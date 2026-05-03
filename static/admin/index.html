@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JI Taxi — Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <link rel="stylesheet" href="/static/admin/admin.css?v={{ static_v }}" />
+
+</head>
+<body>
+  <div id="login-screen" class="login-screen">
+    <div class="login-card">
+      <h1><i class="fa-solid fa-shield-halved"></i> Админ-панель</h1>
+      <p class="muted">JI Taxi</p>
+      <form id="login-form">
+        <label>Логин</label>
+        <input type="text" id="login-user" autocomplete="username" value="" />
+        <label>Пароль</label>
+        <input type="password" id="login-pass" autocomplete="current-password" value="" />
+        <button type="submit" class="btn-primary"><i class="fa-solid fa-right-to-bracket"></i> Войти</button>
+        <p id="login-error" class="error-text"></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <div id="sidebar-backdrop" class="sidebar-backdrop" aria-hidden="true"></div>
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <span class="brand-icon"><i class="fa-solid fa-taxi"></i></span>
+        <div class="brand-text">
+          <span class="brand-title">JI Taxi</span>
+          <span class="brand-sub">Admin</span>
+        </div>
+      </div>
+      <nav class="nav nav-rich">
+        <a href="#/dashboard" data-route="dashboard"><span class="ni"><i class="fa-solid fa-chart-pie"></i></span><span class="nt">Dashboard</span></a>
+        <a href="#/map" data-route="map"><span class="ni"><i class="fa-solid fa-map-location-dot"></i></span><span class="nt">Карта</span></a>
+        <a href="#/drivers" data-route="drivers"><span class="ni"><i class="fa-solid fa-id-card"></i></span><span class="nt">Водители</span></a>
+        <a href="#/clients" data-route="clients"><span class="ni"><i class="fa-solid fa-users"></i></span><span class="nt">Клиенты</span></a>
+        <a href="#/trips" data-route="trips"><span class="ni"><i class="fa-solid fa-route"></i></span><span class="nt">Поездки</span></a>
+        <a href="#/transactions" data-route="transactions"><span class="ni"><i class="fa-solid fa-money-bill-transfer"></i></span><span class="nt">Транзакция</span></a>
+        <a href="#/analytics" data-route="analytics"><span class="ni"><i class="fa-solid fa-chart-line"></i></span><span class="nt">Аналитика</span></a>
+        <a href="#/push" data-route="push"><span class="ni"><i class="fa-solid fa-bell"></i></span><span class="nt">Push-уведомления</span></a>
+        <a href="#/settings" data-route="settings"><span class="ni"><i class="fa-solid fa-sliders"></i></span><span class="nt">Настройки</span></a>
+      </nav>
+      <button type="button" id="btn-logout" class="btn-logout-sidebar"><i class="fa-solid fa-power-off"></i> Выход</button>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button type="button" id="nav-burger" class="nav-burger" aria-label="Меню"><i class="fa-solid fa-bars"></i></button>
+          <h2 id="page-title">Dashboard</h2>
+        </div>
+        <div class="topbar-actions">
+          <span id="socket-status" class="badge badge-off"><i class="fa-solid fa-plug"></i> Socket</span>
+        </div>
+      </header>
+
+      <section id="view-dashboard" class="view">
+        <div class="dash-hero">
+          <div>
+            <h3 class="dash-title">Обзор системы</h3>
+            <p class="dash-sub muted" id="dash-updated">—</p>
+          </div>
+          <button type="button" id="btn-dash-refresh" class="btn-dash-refresh"><i class="fa-solid fa-rotate"></i> Обновить</button>
+        </div>
+        <div class="dash-grid-main" id="stat-cards"></div>
+        <div class="dash-panels">
+          <div class="dash-panel card-panel">
+            <h4 class="dash-panel-title"><i class="fa-solid fa-calendar-day"></i> Сегодня</h4>
+            <div id="dash-today" class="dash-kv"></div>
+          </div>
+          <div class="dash-panel card-panel">
+            <h4 class="dash-panel-title"><i class="fa-solid fa-chart-simple"></i> Водители по статусу</h4>
+            <div id="dash-drivers-bar" class="dash-bars"></div>
+          </div>
+          <div class="dash-panel card-panel">
+            <h4 class="dash-panel-title"><i class="fa-solid fa-bolt"></i> Онлайн (WebSocket)</h4>
+            <div id="dash-live" class="dash-kv"></div>
+          </div>
+        </div>
+        <div class="dash-panels dash-row-2">
+          <div class="dash-panel card-panel">
+            <h4 class="dash-panel-title"><i class="fa-solid fa-user-check"></i> Верификация водителей</h4>
+            <div id="dash-verif" class="dash-kv"></div>
+          </div>
+          <div class="dash-panel card-panel">
+            <h4 class="dash-panel-title"><i class="fa-solid fa-coins"></i> Выручка (completed)</h4>
+            <div id="dash-revenue" class="dash-kv"></div>
+          </div>
+        </div>
+        <div class="dash-panel card-panel dash-wide">
+          <h4 class="dash-panel-title"><i class="fa-solid fa-route"></i> Поездки и качество</h4>
+          <div id="dash-trips-meta" class="dash-kv cols-3"></div>
+        </div>
+      </section>
+
+      <section id="view-map" class="view hidden">
+        <div class="map-page">
+          <div class="map-shell">
+            <div class="map-overlay-toolbar">
+              <div class="toggles">
+                <label class="toggle"><input type="checkbox" id="tog-drivers" checked /> Водители</label>
+                <label class="toggle"><input type="checkbox" id="tog-clients" checked /> Клиенты</label>
+                <label
+                  class="toggle"
+                  title="Ярко-зелёные — активные поездки; тёмные пунктиры — завершённые и отменённые за последние 72 ч."
+                >
+                  <input type="checkbox" id="tog-routes" /> Маршруты
+                </label>
+                <label class="toggle"><input type="checkbox" id="tog-heatmap" /> Heatmap</label>
+                <label class="toggle"><input type="checkbox" id="filt-online" /> Только онлайн</label>
+                <label class="toggle"><input type="checkbox" id="filt-busy" /> Только занятые</label>
+              </div>
+              <div class="map-toolbar-actions">
+                <input type="search" id="map-search" class="map-search-input" placeholder="Поиск по ID…" />
+                <button type="button" id="btn-map-fit" class="btn-map-tool" title="Показать всех на карте"><i class="fa-solid fa-expand"></i></button>
+                <button type="button" id="btn-refresh-map" class="btn-map-tool" title="Обновить"><i class="fa-solid fa-rotate"></i></button>
+              </div>
+            </div>
+            <div id="map" class="map-wrap">
+              <div id="map-inner"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-drivers" class="view hidden">
+        <div class="drivers-page card">
+          <div class="drivers-toolbar">
+            <input type="search" id="drivers-q" class="drivers-search" placeholder="Поиск: ID, телефон, имя…" />
+            <select id="drivers-ver-filter" class="drivers-select" title="Верификация">
+              <option value="">Все верификации</option>
+              <option value="pending">Ожидает (pending)</option>
+              <option value="verified">Подтверждён</option>
+              <option value="refused">Отклонён</option>
+            </select>
+            <select id="drivers-sort-by" class="drivers-select">
+              <option value="driver_id">Сорт: ID</option>
+              <option value="created_at">Дата регистрации</option>
+              <option value="name">Имя</option>
+              <option value="rating">Рейтинг</option>
+              <option value="verification">Верификация</option>
+              <option value="status">Статус такси</option>
+              <option value="balance">Баланс</option>
+            </select>
+            <select id="drivers-sort-dir" class="drivers-select">
+              <option value="desc">По убыванию</option>
+              <option value="asc">По возрастанию</option>
+            </select>
+            <button type="button" id="btn-drivers-load" class="btn-secondary">Обновить</button>
+          </div>
+          <div id="drivers-grid" class="drivers-grid"></div>
+        </div>
+      </section>
+
+      <section id="view-clients" class="view hidden">
+        <div class="drivers-page card">
+          <div class="drivers-toolbar">
+            <input type="search" id="clients-q" class="drivers-search" placeholder="Поиск: ID, телефон…" />
+            <select id="clients-sort-by" class="drivers-select">
+              <option value="client_id">Сорт: ID</option>
+              <option value="created_at">Дата</option>
+              <option value="name">Имя</option>
+              <option value="rating">Рейтинг</option>
+              <option value="balance">Баланс</option>
+              <option value="trips_count">Поездок</option>
+            </select>
+            <select id="clients-sort-dir" class="drivers-select">
+              <option value="desc">↓</option>
+              <option value="asc">↑</option>
+            </select>
+            <button type="button" id="btn-clients-load" class="btn-secondary">Обновить</button>
+          </div>
+          <div id="clients-grid" class="drivers-grid"></div>
+        </div>
+      </section>
+
+      <section id="view-trips" class="view hidden">
+        <div class="drivers-page card">
+          <div class="drivers-toolbar">
+            <input type="search" id="trips-q" class="drivers-search" placeholder="ID клиента / водителя / поездки" />
+            <input type="date" id="trips-from" class="drivers-search admin-toolbar-date" title="Дата с" />
+            <input type="date" id="trips-to" class="drivers-search admin-toolbar-date" title="Дата по" />
+            <select id="trips-status" class="drivers-select">
+              <option value="">Все статусы</option>
+              <option value="pending">pending</option>
+              <option value="offered">offered</option>
+              <option value="accepted">accepted</option>
+              <option value="busy">busy</option>
+              <option value="completed">completed</option>
+              <option value="cancelled">cancelled</option>
+            </select>
+            <select id="trips-sort-by" class="drivers-select">
+              <option value="created_at">По дате</option>
+              <option value="trip_id">По ID</option>
+              <option value="price">По цене</option>
+              <option value="distance">По км</option>
+              <option value="status">По статусу</option>
+            </select>
+            <select id="trips-sort-dir" class="drivers-select">
+              <option value="desc">↓</option>
+              <option value="asc">↑</option>
+            </select>
+            <button type="button" id="btn-trips-load" class="btn-secondary">Обновить</button>
+          </div>
+          <div id="trips-grid" class="trips-grid"></div>
+        </div>
+      </section>
+
+      <section id="view-transactions" class="view hidden">
+        <div class="wd-page">
+          <div class="wd-page-head">
+            <div>
+              <h3 class="wd-page-title">Выводы водителей</h3>
+              <p class="wd-page-sub muted">
+                Сумма списывается при создании заявки; при отклонении возвращается на баланс. Пустой комментарий при смене статуса — текст из настроек проекта.
+              </p>
+            </div>
+            <div class="wd-toolbar">
+              <select id="wd-status-filter" class="drivers-select wd-filter" title="Статус заявки">
+                <option value="">Все статусы</option>
+                <option value="pending">В очереди</option>
+                <option value="processing">В обработке</option>
+                <option value="completed">Выполнено</option>
+                <option value="rejected">Отклонено</option>
+              </select>
+              <button type="button" id="btn-withdrawals-load" class="btn-secondary wd-refresh-btn">
+                <i class="fa-solid fa-rotate"></i> Обновить
+              </button>
+            </div>
+          </div>
+          <div id="withdrawals-grid" class="withdrawals-grid"></div>
+        </div>
+      </section>
+
+      <section id="view-analytics" class="view hidden">
+        <div class="analytics-page">
+          <div class="analytics-grid">
+            <div class="card-panel chart-card">
+              <h4 class="dash-panel-title"><i class="fa-solid fa-chart-pie"></i> Поездки по статусу</h4>
+              <div class="chart-wrap"><canvas id="chart-trips-status"></canvas></div>
+            </div>
+            <div class="card-panel chart-card">
+              <h4 class="dash-panel-title"><i class="fa-solid fa-user-check"></i> Водители: верификация</h4>
+              <div class="chart-wrap"><canvas id="chart-verif"></canvas></div>
+            </div>
+            <div class="card-panel chart-card chart-wide">
+              <h4 class="dash-panel-title"><i class="fa-solid fa-calendar-week"></i> Созданные поездки, 7 дней</h4>
+              <div class="chart-wrap chart-tall"><canvas id="chart-trips-7d"></canvas></div>
+            </div>
+            <div class="card-panel chart-card">
+              <h4 class="dash-panel-title"><i class="fa-solid fa-flag-checkered"></i> Завершённые, 7 дней</h4>
+              <div class="chart-wrap"><canvas id="chart-completed-7d"></canvas></div>
+            </div>
+            <div class="card-panel chart-card">
+              <h4 class="dash-panel-title"><i class="fa-solid fa-sack-dollar"></i> Выручка (completed), 7 дней</h4>
+              <div class="chart-wrap"><canvas id="chart-rev-7d"></canvas></div>
+            </div>
+            <div class="card-panel chart-card chart-wide">
+              <h4 class="dash-panel-title"><i class="fa-solid fa-user-plus"></i> Регистрации: клиенты и водители</h4>
+              <div class="chart-wrap chart-tall"><canvas id="chart-reg-7d"></canvas></div>
+            </div>
+            <div class="card-panel chart-card chart-wide">
+              <h4 class="dash-panel-title"><i class="fa-solid fa-ban"></i> Отказы по причине (30 дней)</h4>
+              <div class="chart-wrap chart-tall"><canvas id="chart-refusals"></canvas></div>
+            </div>
+          </div>
+          <div class="card-panel analytics-strip" id="analytics-strip"></div>
+          <div class="card-panel analytics-json-wrap">
+            <h4 class="dash-panel-title"><i class="fa-solid fa-code"></i> Сырые данные</h4>
+            <pre id="analytics-dump" class="mono"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-push" class="view hidden">
+        <div class="settings-page">
+          <div class="card-panel settings-block">
+            <h3 class="settings-h"><i class="fa-solid fa-bell"></i> Тексты Web Push</h3>
+            <p class="muted settings-desc">
+              Шаблоны для событий приложения. Плейсхолдеры в фигурных скобках, например
+              <code class="mono">{trip_id}</code>, <code class="mono">{price}</code>,
+              <code class="mono">{driver_label}</code>, <code class="mono">{taxi_name}</code>,
+              <code class="mono">{start_address}</code>,
+              <code class="mono">{addressFrom}</code> / <code class="mono">{address_from}</code>,
+              <code class="mono">{addressTo}</code> / <code class="mono">{address_to}</code> / <code class="mono">{end_address}</code>,
+              <code class="mono">{distanceKm}</code> / <code class="mono">{distance_km}</code> (км, два знака после запятой);
+              выводы: <code class="mono">{withdrawal_id}</code>, <code class="mono">{amount}</code>, <code class="mono">{card_last4}</code>, <code class="mono">{reason}</code>.
+              Поле «Подзаголовок» поддерживается не везде; на iOS у Web Push система часто добавляет строку вида «from …» — это ограничение платформы, а не текста шаблона.
+              После сохранения новые тексты используются при следующей отправке.
+            </p>
+            <button type="button" id="btn-push-templates-reload" class="btn-secondary" style="margin-bottom:0.75rem">
+              <i class="fa-solid fa-rotate"></i> Обновить список
+            </button>
+            <div id="push-templates-list" class="push-templates-list"></div>
+          </div>
+          <div class="card-panel settings-block">
+            <h3 class="settings-h"><i class="fa-solid fa-paper-plane"></i> Тестовая отправка</h3>
+            <p class="muted settings-desc">
+              Отправляет push на все сохранённые подписки указанного пользователя (как в приложении после «Разрешить уведомления»).
+              Нужны переменные <code class="mono">VAPID_*</code> на сервере.
+            </p>
+            <label class="set-row"><span>Тип</span>
+              <select id="push-test-user-type" class="drivers-search" style="max-width:200px">
+                <option value="driver">Водитель</option>
+                <option value="client">Клиент</option>
+              </select>
+            </label>
+            <label class="set-row"><span>ID пользователя</span>
+              <input type="number" min="1" id="push-test-user-id" class="drivers-search" style="max-width:140px" value="1" />
+            </label>
+            <label class="set-row"><span>Заголовок</span>
+              <input type="text" id="push-test-title" class="drivers-search" style="max-width:100%" maxlength="300" value="Тест уведомления" />
+            </label>
+            <label class="set-row"><span>Текст</span>
+              <textarea id="push-test-body" class="drivers-search" rows="3" style="max-width:100%;min-height:4rem">Проверка Web Push из админ-панели.</textarea>
+            </label>
+            <label class="set-row"><span>Подзаголовок (опц.)</span>
+              <input type="text" id="push-test-subtitle" class="drivers-search" style="max-width:100%" maxlength="500" placeholder="" />
+            </label>
+            <label class="set-row"><span>URL при клике</span>
+              <input type="text" id="push-test-url" class="drivers-search" style="max-width:100%" value="/" />
+            </label>
+            <button type="button" id="btn-push-test-send" class="btn-primary" style="margin-top:0.5rem">
+              <i class="fa-solid fa-paper-plane"></i> Отправить тест
+            </button>
+            <div id="push-test-result" class="push-test-result muted" style="margin-top:0.75rem" role="status" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-settings" class="view hidden">
+        <div class="settings-page">
+          <div class="card-panel settings-block">
+            <h3 class="settings-h"><i class="fa-solid fa-coins"></i> Тарифы проекта (сервер)</h3>
+            <p class="muted settings-desc">
+              Итоговая цена клиента: <strong>база</strong> + сумма по <strong>ступеням ₼/км</strong> (JSON) + <strong>минуты × тариф</strong>;
+              затем не ниже <strong>минимума</strong>; для длинных поездок — <strong>потолок базы</strong> по ₼/км, затем множители (для длинных ослаблены), затем <strong>финальный потолок</strong> (км × ставка × коэффициент).
+            </p>
+            <div class="tariff-field">
+              <label class="set-row" for="proj-price-per-km">
+                <span class="set-row-label">
+                  <span class="set-title">Цена за 1 км (справочно)</span>
+                  <span class="field-hint">Не входит в основную формулу ступеней. Оставлена для совместимости (старые экраны, отчёты). Основной тариф задаётся JSON ступеней ниже.</span>
+                </span>
+                <input type="number" step="0.01" min="0" id="proj-price-per-km" class="drivers-search" style="max-width:140px" />
+              </label>
+            </div>
+            <div class="tariff-field">
+              <label class="set-row" for="proj-trip-base">
+                <span class="set-row-label">
+                  <span class="set-title">Базовая цена (посадка)</span>
+                  <span class="field-hint">Фиксированная часть до километров и минут (например «подъём цены» за вызов такси).</span>
+                </span>
+                <input type="number" step="0.01" min="0" id="proj-trip-base" class="drivers-search" style="max-width:140px" />
+              </label>
+            </div>
+            <div class="tariff-field">
+              <label class="set-row" for="proj-pricing-per-min">
+                <span class="set-row-label">
+                  <span class="set-title">Цена за минуту</span>
+                  <span class="field-hint">Умножается на длительность маршрута в минутах (с клиента передаётся после расчёта OSRM). Добавляется к базе и километражу.</span>
+                </span>
+                <input type="number" step="0.001" min="0" id="proj-pricing-per-min" class="drivers-search" style="max-width:140px" />
+              </label>
+            </div>
+            <div class="tariff-field">
+              <label class="set-row" for="proj-pricing-min-price">
+                <span class="set-row-label">
+                  <span class="set-title">Минимальная цена поездки</span>
+                  <span class="field-hint">Нижняя граница после сложения базы, км и минут (до множителей волны/спроса), в ₼.</span>
+                </span>
+                <input type="number" step="0.01" min="0" id="proj-pricing-min-price" class="drivers-search" style="max-width:140px" />
+              </label>
+            </div>
+            <div class="tariff-field">
+              <label class="set-row" for="proj-pricing-long-km">
+                <span class="set-row-label">
+                  <span class="set-title">Порог «длинной» поездки (км)</span>
+                  <span class="field-hint">Если дистанция заказа <strong>строго больше</strong> этого значения, к базовой цене (до волн/спроса) применяется потолок «км × ставка» из следующего поля.</span>
+                </span>
+                <input type="number" step="0.1" min="0" id="proj-pricing-long-km" class="drivers-search" style="max-width:140px" />
+              </label>
+            </div>
+            <div class="tariff-field">
+              <label class="set-row" for="proj-pricing-long-floor">
+                <span class="set-row-label">
+                  <span class="set-title">Потолок: линейная ставка ₼/км при длинной</span>
+                  <span class="field-hint">При дистанции выше порога база (посадка + ступени + минуты, с учётом минимума поездки) не превышает <code>км × это значение</code>. Ступени по-прежнему считаются для всех дистанций; для длинных рейсов берётся <code>min(ступенчатая база, км × ставка)</code>, затем умножаются волна и спрос.</span>
+                </span>
+                <input type="number" step="0.01" min="0" id="proj-pricing-long-floor" class="drivers-search" style="max-width:140px" />
+              </label>
+            </div>
+            <div class="tariff-field">
+              <label class="set-row" for="proj-pricing-long-post-cap">
+                <span class="set-row-label">
+                  <span class="set-title">Финальный потолок длинной поездки (множитель)</span>
+                  <span class="field-hint">После волн и спроса итог не выше <code>км × линейная ставка × это значение</code> (например 1.05 ≈ +5% к линейной ставке).</span>
+                </span>
+                <input type="number" step="0.01" min="1" max="3" id="proj-pricing-long-post-cap" class="drivers-search" style="max-width:140px" />
+              </label>
+            </div>
+            <div class="tariff-field">
+              <label class="set-row" for="proj-pricing-long-max-wave">
+                <span class="set-row-label">
+                  <span class="set-title">Макс. множитель волны для длинной поездки</span>
+                  <span class="field-hint">Для км выше порога спрос принудительно 1.0; множитель волны не выше этого числа (1.05–1.1 — разумный диапазон).</span>
+                </span>
+                <input type="number" step="0.01" min="1" max="2" id="proj-pricing-long-max-wave" class="drivers-search" style="max-width:140px" />
+              </label>
+            </div>
+            <div class="tariff-field">
+              <label class="set-row" for="proj-pricing-nearby-km">
+                <span class="set-row-label">
+                  <span class="set-title">Порог «водитель рядом» (км)</span>
+                  <span class="field-hint">Если в волне диспетчеризации ближайший из предложенных водителей ближе этого расстояния до точки подачи, волна и спрос <strong>не повышают</strong> цену (множители 1.0).</span>
+                </span>
+                <input type="number" step="0.1" min="0" max="50" id="proj-pricing-nearby-km" class="drivers-search" style="max-width:140px" />
+              </label>
+            </div>
+            <div class="tariff-field">
+              <label class="set-row" for="proj-pricing-ref-high">
+                <span class="set-row-label">
+                  <span class="set-title">Контроллер рынка: верх к якорю ₼/км</span>
+                  <span class="field-hint">Итог не выше <code>якорь ₼/км × км × это значение</code>. Якорь: для коротких поездок — отдельное поле ниже (если включено), иначе средняя фактическая ₼/км за 14 дней либо «цена за 1 км справочно».</span>
+                </span>
+                <input type="number" step="0.01" min="1" max="1.35" id="proj-pricing-ref-high" class="drivers-search" style="max-width:140px" />
+              </label>
+            </div>
+            <div class="tariff-field">
+              <label class="set-row" for="proj-pricing-ref-low">
+                <span class="set-row-label">
+                  <span class="set-title">Контроллер рынка: низ к якорю</span>
+                  <span class="field-hint">Нижняя граница относительно того же якоря (например 0.88).</span>
+                </span>
+                <input type="number" step="0.01" min="0.5" max="1" id="proj-pricing-ref-low" class="drivers-search" style="max-width:140px" />
+              </label>
+            </div>
+            <div class="tariff-field">
+              <label class="set-row" for="proj-pricing-ref-short-max-km">
+                <span class="set-row-label">
+                  <span class="set-title">Короткие поездки: порог км для отдельного якоря</span>
+                  <span class="field-hint">Если <strong>&gt; 0</strong> и задан якорь ₼/км ниже — для заказов <strong>≤</strong> этого км цена км считается <strong>только</strong> как посадка + якорь×км + минуты (ступени JSON <strong>не</strong> используются); волна/спрос/рынок как раньше. Контроллер рынка (коридор от истории/справочно) для таких поездок <strong>не</strong> применяется. <strong>0</strong> — выключено, все поездки по ступеням + контроллер.</span>
+                </span>
+                <input type="number" step="0.1" min="0" max="500" id="proj-pricing-ref-short-max-km" class="drivers-search" style="max-width:140px" />
+              </label>
+            </div>
+            <div class="tariff-field">
+              <label class="set-row" for="proj-pricing-ref-short-pkm">
+                <span class="set-row-label">
+                  <span class="set-title">Короткие поездки: якорь ₼/км</span>
+                  <span class="field-hint">Например <strong>0,46</strong> при пороге <strong>50</strong> — линейная ставка ₼/км для км-части короткого режима. Пусть будет <strong>0</strong>, если короткий режим не нужен.</span>
+                </span>
+                <input type="number" step="0.001" min="0" max="2.5" id="proj-pricing-ref-short-pkm" class="drivers-search" style="max-width:140px" />
+              </label>
+            </div>
+            <div class="tariff-field">
+              <label class="set-row" for="proj-dispatch-dist-w">
+                <span class="set-row-label">
+                  <span class="set-title">Вес расстояния в приоритете водителя</span>
+                  <span class="field-hint">При раздаче заказа: <code>приоритет = балл − (расстояние до клиента в км × вес)</code>. Чем больше вес, тем сильнее ближние водители выигрывают у дальних при прочих равных.</span>
+                </span>
+                <input type="number" step="0.001" min="0" id="proj-dispatch-dist-w" class="drivers-search" style="max-width:140px" />
+              </label>
+            </div>
+            <div class="tariff-field tariff-field--textarea">
+              <label class="set-row" for="proj-pricing-km-tiers-json">
+                <span class="set-row-label">
+                  <span class="set-title">Ступени динамической цены за км (JSON)</span>
+                  <span class="field-hint">Массив объектов <code>{"up_to": км, "rate": ₼ за км}</code> по возрастанию <code>up_to</code>; последний сегмент с <code>"up_to": null</code> — «всё, что дальше». Каждый участок (от предыдущей границы до <code>up_to</code>) умножается на свой <code>rate</code>.</span>
+                </span>
+                <textarea id="proj-pricing-km-tiers-json" class="drivers-search" rows="6" style="max-width:100%;font-family:ui-monospace,monospace;font-size:12px" spellcheck="false"></textarea>
+              </label>
+            </div>
+            <div class="tariff-field">
+              <label class="set-row" for="proj-dispatch-timeout">
+                <span class="set-row-label">
+                  <span class="set-title">Таймаут волны оффера (сек)</span>
+                  <span class="field-hint">Сколько секунд выбранные водители видят заказ, пока не запустится следующая волна (шире радиус, выше коэффициент цены при необходимости).</span>
+                </span>
+                <input type="number" step="1" min="3" max="120" id="proj-dispatch-timeout" class="drivers-search" style="max-width:140px" />
+              </label>
+            </div>
+            <div class="tariff-field">
+              <label class="set-row" for="proj-dispatch-wave-size">
+                <span class="set-row-label">
+                  <span class="set-title">Водителей в волне (топ)</span>
+                  <span class="field-hint">Сколько водителей с лучшим приоритетом получают оффер за одну волну (остальные ждут следующей волны и расширения радиуса).</span>
+                </span>
+                <input type="number" step="1" min="1" max="20" id="proj-dispatch-wave-size" class="drivers-search" style="max-width:140px" />
+              </label>
+            </div>
+            <details class="tariff-field" style="margin-top:0.75rem">
+              <summary class="settings-h" style="cursor:pointer">Волны, SOLO, приоритет и анти-спам офферов</summary>
+              <p class="muted" style="margin:0.5rem 0 0.75rem;font-size:0.9rem">
+                <strong>Волны:</strong> доли кандидатов по волнам, таймаут волны, минимум водителей в волне 1, интервал между офферами одному водителю (глобально) и <strong>жёсткий cooldown повтора по тому же заказу</strong> (Redis).
+                <strong>Цена:</strong> surge по tier и по времени с первого оффера; клиентский мягкий буст из приложения.
+                <strong>SOLO:</strong> пороги acceptance/рейтинга для одиночного первого оффера.
+                <strong>Скоринг:</strong> нормализация метрик, вес расстояния (в т.ч. авто от плотности), «рядом хороший» ограничивает выбор дальних, бонус стабильности EMA accept, штрафы отказов по типам (Redis × масштаб).
+              </p>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-offer-gap">
+                  <span class="set-row-label"><span class="set-title">Мин. интервал между офферами (сек)</span>
+                    <span class="field-hint">Анти-спам между <em>разными</em> заказами: не слать новый оффер водителю, если предыдущий был &lt; N сек назад (Redis по водителю).</span></span>
+                  <input type="number" step="1" min="0" max="120" id="proj-dispatch-offer-gap" class="drivers-search" style="max-width:140px" />
+                </label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-wave1-share"><span class="set-row-label"><span class="set-title">Доля волны 1 (0.05–0.55)</span>
+                  <span class="field-hint">Доля пула кандидатов, которым уходит первая волна (остальное — следующие волны / расширение радиуса).</span></span>
+                  <input type="number" step="0.01" min="0.05" max="0.55" id="proj-dispatch-wave1-share" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-wave2-share"><span class="set-row-label"><span class="set-title">Доля волны 2 (0.05–0.55)</span>
+                  <span class="field-hint">Вторая волна после таймаута первой; сумма с волной 1 не обязана быть 1 — остаток уходит волне 3+.</span></span>
+                  <input type="number" step="0.01" min="0.05" max="0.55" id="proj-dispatch-wave2-share" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-wave1-min"><span class="set-row-label"><span class="set-title">Мин. водителей волны 1 (1–4)</span>
+                  <span class="field-hint">Если достойных кандидатов хватает — не отдавать заказ одному человеку в первой волне (снижает риск «один промолчал — зря ждём»).</span></span>
+                  <input type="number" step="1" min="1" max="4" id="proj-dispatch-wave1-min" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-trip-repeat-cd"><span class="set-row-label"><span class="set-title">Cooldown повтора оффера по тому же trip (сек)</span>
+                  <span class="field-hint">Ключ Redis <code>dispatch:trip:{id}:offered:{driver}</code>: не слать тому же водителю тот же заказ чаще, чем раз в N секунд.</span></span>
+                  <input type="number" step="1" min="15" max="120" id="proj-dispatch-trip-repeat-cd" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-tier2-sur"><span class="set-row-label"><span class="set-title">Surge цены tier ≥2 (доля, 0–0.08)</span>
+                  <span class="field-hint">Множитель к расчётной цене при повышении tier качества поиска (вторая ступень).</span></span>
+                  <input type="number" step="0.001" min="0" max="0.08" id="proj-dispatch-tier2-sur" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-tier3-extra"><span class="set-row-label"><span class="set-title">Доп. surge tier 3 (0–0.06)</span>
+                  <span class="field-hint">Добавка к surge tier 2 на третьей ступени (сильный дефицит / долгий поиск).</span></span>
+                  <input type="number" step="0.001" min="0" max="0.06" id="proj-dispatch-tier3-extra" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-time-surge-cap"><span class="set-row-label"><span class="set-title">Потолок surge по времени (доля, 0–0.12)</span>
+                  <span class="field-hint">Суммарная надбавка к цене от момента первого оффера (пороги 15/30/45 с и доли ниже).</span></span>
+                  <input type="number" step="0.001" min="0" max="0.12" id="proj-dispatch-time-surge-cap" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-time-t15"><span class="set-row-label"><span class="set-title">Время surge: порог 1 (сек)</span>
+                  <span class="field-hint">Секунд с момента <strong>первого оффера</strong> водителю: после этого нарастает первая ступень time-surge (доля p15 ниже), в пределах общего потолка surge по времени.</span></span>
+                  <input type="number" step="1" min="5" max="120" id="proj-dispatch-time-t15" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-time-t30"><span class="set-row-label"><span class="set-title">Время surge: порог 2 (сек)</span>
+                  <span class="field-hint">Вторая ступень (обычно дольше первой): к суммарной надбавке добавляется доля p30; пороги должны идти по возрастанию (t15 &lt; t30 &lt; t45).</span></span>
+                  <input type="number" step="1" min="6" max="180" id="proj-dispatch-time-t30" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-time-t45"><span class="set-row-label"><span class="set-title">Время surge: порог 3 (сек)</span>
+                  <span class="field-hint">Третья ступень «долгий поиск»: после неё действует доля p45; итоговая надбавка по времени ограничена полем «Потолок surge по времени».</span></span>
+                  <input type="number" step="1" min="7" max="300" id="proj-dispatch-time-t45" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-time-p15"><span class="set-row-label"><span class="set-title">Доля surge после порога 1</span>
+                  <span class="field-hint">Доля от <strong>базовой цены</strong> (до волны/спроса), добавляемая после t15; сумма p15+p30+p45 не должна превышать потолок time surge.</span></span>
+                  <input type="number" step="0.001" min="0" max="0.04" id="proj-dispatch-time-p15" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-time-p30"><span class="set-row-label"><span class="set-title">Доля surge после порога 2</span>
+                  <span class="field-hint">Дополнительная доля после t30 (накладывается на предыдущие ступени в модели «ступенчатого» роста по времени ожидания).</span></span>
+                  <input type="number" step="0.001" min="0" max="0.04" id="proj-dispatch-time-p30" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-time-p45"><span class="set-row-label"><span class="set-title">Доля surge после порога 3</span>
+                  <span class="field-hint">Максимальная по величине ступень по времени; при нулевых p30/p45 остаётся только ранний рост по t15.</span></span>
+                  <input type="number" step="0.001" min="0" max="0.04" id="proj-dispatch-time-p45" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-solo-acc"><span class="set-row-label"><span class="set-title">SOLO: мин. acceptance (0.35–0.95)</span>
+                  <span class="field-hint">Ниже порога SOLO не используется — сразу обычная волна.</span></span>
+                  <input type="number" step="0.01" min="0.35" max="0.95" id="proj-dispatch-solo-acc" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-solo-rt"><span class="set-row-label"><span class="set-title">SOLO: мин. рейтинг (3–5)</span>
+                  <span class="field-hint">Минимальный рейтинг водителя, чтобы первый оффер мог уйти <strong>одному</strong> лучшему кандидату (SOLO); ниже — сразу обычная волна.</span></span>
+                  <input type="number" step="0.1" min="3" max="5" id="proj-dispatch-solo-rt" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-near-good-km"><span class="set-row-label"><span class="set-title">«Рядом хороший»: км (0.3–2)</span>
+                  <span class="field-hint">Если есть водитель в пределах N км с приемлемым рейтингом/acceptance — не брать из волны тех, кто дальше порога «max pick km».</span></span>
+                  <input type="number" step="0.1" min="0.3" max="2" id="proj-dispatch-near-good-km" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-near-good-acc"><span class="set-row-label"><span class="set-title">«Рядом хороший»: мин. acceptance</span>
+                  <span class="field-hint">Порог accept rate для водителя «рядом»: если в радиусе км есть такой — не поднимать из волны дальних с плохим accept.</span></span>
+                  <input type="number" step="0.01" min="0.35" max="0.95" id="proj-dispatch-near-good-acc" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-near-good-rt"><span class="set-row-label"><span class="set-title">«Рядом хороший»: мин. рейтинг</span>
+                  <span class="field-hint">Порог рейтинга в паре с acceptance для «качественного соседа»; вместе с км задаёт, кого считать «рядом хорошим».</span></span>
+                  <input type="number" step="0.1" min="3" max="5" id="proj-dispatch-near-good-rt" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-wave-max-km"><span class="set-row-label"><span class="set-title">Max км выбора при «рядом хороший» (1.2–6)</span>
+                  <span class="field-hint">Верхняя граница дистанции до клиента при отборе «хорошего рядом»: дальше этого км кандидат не вытесняет дальних из волны.</span></span>
+                  <input type="number" step="0.1" min="1.2" max="6" id="proj-dispatch-wave-max-km" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-distw-auto"><span class="set-row-label"><span class="set-title">Авто-вес расстояния (0–1)</span>
+                  <span class="field-hint">1 = подменять «вес расстояния» из плотности кандидатов (sparse/dense); 0 = всегда брать ручной вес сверху.</span></span>
+                  <input type="number" step="0.05" min="0" max="1" id="proj-dispatch-distw-auto" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-distw-low-n"><span class="set-row-label"><span class="set-title">Плотность: мало водителей (n ≤)</span>
+                  <span class="field-hint">Число кандидатов в зоне волны ≤ этого — считаем «разреженно»: берётся вес <code>distw_sparse</code> (сильнее штраф за дистанцию).</span></span>
+                  <input type="number" step="1" min="2" max="20" id="proj-dispatch-distw-low-n" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-distw-high-n"><span class="set-row-label"><span class="set-title">Плотность: много водителей (n ≥)</span>
+                  <span class="field-hint">При n ≥ этого порога — «плотно»: вес <code>distw_dense</code> (дистанция меньше влияет на приоритет, конкуренция выше).</span></span>
+                  <input type="number" step="1" min="3" max="40" id="proj-dispatch-distw-high-n" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-distw-sparse"><span class="set-row-label"><span class="set-title">Вес дистанции при малой плотности</span>
+                  <span class="field-hint">Множитель штрафа за км в скоринге при мало кандидатах; выше — сильнее предпочитаем ближних.</span></span>
+                  <input type="number" step="0.001" min="0.1" max="0.3" id="proj-dispatch-distw-sparse" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-distw-dense"><span class="set-row-label"><span class="set-title">Вес дистанции при большой плотности</span>
+                  <span class="field-hint">При большом числе кандидатов дистанция слабее режет скор (больше шансов дальним при сильном рейтинге/accept).</span></span>
+                  <input type="number" step="0.001" min="0.1" max="0.3" id="proj-dispatch-distw-dense" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-score-dist-ref"><span class="set-row-label"><span class="set-title">Нормализация: эталон км для дистанции</span>
+                  <span class="field-hint">Дистанция до подачи делится на это значение перед смешиванием с другими метриками (единая шкала 0…1).</span></span>
+                  <input type="number" step="0.1" min="0.8" max="8" id="proj-dispatch-score-dist-ref" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-score-load-ref"><span class="set-row-label"><span class="set-title">Нормализация: эталон поездок за 10 ч</span>
+                  <span class="field-hint">Ожидаемая «нагрузка» водителя за окно; фактическая нагрузка нормируется к ней для штрафа перегруза и скоринга.</span></span>
+                  <input type="number" step="0.5" min="2" max="24" id="proj-dispatch-score-load-ref" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-idle-score-w"><span class="set-row-label"><span class="set-title">Вес простоя (idle) в скоре</span>
+                  <span class="field-hint">Насколько учитывать время без заказа в общем приоритете (честная очередь vs чистый балл рейтинга/accept).</span></span>
+                  <input type="number" step="0.01" min="0.1" max="1.2" id="proj-dispatch-idle-score-w" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-stab-bonus"><span class="set-row-label"><span class="set-title">Бонус стабильности accept (max)</span>
+                  <span class="field-hint">Низкая дисперсия EMA времени принятия → до этого бонуса к скору.</span></span>
+                  <input type="number" step="0.001" min="0" max="0.12" id="proj-dispatch-stab-bonus" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-stab-var"><span class="set-row-label"><span class="set-title">Порог дисперсии для бонуса</span>
+                  <span class="field-hint">Дисперсия EMA времени accept ниже этого порога даёт бонус стабильности (предсказуемые быстрые принятия).</span></span>
+                  <input type="number" step="0.001" min="0.02" max="0.35" id="proj-dispatch-stab-var" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-client-hint-sec"><span class="set-row-label"><span class="set-title">Клиент: сек до подсказки «ищем…»</span>
+                  <span class="field-hint">После первого оффера, если заказ всё ещё offered.</span></span>
+                  <input type="number" step="1" min="25" max="120" id="proj-dispatch-client-hint-sec" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-client-boost-pct"><span class="set-row-label"><span class="set-title">Клиент: % для текста буста</span>
+                  <span class="field-hint">Доля (0.03 = 3%) для подсказки в UI «увеличить шанс»; может не совпадать с реальным множителем цены, если тексты кастомные.</span></span>
+                  <input type="number" step="0.001" min="0.01" max="0.08" id="proj-dispatch-client-boost-pct" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-client-boost-mult"><span class="set-row-label"><span class="set-title">Клиент: множитель цены при бусте</span>
+                  <span class="field-hint">Реальный множитель к расчётной цене при мягком бусте клиентом (пока заказ в pending/offered); обычно небольшой (1.02–1.08).</span></span>
+                  <input type="number" step="0.001" min="1" max="1.12" id="proj-dispatch-client-boost-mult" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-decline-pen"><span class="set-row-label"><span class="set-title">База штрафа приоритета за отказ (ступень)</span>
+                  <span class="field-hint">Множитель к накопленному Redis-штрафу; отдельно задаётся «масштаб» ниже.</span></span>
+                  <input type="number" step="0.001" min="0" max="0.25" id="proj-dispatch-decline-pen" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-decline-scale"><span class="set-row-label"><span class="set-title">Масштаб Redis-штрафа отказа</span>
+                  <span class="field-hint">Итоговое вычитание из приоритета ≈ <code>penalty × масштаб</code> (типы: timeout / busy / decline).</span></span>
+                  <input type="number" step="0.001" min="0" max="0.25" id="proj-dispatch-decline-scale" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-react-fast"><span class="set-row-label"><span class="set-title">Быстрая реакция: порог сек</span>
+                  <span class="field-hint">EMA секунд до accept: быстрее порога — бонус к скору.</span></span>
+                  <input type="number" step="0.5" min="1" max="30" id="proj-dispatch-react-fast" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-react-slow"><span class="set-row-label"><span class="set-title">Медленная реакция: порог сек</span>
+                  <span class="field-hint">Медленнее — штраф к скору.</span></span>
+                  <input type="number" step="0.5" min="2" max="120" id="proj-dispatch-react-slow" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-react-fast-b"><span class="set-row-label"><span class="set-title">Бонус приоритета (быстро)</span>
+                  <span class="field-hint">Добавка к итоговому скору, если EMA времени accept короче порога «быстрая реакция».</span></span>
+                  <input type="number" step="0.001" min="0" max="0.15" id="proj-dispatch-react-fast-b" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-react-slow-p"><span class="set-row-label"><span class="set-title">Штраф приоритета (медленно)</span>
+                  <span class="field-hint">Вычитание из скора, если реакция медленнее порога «медленно» (перегруженные или нерегулярные водители).</span></span>
+                  <input type="number" step="0.001" min="0" max="0.15" id="proj-dispatch-react-slow-p" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-far-km"><span class="set-row-label"><span class="set-title">Микробoost: км от клиента ≥</span>
+                  <span class="field-hint">Если водитель дальше этого расстояния от клиента, к приоритету добавляется небольшой «микробуст» (редкие зоны).</span></span>
+                  <input type="number" step="0.1" min="2" max="12" id="proj-dispatch-far-km" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-far-bonus"><span class="set-row-label"><span class="set-title">Микробoost: бонус к приоритету</span>
+                  <span class="field-hint">Величина бонуса при выполнении условия «далеко от клиента»; не путать с ценой — только ранжирование офферов.</span></span>
+                  <input type="number" step="0.001" min="0" max="0.12" id="proj-dispatch-far-bonus" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-load-pen"><span class="set-row-label"><span class="set-title">Штраф за поездку за 10 ч (на поездку)</span>
+                  <span class="field-hint">Штраф к приоритету за каждую завершённую поездку в скользящем окне 10 ч (анти-перегруз одних и тех же).</span></span>
+                  <input type="number" step="0.001" min="0.01" max="0.09" id="proj-dispatch-load-pen" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-rw"><span class="set-row-label"><span class="set-title">Вес рейтинга в приоритете (1–4)</span>
+                  <span class="field-hint">Вклад нормализованного рейтинга в суммарный скор; выше — сильнее «звёзды» влияют на очередь офферов.</span></span>
+                  <input type="number" step="0.01" min="1" max="4" id="proj-dispatch-rw" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-aw"><span class="set-row-label"><span class="set-title">Вес acceptance² (1–4)</span>
+                  <span class="field-hint">Вклад acceptance (в квадрате в формуле) в скор; усиливает разницу между надёжными и «часто молчащими» водителями.</span></span>
+                  <input type="number" step="0.01" min="1" max="4" id="proj-dispatch-aw" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+              <div class="tariff-field">
+                <label class="set-row" for="proj-dispatch-idle-long"><span class="set-row-label"><span class="set-title">Порог «долго без оффера» (сек)</span>
+                  <span class="field-hint">Для бонуса/учёта простоя вне основного скоринга волны (если используется в логике idle).</span></span>
+                  <input type="number" step="10" min="120" max="7200" id="proj-dispatch-idle-long" class="drivers-search" style="max-width:140px" /></label>
+              </div>
+            </details>
+            <button type="button" id="btn-proj-settings-save" class="btn-secondary" style="margin-top:0.5rem">Сохранить настройки проекта</button>
+          </div>
+          <div class="card-panel settings-block">
+            <h3 class="settings-h"><i class="fa-solid fa-comments"></i> Тексты вывода средств</h3>
+            <p class="muted settings-desc">
+              Подставляются в историю заявки у водителя при смене статуса (если комментарий в админке пустой). Можно изменить под ваш тон общения.
+            </p>
+            <label class="set-row" style="flex-direction: column; align-items: stretch; gap: 0.35rem">
+              <span class="set-title">В очереди (pending)</span>
+              <textarea id="proj-wd-msg-pending" class="drivers-search" rows="2" maxlength="600" spellcheck="false"></textarea>
+            </label>
+            <label class="set-row" style="flex-direction: column; align-items: stretch; gap: 0.35rem">
+              <span class="set-title">В обработке (processing)</span>
+              <textarea id="proj-wd-msg-processing" class="drivers-search" rows="2" maxlength="600" spellcheck="false"></textarea>
+            </label>
+            <label class="set-row" style="flex-direction: column; align-items: stretch; gap: 0.35rem">
+              <span class="set-title">Выполнено (completed)</span>
+              <textarea id="proj-wd-msg-completed" class="drivers-search" rows="2" maxlength="600" spellcheck="false"></textarea>
+            </label>
+            <label class="set-row" style="flex-direction: column; align-items: stretch; gap: 0.35rem">
+              <span class="set-title">Отклонено (rejected)</span>
+              <textarea id="proj-wd-msg-rejected" class="drivers-search" rows="2" maxlength="600" spellcheck="false"></textarea>
+            </label>
+            <button type="button" id="btn-withdrawal-msgs-save" class="btn-secondary" style="margin-top: 0.5rem">
+              Сохранить тексты вывода
+            </button>
+          </div>
+          <div class="card-panel settings-block">
+            <h3 class="settings-h"><i class="fa-solid fa-sliders"></i> Поведение панели</h3>
+            <p class="muted settings-desc">Сохраняется в этом браузере (localStorage).</p>
+            <label class="set-row"><span>Тёмная тема</span><input type="checkbox" id="set-dark-mode" /></label>
+            <label class="set-row"><span>Авто-обновление Dashboard</span><input type="checkbox" id="set-auto-dash" /></label>
+            <label class="set-row"><span>Интервал авто-обновления (сек)</span>
+              <select id="set-dash-interval">
+                <option value="15">15</option>
+                <option value="30" selected>30</option>
+                <option value="60">60</option>
+                <option value="120">120</option>
+              </select>
+            </label>
+            <label class="set-row"><span>По умолчанию включать heatmap на карте</span><input type="checkbox" id="set-def-heat" /></label>
+            <label class="set-row"><span>Heatmap: радужная шкала (холодное → горячее)</span><input type="checkbox" id="set-heat-rainbow" checked /></label>
+            <label class="set-row"><span>Heatmap: радиус точки</span>
+              <select id="set-heat-radius">
+                <option value="40">40</option>
+                <option value="56" selected>56</option>
+                <option value="72">72</option>
+                <option value="88">88</option>
+              </select>
+            </label>
+            <label class="set-row"><span>Heatmap: размытие (blur)</span>
+              <select id="set-heat-blur">
+                <option value="20">20</option>
+                <option value="32" selected>32</option>
+                <option value="44">44</option>
+                <option value="56">56</option>
+              </select>
+            </label>
+            <label class="set-row"><span>По умолчанию показывать маршруты</span><input type="checkbox" id="set-def-routes" /></label>
+            <label class="set-row"><span>Компактный вид списков</span><input type="checkbox" id="set-compact" /></label>
+            <label class="set-row"><span>Подсвечивать новые события на карте (toast)</span><input type="checkbox" id="set-toast" /></label>
+            <label class="set-row"><span>Звук при новой поездке (эксперимент)</span><input type="checkbox" id="set-sound" /></label>
+            <button type="button" id="btn-settings-save" class="btn-secondary">Сохранить настройки</button>
+          </div>
+          <div class="card-panel settings-block">
+            <h3 class="settings-h"><i class="fa-solid fa-list"></i> Журнал действий админа</h3>
+            <div class="table-scroll"><table class="data-table" id="table-logs"></table></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-backdrop" data-close="1"></div>
+    <div class="modal-body card">
+      <button type="button" class="modal-x" data-close="1">&times;</button>
+      <pre id="modal-content" class="mono"></pre>
+    </div>
+  </div>
+
+  <div id="doc-modal" class="modal hidden">
+    <div class="modal-backdrop" data-doc-close="1"></div>
+    <div class="modal-body card doc-modal-card">
+      <button type="button" class="modal-x" data-doc-close="1">&times;</button>
+      <h3 id="doc-modal-title" class="doc-modal-title"></h3>
+      <div id="doc-modal-inner" class="doc-modal-inner"></div>
+    </div>
+  </div>
+
+  <div id="admin-edit-modal" class="modal hidden">
+    <div class="modal-backdrop" data-edit-close="1"></div>
+    <div class="modal-body card doc-modal-card admin-edit-card">
+      <button type="button" class="modal-x" data-edit-close="1">&times;</button>
+      <h3 id="admin-edit-title" class="doc-modal-title">Редактирование</h3>
+      <p id="admin-edit-device-strip" class="muted" style="margin: 0 0 0.65rem; font-size: 0.88rem; line-height: 1.4"></p>
+      <input type="hidden" id="admin-edit-type" value="" />
+      <input type="hidden" id="admin-edit-id" value="" />
+      <div id="admin-edit-client-fields" class="hidden admin-edit-form">
+        <label class="set-row"><span>Имя</span><input type="text" id="edit-c-name" class="drivers-search" maxlength="100" /></label>
+        <label class="set-row"><span>Фамилия</span><input type="text" id="edit-c-surname" class="drivers-search" maxlength="100" /></label>
+        <label class="set-row"><span>Телефон</span><input type="text" id="edit-c-phone" class="drivers-search" maxlength="32" /></label>
+        <label class="set-row"><span>Email</span><input type="text" id="edit-c-email" class="drivers-search" maxlength="100" /></label>
+        <details class="admin-edit-details">
+          <summary>Баланс, рейтинг, координаты, фото…</summary>
+          <label class="set-row"><span>Баланс</span><input type="number" step="0.01" id="edit-c-balance" class="drivers-search" /></label>
+          <label class="set-row"><span>Рейтинг (0–5)</span><input type="number" step="0.01" min="0" max="5" id="edit-c-rating" class="drivers-search" /></label>
+          <label class="set-row"><span>Широта</span><input type="text" id="edit-c-lat" class="drivers-search" /></label>
+          <label class="set-row"><span>Долгота</span><input type="text" id="edit-c-lon" class="drivers-search" /></label>
+          <label class="set-row toggle-row"><span>Бан</span><input type="checkbox" id="edit-c-is-banned" /></label>
+          <label class="set-row toggle-row"><span>Деактивирован</span><input type="checkbox" id="edit-c-admin-disabled" /></label>
+          <label class="set-row"><span>Новый пароль</span><input type="password" id="edit-c-password" class="drivers-search" autocomplete="new-password" placeholder="не менять — оставьте пустым" /></label>
+          <label class="set-row" style="flex-direction:column;align-items:stretch"><span>Фото (base64 или data URL, опционально)</span>
+            <textarea id="edit-c-photo" class="drivers-search" rows="3" placeholder="Заполните только чтобы заменить фото в БД"></textarea>
+          </label>
+        </details>
+      </div>
+      <div id="admin-edit-driver-fields" class="hidden admin-edit-form">
+        <label class="set-row"><span>Имя</span><input type="text" id="edit-d-name" class="drivers-search" maxlength="100" /></label>
+        <label class="set-row"><span>Фамилия</span><input type="text" id="edit-d-surname" class="drivers-search" maxlength="100" /></label>
+        <label class="set-row"><span>Телефон</span><input type="text" id="edit-d-phone" class="drivers-search" maxlength="32" /></label>
+        <label class="set-row"><span>Email</span><input type="text" id="edit-d-email" class="drivers-search" maxlength="100" /></label>
+        <label class="set-row"><span>Марка авто</span><input type="text" id="edit-d-car-name" class="drivers-search" maxlength="100" /></label>
+        <label class="set-row"><span>Гос. номер</span><input type="text" id="edit-d-car-number" class="drivers-search" maxlength="32" /></label>
+        <label class="set-row"><span>Год авто</span><input type="number" id="edit-d-car-year" class="drivers-search" min="1950" max="2035" style="max-width:120px" /></label>
+        <label class="set-row"><span>Класс</span><input type="text" id="edit-d-car-category" class="drivers-search" maxlength="50" placeholder="Econom" /></label>
+        <details class="admin-edit-details">
+          <summary>Баланс, рейтинги, статусы, координаты, документы…</summary>
+          <label class="set-row"><span>Баланс</span><input type="number" step="0.01" id="edit-d-balance" class="drivers-search" /></label>
+          <label class="set-row"><span>Рейтинг (0–5)</span><input type="number" step="0.01" min="0" max="5" id="edit-d-rating" class="drivers-search" /></label>
+          <label class="set-row"><span>Цена за км</span><input type="number" step="0.01" min="0" id="edit-d-price-km" class="drivers-search" /></label>
+          <label class="set-row"><span>Коэф. рейтинга</span><input type="number" step="0.01" min="0.1" id="edit-d-rating-coef" class="drivers-search" title="rating_coefficient" /></label>
+          <label class="set-row"><span>Accept rate</span><input type="number" step="0.01" min="0" max="1" id="edit-d-accept-rate" class="drivers-search" title="acceptance_rate" /></label>
+          <label class="set-row"><span>Верификация</span>
+            <select id="edit-d-verification" class="drivers-select">
+              <option value="pending">pending</option>
+              <option value="verified">verified</option>
+              <option value="refused">refused</option>
+            </select>
+          </label>
+          <label class="set-row"><span>Статус в сети</span>
+            <select id="edit-d-status" class="drivers-select">
+              <option value="offline">offline</option>
+              <option value="available">available</option>
+              <option value="busy">busy</option>
+            </select>
+          </label>
+          <label class="set-row toggle-row"><span>Бан</span><input type="checkbox" id="edit-d-is-banned" /></label>
+          <label class="set-row toggle-row"><span>Деактивирован</span><input type="checkbox" id="edit-d-admin-disabled" /></label>
+          <label class="set-row"><span>ПТС (номер)</span><input type="text" id="edit-d-tech-passport" class="drivers-search" maxlength="100" /></label>
+          <label class="set-row"><span>ВУ (номер)</span><input type="text" id="edit-d-driver-license" class="drivers-search" maxlength="100" /></label>
+          <label class="set-row"><span>Широта</span><input type="text" id="edit-d-lat" class="drivers-search" placeholder="напр. 40.4093" /></label>
+          <label class="set-row"><span>Долгота</span><input type="text" id="edit-d-lon" class="drivers-search" placeholder="напр. 49.8671" /></label>
+          <label class="set-row"><span>Новый пароль</span><input type="password" id="edit-d-password" class="drivers-search" autocomplete="new-password" placeholder="оставьте пустым, если не менять" /></label>
+        </details>
+      </div>
+      <div class="admin-edit-actions">
+        <button type="button" id="btn-admin-edit-save" class="btn-primary">Сохранить</button>
+        <button type="button" class="btn-secondary" data-edit-close="1">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="delete-confirm-modal" class="modal hidden">
+    <div class="modal-backdrop" data-del-close="1"></div>
+    <div class="modal-body card doc-modal-card admin-edit-card">
+      <button type="button" class="modal-x" data-del-close="1">&times;</button>
+      <h3 id="delete-confirm-title" class="doc-modal-title">Удаление</h3>
+      <p id="delete-confirm-text" class="muted" style="margin: 0 0 1rem; line-height: 1.45"></p>
+      <div class="admin-edit-actions">
+        <button type="button" id="btn-delete-confirm" class="btn-danger">Удалить</button>
+        <button type="button" class="btn-secondary" data-del-close="1">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
+  <script src="/static/admin/admin.js?v={{ static_v }}"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#07ad52" />
+  <title>Нет сети — JI Такси</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background: linear-gradient(160deg, #f0fdf4 0%, #fff 45%);
+      color: #0f172a;
+    }
+    .card {
+      max-width: 360px;
+      text-align: center;
+      padding: 1.75rem;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 8px 32px rgba(15, 23, 42, 0.08);
+      border: 1px solid #e2e8f0;
+    }
+    h1 { font-size: 1.15rem; margin: 0 0 0.5rem; }
+    p { margin: 0; font-size: 0.9rem; color: #64748b; line-height: 1.5; }
+    button {
+      margin-top: 1.25rem;
+      padding: 0.65rem 1.25rem;
+      border: none;
+      border-radius: 10px;
+      background: #07ad52;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    button:active { opacity: 0.9; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Нет подключения к сети</h1>
+    <p>Проверьте интернет и откройте приложение снова. Кэшированные страницы могут открываться без сети.</p>
+    <button type="button" onclick="location.reload()">Повторить</button>
+  </div>
+</body>
+</html>

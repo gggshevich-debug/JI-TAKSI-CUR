@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="carBody" x1="0" y1="0" x2="0" y2="64">
+      <stop offset="0" stop-color="#06c167"/>
+      <stop offset="1" stop-color="#049e4c"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#d9f2ff" stop-opacity="0.8"/>
+    </linearGradient>
+    <radialGradient gradientUnits="userSpaceOnUse" cx="32.16" cy="31.908" r="12.474" id="gradient-0" gradientTransform="matrix(0.989735, 0, 0, 1, -0.000003, 0.000004)">
+      <stop offset="0" style="stop-color: rgb(0, 0, 0)"/>
+      <stop offset="1" style="stop-color: rgb(0% 0% 0%)"/>
+    </radialGradient>
+  </defs>
+  <path d=" M22 6 C18 6 16 10 16 14 L16 50 C16 54 18 58 22 58 L42 58 C46 58 48 54 48 50 L48 14 C48 10 46 6 42 6 Z" fill="url(#carBody)"/>
+  <rect x="20" y="12" width="24" height="12" rx="4" fill="url(#glass)"/>
+  <rect x="19.484" y="25.913" width="24.691" height="11.99" opacity="0.08" style="fill: url(&quot;#gradient-0&quot;); stroke-miterlimit: 24.8; stroke-width: 38px; stroke-linejoin: round; stroke-dashoffset: -12px; stroke-dasharray: 4; stroke-linecap: round; transform-box: fill-box; transform-origin: 50% 50%;" transform="matrix(1, -0.000271, 0.000271, 1, 0.351331, 0.000054)" rx="3.631" ry="3.631"/>
+  <rect x="20" y="40" width="24" height="12" rx="4" fill="url(#glass)"/>
+  <rect x="14" y="16" width="4" height="12" rx="2" fill="#222"/>
+  <rect x="46" y="16" width="4" height="12" rx="2" fill="#222"/>
+  <rect x="14" y="36" width="4" height="12" rx="2" fill="#222"/>
+  <rect x="46" y="36" width="4" height="12" rx="2" fill="#222"/>
+  <text style="fill: rgb(51, 51, 51); font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; white-space: pre;" x="19.611" y="39.006" transform="matrix(0.50748, 0, 0, 0.378484, 15.525719, 20.754585)">JI</text>
+</svg>
