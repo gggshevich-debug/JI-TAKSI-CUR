@@ -1,0 +1,1890 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    
+    <title>JI - Такси | SDK</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" /> -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="/static/css/main.css?v={{ static_v }}">
+    <script src="/static/js/darkreader.js?v={{ static_v }}"></script>
+    <!-- <script>const gen_m1 = document.querySelector('link[href="/static/css/main.css"]');if (gen_m1) gen_m1.href = '/static/css/main.css?v=' + Date.now();</script>
+    <script>const gen_m2 = document.querySelector('link[href="/static/js/darkreader.js"]');if (gen_m2) gen_m2.href = '/static/js/darkreader.js?v=' + Date.now();</script> -->
+
+    <link rel="manifest" href="/static/manifest.json">
+    <link rel="icon" type="image/png" href="/static/images/logo.png">
+    <meta name="theme-color" content="#07ad52">
+    <meta name="description" content="Заказ такси, маршрут и поездки — JI-Такси">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="JI Taksi">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+
+    <!-- iOS: сначала default apple-touch-icon (180), без precomposed (устарело и может мешать выбору размера) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/pwa-icons/pwa-icon-180.png">
+    <!-- <link rel="apple-touch-icon" sizes="152x152" href="/static/images/pwa-icons/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/static/images/pwa-icons/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/static/images/pwa-icons/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/static/images/pwa-icons/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/images/pwa-icons/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/static/images/pwa-icons/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/static/images/pwa-icons/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="/static/images/pwa-icons/apple-touch-icon-57x57.png"> -->
+
+    <meta name="application-name" content="JI Taksi">
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="/static/images/pwa-icons/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="/static/images/pwa-icons/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="/static/images/pwa-icons/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="/static/images/pwa-icons/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="/static/images/pwa-icons/mstile-310x310.png" />
+    <link rel="apple-touch-startup-image" href="/static/images/logo.png">
+
+
+</head>
+<body>
+    <div id="pwa-offline-bar" class="pwa-offline-bar" role="status" hidden aria-live="polite"></div>
+    <div id="app">
+        <div class="logo">
+            <img src="/static/images/logo.png">
+        </div>
+
+        <!-- Главный экран с картой -->
+        <div id="main-screen" class="screen active">
+            <div class="main-content">
+                <div class="taxi-notification-button offline" id="taxi-notification-button" style="display: {{userDisplayStatus}};"></div>
+                <div class="screen-road-alert-notification" id="speed-alert-notification"></div>
+                <div class="my-locations" id="my-locations-btn">
+                    <svg width="30px" height="30px" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--gis" preserveAspectRatio="xMidYMid meet" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M43 0v13.166C27.944 16.03 16.03 27.944 13.166 43H0v14h13.166C16.03 72.056 27.944 83.97 43 86.834V100h14V86.834C72.056 83.97 83.97 72.056 86.834 57H100V43H86.834C83.97 27.944 72.056 16.03 57 13.166V0H43zm7 22.5A27.425 27.425 0 0 1 77.5 50A27.425 27.425 0 0 1 50 77.5A27.425 27.425 0 0 1 22.5 50A27.425 27.425 0 0 1 50 22.5z" fill="#5c5c5c"></path><circle r="15" cy="50" cx="50" fill="#6f6f6fa3"></circle></g></svg>
+                </div>
+
+                <div id="map" class="map-container">
+                    <div class="loading-preloader">
+                        <img src="/static/images/logo.png" width="30%" style="background: #fff;border-radius: 30px;animation: logoPulse 3s infinite;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Экран с профилем пользователя -->
+        <div id="profile-screen" class="screen">
+            <div class="header">
+                <button class="back-button" onclick="window.taxiApp.showScreen('main-screen')">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+
+            <div class="spinner"></div>
+            <template id="profile-template">
+                <div class="header">
+                    <button class="back-button" onclick="window.taxiApp.showScreen('main-screen')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+
+                <div class="main-content">
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                <img class="profile-header-photo-img" src="{profile_header_photo_src}" alt="" width="96" height="96" style="display: {profile_header_photo_display}; object-fit: cover; border-radius: 50%;">
+                                <i class="fas fa-user-circle profile-header-photo-fallback" style="display: {profile_header_icon_display};"></i>
+                                <div class="profile-status {status}"></div>
+                            </div>
+                            <div class="profile-info">
+                                <h1 class="profile-name">{surname} {name}</h1>
+                                <p class="profile-phone">{phone}</p>
+                                <p class="profile-email-row" style="display: {client_email_display}; font-size: 14px; color: #666; margin: 4px 0 0;">{client_email}</p>
+                                <div class="profile-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>{rating}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PWA Install Banner -->
+                        <div class="profile-pwa-banner">
+                            <button type="button" id="pwa-install-app-btn" class="profile-pwa-install" style="display: flex;" hidden aria-live="polite" title="Установить приложение">
+                                <img src="/static/images/logo.png" alt="JI-TAKSI">
+                                <div>
+                                    <div>Скачать <b>JI TAKSI</b></div>
+                                    <span>
+                                        <span><i class="fas fa-star"></i> 4.7 ·</span>
+                                        <span><i class="fas fa-download"></i>193</span>
+                                        <!-- <span><i class="fa-brands fa-apple"></i> ·</span>
+                                        <span><i class="fa-brands fa-google-play"></i></span> -->
+                                    </span>
+                                </div>
+                            </button>
+                        </div>
+
+                        <div class="taxi-profile-data" style="display: {driverDisplayStatus};">
+                            <div class="profile-balance">
+                                <div class="balance-label">Balans</div>
+                                <div class="balance-amount" aria-label="Balans">
+                                    <span class="balance-amount-value">{balance}</span>
+                                    <span class="balance-currency" aria-hidden="true">₼</span>
+                                </div>
+                                <button class="balance-button" id="balans-conclusion">
+                                    <i class="fas fa-plus"></i>
+                                    Pul çıxart 
+                                </button>
+                                <div class="balance-withdraw" id="balance-withdraw" aria-hidden="true">
+                                    <div class="balance-withdraw-head">
+                                        <div class="balance-withdraw-title">
+                                            <i class="fa-solid fa-wallet"></i>
+                                            Kartaya çıxarış
+                                        </div>
+                                        <button type="button" class="balance-withdraw-close" id="balance-withdraw-close" aria-label="Bağla">
+                                            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="balance-withdraw-bank" id="balance-withdraw-bank" aria-live="polite"></div>
+                                    <div class="balance-withdraw-grid">
+                                        <label class="balance-withdraw-field">
+                                            <span>Nömrə (kart)</span>
+                                            <input inputmode="numeric" autocomplete="cc-number" maxlength="19" placeholder="0000 0000 0000 0000" id="balance-withdraw-card" />
+                                            <div class="balance-withdraw-error" id="balance-withdraw-card-err"></div>
+                                        </label>
+                                        <label class="balance-withdraw-field">
+                                            <span>Məbləğ</span>
+                                            <input inputmode="decimal" autocomplete="off" placeholder="Məs: 100 və ya 100.5" id="balance-withdraw-amount" />
+                                            <div class="balance-withdraw-error" id="balance-withdraw-amount-err"></div>
+                                        </label>
+                                    </div>
+                                    <button type="button" class="balance-withdraw-submit" id="balance-withdraw-submit">
+                                        <span class="balance-withdraw-submit-default">
+                                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                                            <span>Göndər</span>
+                                        </span>
+                                        <span class="balance-withdraw-submit-busy" hidden>
+                                            <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
+                                            <span>Gözləyin…</span>
+                                        </span>
+                                    </button>
+                                    <div class="balance-withdraw-hint">
+                                        <b><i class="fa-solid fa-lock"></i> Təhlükəsiz ödəniş</b>
+                                        Bütün məlumatlarınız müasir şifrələmə texnologiyaları ilə qorunur.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="balance-payout-history" id="balance-payout-history">
+                                <div class="balance-payout-history-head">
+                                    <span class="balance-payout-history-title"><i class="fa-regular fa-clipboard"></i> Çıxarış tarixçəsi</span>
+                                    <button type="button" class="balance-payout-refresh" id="balance-payout-refresh" aria-label="Yenilə">
+                                        <i class="fa-solid fa-rotate" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div id="balance-payout-list" class="balance-payout-list"></div>
+                            </div>
+    
+                            <div class="car-section">
+                                <h3 class="car-info-title"><i class="fas fa-car"></i> Avtomobil məlumat</h3>
+                                <style>
+                                    .car-image::before {
+                                        content: "";
+                                        position: absolute;
+                                        inset: 0; 
+                                        background: url('{car_front_photo}') center/cover no-repeat;
+                                        /* filter: blur(12px); */
+                                        transform: scale(1.2); 
+                                        z-index: 0;
+                                    }
+                                </style>
+                                <div class="car-image"></div>
+                                
+                                <div class="car-details">
+                                    <div class="car-detail">
+                                        <span class="car-label">Model</span>
+                                        <span class="car-value">
+                                            {car_name}
+                                        </span>
+                                    </div>
+                                    <div class="car-detail">
+                                        <span class="car-label">Kateqoriya</span>
+                                        <span class="car-value">
+                                            {car_category}
+                                        </span>
+                                    </div>
+                                    <div class="car-detail">
+                                        <span class="car-label">İl</span>
+                                        <span class="car-value">
+                                            {car_year}
+                                        </span>
+                                    </div>
+                                    <div class="car-detail">
+                                        <span class="car-label">Əmsal (reytinq)</span>
+                                        <span class="car-value">
+                                            {ratio_display}
+                                        </span>
+                                    </div>
+                                    <div class="car-detail">
+                                        <span class="car-label">Qəbul faizi</span>
+                                        <span class="car-value">
+                                            {acceptance_pct}
+                                        </span>
+                                    </div>
+                                    <div class="car-detail">
+                                        <span class="car-label">Dövlət nömrəsi</span>
+                                        <span class="car-value">
+                                            <svg width="20px" height="20px" viewBox="0 -4 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_503_4502)"> <rect width="28" height="20" rx="2" fill="white"></rect> <mask id="mask0_503_4502" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="28" height="20"> <rect width="28" height="20" rx="2" fill="white"></rect> </mask> <g mask="url(#mask0_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 6.66667H28V0H0V6.66667Z" fill="#24AAD5"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 20H28V13.3333H0V20Z" fill="#21BF75"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 13.3333H28V6.66666H0V13.3333Z" fill="#ED1845"></path> <g filter="url(#filter0_d_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M14 12C14.4113 12 14.7936 11.8759 15.1114 11.663C15.0747 11.6654 15.0376 11.6666 15.0002 11.6666C14.0797 11.6666 13.3335 10.9205 13.3335 9.99998C13.3335 9.0795 14.0797 8.33331 15.0002 8.33331C15.0375 8.33331 15.0746 8.33454 15.1114 8.33696C14.7935 8.12413 14.4113 8 14 8C12.8954 8 12 8.89543 12 10C12 11.1046 12.8954 12 14 12ZM15.9998 9.99998C15.9998 10.3682 15.7014 10.6666 15.3332 10.6666C14.965 10.6666 14.6665 10.3682 14.6665 9.99998C14.6665 9.63179 14.965 9.33331 15.3332 9.33331C15.7014 9.33331 15.9998 9.63179 15.9998 9.99998Z" fill="white"></path> </g> </g> </g> <defs> <filter id="filter0_d_503_4502" x="12" y="8" width="3.99988" height="5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"> <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood> <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix> <feOffset dy="1"></feOffset> <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"></feColorMatrix> <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_503_4502"></feBlend> <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_503_4502" result="shape"></feBlend> </filter> <clipPath id="clip0_503_4502"> <rect width="28" height="20" rx="2" fill="white"></rect> </clipPath> </defs> </g></svg>
+                                            {car_number}</span>
+                                    </div>
+                                    <div class="car-detail">
+                                        <span class="car-label">Qeydiyyat</span>
+                                        <span class="car-value {verification_class}">
+                                            {verification_status}
+                                        </span>
+                                    </div>
+                                </div>
+    
+                                <div class="verification-message" data-status="{accaunt_verified}">
+                                    <!-- Pending -->
+                                    <div class="verification-block pending">
+                                        <div class="verification-title">
+                                            <b><i class="fas fa-question-circle"></i> Что это значит:</b>
+                                        </div>
+                                        <div class="verification-body">
+                                            <p>
+                                                Ваша заявка проверяется. Обычно это занимает не более 24 часов.
+                                            </p>
+                                        </div>
+                                    </div>
+    
+                                    <!-- Refused -->
+                                    <div class="verification-block refused">
+                                        <div class="verification-title">
+                                            <b><i class="fas fa-question-circle"></i> Почему отказано:</b>
+                                        </div>
+    
+                                        <div class="verification-body">
+                                            <p>
+                                                К сожалению, ваша заявка на верификацию отклонена.
+                                                Это значит, что вы не можете принимать заказы через нашу платформу.
+                                            </p>
+                                            <br>
+                                            <p>
+                                                <b><i class="fa-solid fa-book"></i> Возможные причины:<br></b>
+                                                • Некорректные или неполные данные профиля.<br>
+                                                • Ошибки или несоответствия в документах.<br>
+                                                • Несоответствие требованиям сервиса.
+                                            </p>
+                                            <br>
+                                            <p>
+                                                <b><i class="fa-solid fa-circle-info"></i> Что делать?:<br></b>
+                                                • Вы можете повторно подать заявку, исправив ошибки и загрузив корректные данные.
+                                            </p>
+                                        </div>
+    
+                                        <div class="verification-button">
+                                            <i class="fa-solid fa-trash"></i>
+                                            Удалить аккаунт?
+                                        </div>
+                                    </div>
+    
+                                </div>
+                                                    <!-- {accaunt_verified} -->
+                                <!-- <div class="status-controls {accaunt_verified}">
+                                    <button class="status-btn {driver_online_status_available}">
+                                        <i class="fa-solid fa-bell"></i> Aktiv
+                                    </button>
+                                    <button class="status-btn {driver_online_status_offline}">
+                                        <i class="fa-solid fa-bell-slash"></i> Offline
+                                    </button>
+                                </div> -->
+                                </div>
+
+                            <div class="history-section driver-profile-history" aria-label="Sürücü səyahət tarixi">
+                                <div class="trips-header">
+                                    <i class="fa-solid fa-route"></i>
+                                    Səyahət tarixi
+                                </div>
+                                <div class="trips-container"></div>
+                                <div class="show-all-trips">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="client-profile-data" style="display: {clientDisplayStatus};">
+
+                            <div class="history-section">
+
+                                <div class="trips-header">
+                                    <i class="fa-solid fa-table-list"></i>
+                                    Səyahət tarixi
+                                </div>
+
+                                <!-- Контейнер историй -->
+                                <div class="trips-container"></div>
+
+                                <div class="show-all-trips">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="profile-edit-section" id="profile-edit-section">
+                            <button type="button" class="profile-edit-toggle" id="profile-edit-toggle" aria-expanded="false">
+                                <span class="profile-edit-toggle-icon"><i class="fas fa-pen-to-square"></i></span>
+                                <span class="profile-edit-toggle-text">Profili redaktə et</span>
+                                <span class="profile-edit-toggle-chevron" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                                </button>
+                            <div class="profile-edit-collapse" id="profile-edit-collapse">
+                                <p class="profile-edit-hint">Reytinq, balans, təsdiq və sistem məlumatları buradan dəyişmir.</p>
+                                <div id="profile-client-fields" class="profile-edit-form-grid profile-edit-form-fields" style="display: none;">
+                                    <label class="profile-edit-label">Ad</label>
+                                    <input type="text" class="register-input profile-edit-input" id="profile-c-name" autocomplete="given-name" placeholder="Adınız">
+                                    <label class="profile-edit-label">Soyad</label>
+                                    <input type="text" class="register-input profile-edit-input" id="profile-c-surname" autocomplete="family-name" placeholder="Soyadınız">
+                                    <label class="profile-edit-label">Telefon (+994)</label>
+                                    <input type="text" class="register-input profile-edit-input" id="profile-c-phone" placeholder="50 123 45-67" inputmode="numeric" autocomplete="tel">
+                                    <label class="profile-edit-label">E-poçt</label>
+                                    <input type="email" class="register-input profile-edit-input" id="profile-c-email" autocomplete="email" placeholder="name@example.com">
+                                    <label class="profile-edit-label">Yeni parol (istəyə bağlı)</label>
+                                    <input type="password" class="register-input profile-edit-input" id="profile-c-password" autocomplete="new-password" placeholder="Ən azı 6 simvol">
+                                    <label class="profile-edit-label">Profil şəkli</label>
+                                    <div class="profile-edit-upload profile-edit-upload--client">
+                                        <input type="file" class="profile-edit-file-input" id="profile-c-photo-file" accept="image/*" hidden>
+                                        <label for="profile-c-photo-file" class="profile-edit-upload-box">
+                                            <span class="profile-edit-upload-icon-wrap" aria-hidden="true"><i class="fas fa-user-circle"></i></span>
+                                            <span class="profile-edit-upload-title">Şəkil seçin</span>
+                                            <span class="profile-edit-upload-meta">JPG, PNG, WEBP · təxminən 8 MB-ədək</span>
+                                            <span class="profile-edit-upload-name" aria-live="polite"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="profile-driver-fields" class="profile-edit-form-grid profile-edit-form-fields" style="display: none;">
+                                    <label class="profile-edit-label">Ad</label>
+                                    <input type="text" class="register-input profile-edit-input" id="profile-d-name" autocomplete="given-name" placeholder="Adınız">
+                                    <label class="profile-edit-label">Soyad</label>
+                                    <input type="text" class="register-input profile-edit-input" id="profile-d-surname" autocomplete="family-name" placeholder="Soyadınız">
+                                    <label class="profile-edit-label">Telefon (+994)</label>
+                                    <input type="text" class="register-input profile-edit-input" id="profile-d-phone" placeholder="50 123 45-67" inputmode="numeric" autocomplete="tel">
+                                    <label class="profile-edit-label">E-poçt</label>
+                                    <input type="email" class="register-input profile-edit-input" id="profile-d-email" autocomplete="email" placeholder="name@example.com">
+                                    <label class="profile-edit-label">Yeni parol (istəyə bağlı)</label>
+                                    <input type="password" class="register-input profile-edit-input" id="profile-d-password" autocomplete="new-password" placeholder="Ən azı 6 simvol">
+                                    <label class="profile-edit-label">Avtomobil adı</label>
+                                    <input type="text" class="register-input profile-edit-input" id="profile-d-car-name" autocomplete="off" placeholder="Məs: Toyota Camry">
+                                    <label class="profile-edit-label">İl</label>
+                                    <input type="number" class="register-input profile-edit-input" id="profile-d-car-year" min="1990" max="2030" autocomplete="off" placeholder="2019">
+                                    <label class="profile-edit-label">Dövlət nömrəsi</label>
+                                    <input type="text" class="register-input profile-edit-input" id="profile-d-car-number" placeholder="10 AA 000" autocomplete="off">
+                                    <label class="profile-edit-label">Texniki pasport</label>
+                                    <input type="text" class="register-input profile-edit-input" id="profile-d-tech-passport" placeholder="AA №123456" autocomplete="off">
+                                    <label class="profile-edit-label">Sürücülük vəsiqəsi</label>
+                                    <input type="text" class="register-input profile-edit-input" id="profile-d-driver-license" autocomplete="off" placeholder="AA №123456">
+                                    <div class="profile-edit-photos-head">
+                                        <span class="profile-edit-photos-head-icon" aria-hidden="true"><i class="fas fa-images"></i></span>
+                                        <span class="profile-edit-photos-head-text">Şəkil sənədləri</span>
+                                    </div>
+                                    <label class="profile-edit-label">Avtomobil şəkli</label>
+                                    <div class="profile-edit-upload profile-edit-upload--car">
+                                        <input type="file" class="profile-edit-file-input" id="profile-d-car-photo-file" accept="image/*" hidden>
+                                        <label for="profile-d-car-photo-file" class="profile-edit-upload-box">
+                                            <span class="profile-edit-upload-icon-wrap" aria-hidden="true"><i class="fas fa-car-side"></i></span>
+                                            <span class="profile-edit-upload-title">Avtomobil şəkli yükləyin</span>
+                                            <span class="profile-edit-upload-meta">JPG, PNG · tək fayl</span>
+                                            <span class="profile-edit-upload-name" aria-live="polite"></span>
+                                        </label>
+                                    </div>
+                                    <label class="profile-edit-label">Sürücülük vəsiqəsi şəkli</label>
+                                    <div class="profile-edit-upload profile-edit-upload--license">
+                                        <input type="file" class="profile-edit-file-input" id="profile-d-license-photo-file" accept="image/*" hidden>
+                                        <label for="profile-d-license-photo-file" class="profile-edit-upload-box">
+                                            <span class="profile-edit-upload-icon-wrap" aria-hidden="true"><i class="fas fa-id-card"></i></span>
+                                            <span class="profile-edit-upload-title">Vəsiqənin şəkli</span>
+                                            <span class="profile-edit-upload-meta">Aydın, işıqlı foto</span>
+                                            <span class="profile-edit-upload-name" aria-live="polite"></span>
+                                        </label>
+                                    </div>
+                                    <label class="profile-edit-label">Tex.pasport şəkli</label>
+                                    <div class="profile-edit-upload profile-edit-upload--doc">
+                                        <input type="file" class="profile-edit-file-input" id="profile-d-tech-photo-file" accept="image/*" hidden>
+                                        <label for="profile-d-tech-photo-file" class="profile-edit-upload-box">
+                                            <span class="profile-edit-upload-icon-wrap" aria-hidden="true"><i class="fas fa-file-lines"></i></span>
+                                            <span class="profile-edit-upload-title">Tex.pasport şəkli</span>
+                                            <span class="profile-edit-upload-meta">Səhifənin tam görüntüsü</span>
+                                            <span class="profile-edit-upload-name" aria-live="polite"></span>
+                                        </label>
+                                    </div>
+                                    <label class="profile-edit-label">Üz şəkli</label>
+                                    <div class="profile-edit-upload profile-edit-upload--face">
+                                        <input type="file" class="profile-edit-file-input" id="profile-d-face-photo-file" accept="image/*" hidden>
+                                        <label for="profile-d-face-photo-file" class="profile-edit-upload-box">
+                                            <span class="profile-edit-upload-icon-wrap" aria-hidden="true"><i class="fas fa-smile"></i></span>
+                                            <span class="profile-edit-upload-title">Üz şəkli seçin</span>
+                                            <span class="profile-edit-upload-meta">Portret, fon sadə olsun</span>
+                                            <span class="profile-edit-upload-name" aria-live="polite"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="button" class="profile-save-changes" id="profile-save-changes">
+                                    <i class="fas fa-check"></i> Dəyişiklikləri saxla
+                                </button>
+                                <div id="profile-edit-feedback" class="profile-edit-feedback" role="status"></div>
+                            </div>
+                        </div>
+
+                        <div class="profile-actions">
+                            <div class="bottom-actions">
+                                <button class="action-btn logout" onclick="logout()">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Çıxın
+                                </button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </template>
+
+            <template id="registration-required-template">
+                <div class="header">
+                    <button class="back-button" onclick="window.taxiApp.showScreen('main-screen')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+
+                <div class="main-content">
+                    <div class="registration-required-card">
+                        <div class="registration-icon">
+                            <img src="/static/images/register-client.png" alt="Клиент" width="170px">
+                        </div>
+                        <h2>Hesaba daxil olun!</h2>
+                        <p>Taksi sifariş etmək və tətbiqdən istifadə etmək üçün qeydiyyatdan keçin və ya hesabınıza daxil olun.</p>
+                        
+                        <div class="registration-buttons">
+                            <button class="btn-primary" onclick="window.taxiApp.showScreen('register-screen')">
+                                <i class="fas fa-user-plus"></i>
+                                Qeydiyyat
+                            </button>
+                            <button class="btn-secondary" onclick="window.taxiApp.showScreen('login-screen')">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Daxil ol
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <!-- Экран регистрации таксиста -->
+        <div id="register-screen" class="screen">
+            <div class="header">
+                <button class="back-button" onclick="window.taxiApp.showScreen('main-screen')">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+
+            <div class="main-content">
+                <div class="register-choice-container">
+                    <div class="register-choice-inner">
+                    <div class="register-header">
+                        <h2 class="register-title" id="register-choice-heading">Qeydiyyat növünü seçin</h2>
+                        <p class="register-subtitle">Müştəri və ya taksi sürücüsü kimi davam edin</p>
+                    </div>
+                    
+                    <div class="register-options" role="radiogroup" aria-labelledby="register-choice-heading">
+                        <label class="register-option register-choice-delivery" style="opacity: 0.4; display: none;">
+                            <input type="radio" name="register-type" value="delivery" class="option-input">
+                            <div class="option-card">
+                                <div class="option-icon">
+                                    <img src="/static/images/register-delivery.png" alt="Доставка" width="80px">
+                                </div>
+                                <div class="option-content">
+                                    <h3 class="option-title">Mən Çatdırıcıyam</h3>
+                                    <p class="option-description">Çatdırılma işçisi olaraq işləyin, bizdə!.</p>
+                                </div>
+                                <div class="option-select">
+                                    <div class="select-circle"></div>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="register-option register-choice-taxi">
+                            <input type="radio" name="register-type" value="taxi" class="option-input">
+                            <div class="option-card">
+                                <div class="option-icon">
+                                    <img src="/static/images/register-taxi.png" alt="Такси" width="80px">
+                                </div>
+                                <div class="option-content">
+                                    <h3 class="option-title">Taksi sürücüsüyəm</h3>
+                                    <p class="option-description">Taksi sürücüsü kimi işləmək</p>
+                                </div>
+                                <div class="option-select">
+                                    <div class="select-circle"></div>
+                                </div>
+                            </div>
+                        </label>
+                        
+                        <label class="register-option register-choice-client">
+                            <input type="radio" name="register-type" value="client" class="option-input">
+                            <div class="option-card">
+                                <div class="option-icon">
+                                    <img src="/static/images/register-client.png" alt="Клиент" width="80px">
+                                </div>
+                                <div class="option-content">
+                                    <h3 class="option-title">Müştəriyəm</h3>
+                                    <p class="option-description">Səfər sifariş etmək</p>
+                                </div>
+                                <div class="option-select">
+                                    <div class="select-circle"></div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="register-button-container">
+                        <button type="button" class="register-button register-choice-submit" id="register-choice-btn" disabled><i class="fas fa-user-plus" aria-hidden="true"></i><span>Davam et</span></button>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- РЕГИСТРАЦИЯ КЛИЕНТА -->
+                <div class="register-client-container" style="display: none;">
+                    <div class="register-form-inner register-form-inner--client">
+                    <div class="register-header">
+                        <h2>Müştəri qeydiyyatı</h2>
+                        <p class="register-form-lead">Şəxsi məlumatları daxil edin və hesab yaradın</p>
+                    </div>
+                    
+                    <div class="register-inputs">
+                        <div class="form-group-row">
+                            <div class="input-group">
+                                <input type="text" id="registerName" placeholder="Adı" class="register-input">
+                            </div>
+                            
+                            <div class="input-group">
+                                <input type="text" id="registerSurname" placeholder="Soyad" class="register-input">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <span class="register-phone-input-svg">
+                                <svg style="margin-right: 7px;" width="20px" height="20px" viewBox="0 -4 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_503_4502)"> <rect width="28" height="20" rx="2" fill="white"></rect> <mask id="mask0_503_4502" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="28" height="20"> <rect width="28" height="20" rx="2" fill="white"></rect> </mask> <g mask="url(#mask0_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 6.66667H28V0H0V6.66667Z" fill="#24AAD5"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 20H28V13.3333H0V20Z" fill="#21BF75"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 13.3333H28V6.66666H0V13.3333Z" fill="#ED1845"></path> <g filter="url(#filter0_d_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M14 12C14.4113 12 14.7936 11.8759 15.1114 11.663C15.0747 11.6654 15.0376 11.6666 15.0002 11.6666C14.0797 11.6666 13.3335 10.9205 13.3335 9.99998C13.3335 9.0795 14.0797 8.33331 15.0002 8.33331C15.0375 8.33331 15.0746 8.33454 15.1114 8.33696C14.7935 8.12413 14.4113 8 14 8C12.8954 8 12 8.89543 12 10C12 11.1046 12.8954 12 14 12ZM15.9998 9.99998C15.9998 10.3682 15.7014 10.6666 15.3332 10.6666C14.965 10.6666 14.6665 10.3682 14.6665 9.99998C14.6665 9.63179 14.965 9.33331 15.3332 9.33331C15.7014 9.33331 15.9998 9.63179 15.9998 9.99998Z" fill="white"></path> </g> </g> </g> <defs> <filter id="filter0_d_503_4502" x="12" y="8" width="3.99988" height="5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"> <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood> <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix> <feOffset dy="1"></feOffset> <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"></feColorMatrix> <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_503_4502"></feBlend> <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_503_4502" result="shape"></feBlend> </filter> <clipPath id="clip0_503_4502"> <rect width="28" height="20" rx="2" fill="white"></rect> </clipPath> </defs> </g></svg>
+                                <span style="font-weight: bold; color: var(--primary);">+994</span>
+                            </span>
+                            <input type="text" id="registerPhone" placeholder="70 000 00-00" style="padding-left: 80px;" class="register-input" maxlength="13">
+                        </div>
+
+                        <div class="input-group">
+                            <input type="password" id="registerPassword" placeholder="Parol" class="register-input">
+                            <div class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="registrationMessageClient" class="registration-message-client"></div>
+
+                    <label class="register-checkbox-wrapper">
+                        <input type="checkbox" id="registerRulesCheck">
+                        <div style="font-size: 14px;">
+                            Mən tanışam <span style="color: var(--primary)">xidmət qaydaları</span>  
+                            və <span style="color: var(--primary)">Məxfilik Siyasəti</span>
+                        </div>
+                    </label>
+
+                    <div class="register-actions">
+                        <button class="register-btn" id="register-btn">
+                            <i class="fas fa-user-plus"></i>
+                            Qeydiyyatdan keçməlisiniz
+                        </button>
+                        
+                        <div class="register-divider">
+                            <span>və ya</span>
+                        </div>
+                        
+                        <button class="taxi-to-login-redirect-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Artıq hesabınız var? Daxil ol
+                        </button>
+                    </div>
+
+                    <div class="register-footer">
+                        <p>Qeydiyyatdan keçməklə razılaşırsınız <a href="#">Xidmət Şərtləri</a></p>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- РЕГИСТРАЦИЯ ТАКСИСТА -->
+                <div class="register-taxi-container" style="display: none;">
+                    <div class="register-form-inner register-form-inner--taxi">
+                    <div class="register-header">
+                        <h2>Taksi sürücüsü qeydiyyatı</h2>
+                        <p class="register-form-lead">Şəxsi məlumatlar, avtomobil və sənəd şəkilləri</p>
+                    </div>
+                    
+                    <!-- ДАННЫЕ ВОДИТЕЛЯ -->
+                    <div class="register-inputs-taxi">
+                        <div class="form-group-row">
+                            <div class="input-group">
+                                <input type="text" id="registerNameTaxi" placeholder="Adı" class="register-input">
+                            </div>
+                            
+                            <div class="input-group">
+                                <input type="text" id="registerSurnameTaxi" placeholder="Soyad" class="register-input">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <span class="register-phone-input-svg">
+                                <svg style="margin-right: 7px;" width="20px" height="20px" viewBox="0 -4 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_503_4502)"> <rect width="28" height="20" rx="2" fill="white"></rect> <mask id="mask0_503_4502" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="28" height="20"> <rect width="28" height="20" rx="2" fill="white"></rect> </mask> <g mask="url(#mask0_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 6.66667H28V0H0V6.66667Z" fill="#24AAD5"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 20H28V13.3333H0V20Z" fill="#21BF75"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 13.3333H28V6.66666H0V13.3333Z" fill="#ED1845"></path> <g filter="url(#filter0_d_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M14 12C14.4113 12 14.7936 11.8759 15.1114 11.663C15.0747 11.6654 15.0376 11.6666 15.0002 11.6666C14.0797 11.6666 13.3335 10.9205 13.3335 9.99998C13.3335 9.0795 14.0797 8.33331 15.0002 8.33331C15.0375 8.33331 15.0746 8.33454 15.1114 8.33696C14.7935 8.12413 14.4113 8 14 8C12.8954 8 12 8.89543 12 10C12 11.1046 12.8954 12 14 12ZM15.9998 9.99998C15.9998 10.3682 15.7014 10.6666 15.3332 10.6666C14.965 10.6666 14.6665 10.3682 14.6665 9.99998C14.6665 9.63179 14.965 9.33331 15.3332 9.33331C15.7014 9.33331 15.9998 9.63179 15.9998 9.99998Z" fill="white"></path> </g> </g> </g> <defs> <filter id="filter0_d_503_4502" x="12" y="8" width="3.99988" height="5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"> <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood> <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix> <feOffset dy="1"></feOffset> <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"></feColorMatrix> <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_503_4502"></feBlend> <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_503_4502" result="shape"></feBlend> </filter> <clipPath id="clip0_503_4502"> <rect width="28" height="20" rx="2" fill="white"></rect> </clipPath> </defs> </g></svg>
+                                <span style="font-weight: bold; color: var(--primary);">+994</span>
+                            </span>
+                            <input type="text" id="registerPhoneTaxi" placeholder="70 000 00-00" style="padding-left: 80px;" class="register-input" maxlength="13">
+                        </div>
+
+                        <div class="input-group">
+                            <input type="password" id="registerPasswordTaxi" placeholder="Parol" class="register-input">
+                            <div class="password-toggle-taxi">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="register-taxi-section-divider" role="separator">
+                        <span class="register-taxi-section-divider__line"></span>
+                        <span class="register-taxi-section-divider__label">Avtomobil</span>
+                        <span class="register-taxi-section-divider__line"></span>
+                    </div>
+
+                    <!-- ДАННЫЕ АВТО -->
+                    <div class="form-group-row register-taxi-car-grid">
+                        <div class="input-group">
+                            <label for="carYearTaxi" class="input-label">Avtomobil Buraxılış ili</label>
+                            <input type="number" id="carYearTaxi" min="1990" max="2025" placeholder="1990" class="register-input">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="carNumberTaxi" class="input-label">Avtomobil nömrəsi</label>
+                            <input type="text" id="carNumberTaxi" placeholder="00 NN 000" class="register-input">
+                        </div>
+
+                        
+                    </div>
+
+                    <div class="form-group-row register-taxi-doc-grid">
+                        <div class="input-group">
+                            <label for="techPassportTaxi" class="input-label">Tex.pasport</label>
+                            <input type="text" id="techPassportTaxi" placeholder="BB № 000000" class="register-input">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="driverLicenseTaxi" class="input-label">Sürücülük vəsiqəsi</label>
+                            <input type="text" id="driverLicenseTaxi" placeholder="BD № 000000" class="register-input">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="carNameTaxi" class="input-label">Avtomobilin adı</label>
+                        <input type="text" id="carNameTaxi" placeholder="Mercedes-Benz, Lada Priora.." class="register-input">
+                    </div>
+
+                    <div class="register-taxi-section-divider" role="separator">
+                        <span class="register-taxi-section-divider__line"></span>
+                        <span class="register-taxi-section-divider__label">məlumatlar</span>
+                        <span class="register-taxi-section-divider__line"></span>
+                    </div>
+
+                    <!-- Şəkillər: eyni komponentlər və məntiqi ilə ki, profile-driver-fields -->
+                    <div class="photo-upload-container register-taxi-photo-uploads profile-edit-form-grid profile-edit-form-fields">
+                        <div class="profile-edit-photos-head">
+                            <span class="profile-edit-photos-head-icon" aria-hidden="true"><i class="fas fa-images"></i></span>
+                            <span class="profile-edit-photos-head-text">Şəkil sənədləri</span>
+                        </div>
+                        <label class="profile-edit-label" for="carPhotoTaxi">Avtomobil şəkli</label>
+                        <div class="profile-edit-upload profile-edit-upload--car">
+                            <input type="file" class="profile-edit-file-input" id="carPhotoTaxi" accept="image/*" hidden>
+                            <label for="carPhotoTaxi" class="profile-edit-upload-box">
+                                <span class="profile-edit-upload-icon-wrap" aria-hidden="true"><i class="fas fa-car-side"></i></span>
+                                <span class="profile-edit-upload-title">Avtomobil şəkli yükləyin</span>
+                                <span class="profile-edit-upload-meta">JPG, PNG · tək fayl</span>
+                                <span class="profile-edit-upload-name" aria-live="polite"></span>
+                            </label>
+                        </div>
+                        <label class="profile-edit-label" for="driverLicensePhotoTaxi">Sürücülük vəsiqəsi şəkli</label>
+                        <div class="profile-edit-upload profile-edit-upload--license">
+                            <input type="file" class="profile-edit-file-input" id="driverLicensePhotoTaxi" accept="image/*" hidden>
+                            <label for="driverLicensePhotoTaxi" class="profile-edit-upload-box">
+                                <span class="profile-edit-upload-icon-wrap" aria-hidden="true"><i class="fas fa-id-card"></i></span>
+                                <span class="profile-edit-upload-title">Sürücülük vəsiqəsi şəkli</span>
+                                <span class="profile-edit-upload-meta">Aydın, işıqlı foto</span>
+                                <span class="profile-edit-upload-name" aria-live="polite"></span>
+                            </label>
+                        </div>
+                        <label class="profile-edit-label" for="techPassportPhotoTaxi">Tex.pasport şəkli</label>
+                        <div class="profile-edit-upload profile-edit-upload--doc">
+                            <input type="file" class="profile-edit-file-input" id="techPassportPhotoTaxi" accept="image/*" hidden>
+                            <label for="techPassportPhotoTaxi" class="profile-edit-upload-box">
+                                <span class="profile-edit-upload-icon-wrap" aria-hidden="true"><i class="fas fa-file-lines"></i></span>
+                                <span class="profile-edit-upload-title">Tex.pasport şəkli</span>
+                                <span class="profile-edit-upload-meta">Səhifənin tam görüntüsü</span>
+                                <span class="profile-edit-upload-name" aria-live="polite"></span>
+                            </label>
+                        </div>
+                        <label class="profile-edit-label" for="facePhotoTaxi">Üz şəkli</label>
+                        <div class="profile-edit-upload profile-edit-upload--face">
+                            <input type="file" class="profile-edit-file-input" id="facePhotoTaxi" accept="image/*" hidden>
+                            <label for="facePhotoTaxi" class="profile-edit-upload-box">
+                                <span class="profile-edit-upload-icon-wrap" aria-hidden="true"><i class="fas fa-smile"></i></span>
+                                <span class="profile-edit-upload-title">Üz şəkli seçin</span>
+                                <span class="profile-edit-upload-meta">Portret, fon sadə olsun</span>
+                                <span class="profile-edit-upload-name" aria-live="polite"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="registrationMessageTaxi" class="registration-message-taxi"></div>
+
+
+                    <label class="register-checkbox-wrapper">
+                        <input type="checkbox" id="registerRulesCheckTaxi">
+                        <div style="font-size: 14px;">
+                            Mən tanışam <span style="color: var(--primary)">xidmət qaydaları</span>  
+                            və <span style="color: var(--primary)">Məxfilik Siyasəti</span>
+                        </div>
+                    </label>
+                    <div class="register-actions">
+                        <button class="register-btn" id="register-btn-taxi">
+                            <i class="fas fa-user-plus"></i>
+                            Qeydiyyatdan keçməlisiniz
+                        </button>
+                        
+                        <div class="register-divider">
+                            <span>və ya</span>
+                        </div>
+                        
+                        <button class="client-to-login-redirect-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Artıq hesabınız var? Daxil ol
+                        </button>
+                    </div>
+
+                    <div class="register-footer">
+                        <p>Qeydiyyatdan keçməklə razılaşırsınız <a href="#">Xidmət Şərtləri</a></p>
+                    </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <!-- Экран логина -->
+        <div id="login-screen" class="screen">
+            <div class="header">
+                <button class="back-button" onclick="window.taxiApp.showScreen('main-screen')">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                
+            </div>
+
+            <div class="main-content">
+                
+                <!-- ЛОГИН ПОЛЬЗОВАТЕЛЯ -->
+                <div class="login-user-container">
+                    <div class="register-header">
+                        <h2>Şəxsi kabinetə giriş</h2>
+                        <p>Taksi xidmətimizə qoşulun</p>
+                    </div>
+                    
+                    <div class="login-inputs">
+                        <div class="input-group">
+                            <span class="register-phone-input-svg">
+                                <svg style="margin-right: 7px;" width="20px" height="20px" viewBox="0 -4 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_503_4502)"> <rect width="28" height="20" rx="2" fill="white"></rect> <mask id="mask0_503_4502" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="28" height="20"> <rect width="28" height="20" rx="2" fill="white"></rect> </mask> <g mask="url(#mask0_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 6.66667H28V0H0V6.66667Z" fill="#24AAD5"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 20H28V13.3333H0V20Z" fill="#21BF75"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 13.3333H28V6.66666H0V13.3333Z" fill="#ED1845"></path> <g filter="url(#filter0_d_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M14 12C14.4113 12 14.7936 11.8759 15.1114 11.663C15.0747 11.6654 15.0376 11.6666 15.0002 11.6666C14.0797 11.6666 13.3335 10.9205 13.3335 9.99998C13.3335 9.0795 14.0797 8.33331 15.0002 8.33331C15.0375 8.33331 15.0746 8.33454 15.1114 8.33696C14.7935 8.12413 14.4113 8 14 8C12.8954 8 12 8.89543 12 10C12 11.1046 12.8954 12 14 12ZM15.9998 9.99998C15.9998 10.3682 15.7014 10.6666 15.3332 10.6666C14.965 10.6666 14.6665 10.3682 14.6665 9.99998C14.6665 9.63179 14.965 9.33331 15.3332 9.33331C15.7014 9.33331 15.9998 9.63179 15.9998 9.99998Z" fill="white"></path> </g> </g> </g> <defs> <filter id="filter0_d_503_4502" x="12" y="8" width="3.99988" height="5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"> <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood> <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix> <feOffset dy="1"></feOffset> <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"></feColorMatrix> <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_503_4502"></feBlend> <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_503_4502" result="shape"></feBlend> </filter> <clipPath id="clip0_503_4502"> <rect width="28" height="20" rx="2" fill="white"></rect> </clipPath> </defs> </g></svg>
+                                <span style="font-weight: bold; color: var(--primary);">+994</span>
+                            </span>
+                            <input type="text" id="loginPhone" placeholder="70 000 00-00" style="padding-left: 80px;" class="register-input" maxlength="13">
+                        </div>
+
+                        <div class="input-group">
+                            <input type="password" id="loginPassword" placeholder="Parol" class="register-input">
+                            <div class="password-toggle-login">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                        </div>
+                        <div id="loginMessage" class="registration-message-login"></div>
+                    </div>
+                    <label class="register-checkbox-wrapper">
+                        <input type="checkbox" id="loginRulesCheck">
+                        <div style="font-size: 14px;">
+                            Mən tanışam <span style="color: var(--primary)">xidmət qaydaları</span>  
+                            və <span style="color: var(--primary)">Məxfilik Siyasəti</span>
+                        </div>
+                    </label>
+                    <div class="register-actions">
+                        <button class="register-btn" id="register-btn-login">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Daxil ol
+                        </button>
+                        
+                        <div class="register-divider">
+                            <span>və ya</span>
+                        </div>
+                        
+                        <button class="register-redirect-btn">
+                            <i class="fas fa-user-plus"></i>
+                            Qeydiyyatdan keçməlisiniz
+                        </button>
+                    </div>
+
+                    <div class="register-footer">
+                        <p>Daxil olduqdan sonra razılaşırsınız <a href="#">Xidmət Şərtləri</a></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="settings-screen" class="screen">
+            <div class="header">
+                <button class="back-button" onclick="window.taxiApp.showScreen('main-screen')">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+
+            <div class="main-content">
+                <div class="settings-card" style="--bg: #ffffff; --card: #292929; --muted: #474a4e; --text: #e9eef5; --ring: rgba(1, 174, 80, .18); --primary: #01ae50;">
+
+                    <div class="settings-header">
+                        <div class="settings-avatar">
+                            <img src="/static/images/settings-image.png" width="110px">
+                        </div>
+                        <div class="settings-info">
+                            <h1 class="settings-name">Parametrlər</h1>
+                            <p class="settings-description">Dəyişikliklər dərhal tətbiq edilir</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Блок 1: Уведомления -->
+                    <div class="settings-section">
+                        <div class="section-title">
+                            <i class="fas fa-bell"></i>
+                            <span>Bildirişlər</span>
+                        </div>
+                        <div class="setting-item disabled">
+                            <div class="setting-info">
+                                <div class="setting-icon"><i class="fas fa-mobile-alt"></i></div>
+                                <div class="setting-text">
+                                    <span class="setting-name">Cihazda ani bildirişlər</span>
+                                    <span class="setting-desc">Ani bildirişlər cihazda göstərilir</span>
+                                </div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="phoneNotificationToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <!-- <div class="setting-item disabled">
+                            <div class="setting-info">
+                                <div class="setting-icon"><i class="fas fa-envelope"></i></div>
+                                <div class="setting-text">
+                                    <span class="setting-name">Email-рассылка</span>
+                                    <span class="setting-desc">Новости, акции, полезные статьи</span>
+                                </div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" disabled>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item disabled">
+                            <div class="setting-info">
+                                <div class="setting-icon"><i class="fas fa-sms"></i></div>
+                                <div class="setting-text">
+                                    <span class="setting-name">SMS оповещения</span>
+                                    <span class="setting-desc">Важные изменения по аккаунту</span>
+                                </div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" disabled>
+                                <span class="slider"></span>
+                            </label>
+                        </div> -->
+                    </div>
+
+                    <!-- Блок 2: Конфиденциальность и безопасность -->
+                    <div class="settings-section">
+                        <div class="section-title">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Təhlükəsizlik</span>
+                        </div>
+                        
+                        <div class="setting-item" id="anonymous-profile-setting-row" style="display: none;">
+                            <div class="setting-info">
+                                <div class="setting-icon"><i class="fas fa-user-secret" style="color: #00ae50;"></i></div>
+                                <div class="setting-text">
+                                    <span class="setting-name">Anonimlik rejimi</span>
+                                    <span class="setting-desc">Profil şəkliniz sürücülərə və sifariş zamanı göstərilmir</span>
+                                </div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="anonymousProfileToggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item" id="settings-road-cams-row">
+                            <div class="setting-info">
+                                <div class="setting-icon"><svg width="22px" height="22px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#00ae50"><g id="SVGRepo_bgCarrier"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path stroke-width="1" d="M18.15,4.94A2.09,2.09,0,0,0,17,5.2l-8.65,5a2,2,0,0,0-.73,2.74l1.5,2.59a2,2,0,0,0,2.73.74l1.8-1a2.49,2.49,0,0,0,1.16,1V18a2,2,0,0,0,2,2H22V18H16.81V16.27A2.49,2.49,0,0,0,18,12.73l2.53-1.46a2,2,0,0,0,.74-2.74l-1.5-2.59a2,2,0,0,0-1.59-1M6.22,13.17,2,13.87l.75,1.3,2,3.46.75,1.3,2.72-3.3Z"></path> <rect width="24" height="24" fill="none"></rect> </g></svg></div>
+                                <div class="setting-text">
+                                    <span class="setting-name">Radar kameraları</span>
+                                    <span class="setting-desc">Yol kameralarını göstərin</span>
+                                </div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="roadCamsToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="setting-item disabled">
+                            <div class="setting-info">
+                                <div class="setting-icon"><i class="fas fa-fingerprint"></i></div>
+                                <div class="setting-text">
+                                    <span class="setting-name">2FA təhlükəsizlik</span>
+                                    <span class="setting-desc">Giriş zamanı əlavə kod</span>
+                                </div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" disabled>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                    </div>
+
+                    <!-- Блок 3: Интерфейс и тема -->
+                    <div class="settings-section">
+                        <div class="section-title">
+                            <i class="fas fa-palette"></i>
+                            <span>Dizayn</span>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-icon"><i class="fas fa-moon"></i></div>
+                                <div class="setting-text">
+                                    <span class="setting-name">Qaranlıq rejim</span>
+                                    <span class="setting-desc">Gecə rejimi üçün optimal görünüş</span>
+                                </div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="darkModeToggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                    </div>
+
+                    <a href="#" class="as-pwa-install btn btn-primary"><i class="fa fa-mobile-alt"></i> Установить PWA</a>
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- Нижняя навигация -->
+        <!-- УВЕДОМЛЕНИЕ О ВКЛЮЧЕНИИ ГЕОЛОКАЦИИ -->
+        <div class="notification-location-error" id="notification-location-error">
+
+            <div style="padding: 20px;background: #ffffff;border-radius: 10px;">
+                <div style="margin-bottom: 15px;">
+                    <svg width="70px" height="70px" xmlns="http://www.w3.org/2000/svg" id="location-error" enable-background="new 0 0 512 512" viewBox="0 0 512 512">
+                        <linearGradient id="SVGID_1_" x1="30.291" x2="424" y1="257.149" y2="257.149" gradientUnits="userSpaceOnUse">
+                            <stop offset="0" stop-color="#e84d00"></stop>
+                            <stop offset=".363" stop-color="#d43917"></stop>
+                            <stop offset=".721" stop-color="#c62c27"></stop>
+                            <stop offset="1" stop-color="#c1272d"></stop>
+                        </linearGradient>
+                        <path fill="url(#SVGID_1_)" d="M227.15,1.99c-108.72,0-196.85,88.13-196.85,196.85c0,163.96,196.85,313.47,196.85,313.47S424,353.83,424,198.84C424,90.12,335.87,1.99,227.15,1.99z M227.11,272.33c-42.02,0-76.09-34.07-76.09-76.09c0-42.02,34.07-76.09,76.09-76.09c42.02,0,76.09,34.07,76.09,76.09C303.2,238.26,269.14,272.33,227.11,272.33z"></path>
+                        <circle cx="367.51" cy="371.93" r="112.51" fill="#ffb600"></circle>
+                        <linearGradient id="SVGID_2_" x1="346.308" x2="388.203" y1="373.336" y2="373.336" gradientUnits="userSpaceOnUse">
+                            <stop offset="0" stop-color="#373e49"></stop>
+                            <stop offset=".476" stop-color="#2e343d"></stop>
+                            <stop offset="1" stop-color="#282d35"></stop>
+                        </linearGradient>
+                        <path fill="url(#SVGID_2_)" d="M346.31,432.2c0-12.41,8.66-21.3,21.07-21.3s20.6,8.89,20.83,21.3c0,12.17-8.19,21.3-20.83,21.3S346.31,444.37,346.31,432.2z M354.03,399.2l-5.38-106.03h37.22l-5.15,106.03H354.03z"></path>
+                    </svg>
+                </div>
+                <h3 style="margin-bottom: 10px; font-size: 23px;">Geolokasiya mövcud deyil</h3>
+                <p style="color: #666; margin-bottom: 20px;">
+                    Ünvanı əl ilə daxil edin və ya brauzer parametrlərində geolokasiyaya daxil olmağa icazə verin.
+                </p>
+                <div onclick="this.parentElement.parentElement.style.display='none'" style="background: #292929;color: white;border-radius: 10px;cursor: pointer;width: 100%;height: 50px;display: flex;justify-content: center;align-items: center;">
+                    Bağlayın
+                </div>
+            </div>
+        </div>
+        
+        <div class="geocoding-loader"><div class="spinner"></div><p id="geocoding-loader-text"></p></div>
+        <div class="bottom-nav">
+            <div class="handle-wrapper">
+                <div class="handle"></div>
+            </div>
+            
+            <div class="order-info">
+                <div class="modal-taxi-content">
+                    <img class="modal-taxi-avatar" id="modal-taxi-avatar-order" src="/static/images/user-profile-avatar.png" alt="">
+                    <div class="modal-taxi-details">
+                        <div style="display: flex;flex-direction: column;align-items: flex-start;">
+                            <b id="modal-taxi-name-order"></b>
+                            <span class="modal-taxi-rating"><i class="fas fa-star"></i> <span id="modal-taxi-rating-order">4.7</span></span>
+                        </div>
+
+                        <!-- ПОДТВЕРЖДЕНИЕ -->
+                        <!-- <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M9.55879 3.6972C10.7552 2.02216 13.2447 2.02216 14.4412 3.6972L14.6317 3.96387C14.8422 4.25867 15.1958 4.41652 15.5558 4.37652L16.4048 4.28218C18.3156 4.06988 19.9301 5.68439 19.7178 7.59513L19.6235 8.44415C19.5835 8.8042 19.7413 9.15774 20.0361 9.36831L20.3028 9.55879C21.9778 10.7552 21.9778 13.2447 20.3028 14.4412L20.0361 14.6317C19.7413 14.8422 19.5835 15.1958 19.6235 15.5558L19.7178 16.4048C19.9301 18.3156 18.3156 19.9301 16.4048 19.7178L15.5558 19.6235C15.1958 19.5835 14.8422 19.7413 14.6317 20.0361L14.4412 20.3028C13.2447 21.9778 10.7553 21.9778 9.55879 20.3028L9.36831 20.0361C9.15774 19.7413 8.8042 19.5835 8.44414 19.6235L7.59513 19.7178C5.68439 19.9301 4.06988 18.3156 4.28218 16.4048L4.37652 15.5558C4.41652 15.1958 4.25867 14.8422 3.96387 14.6317L3.6972 14.4412C2.02216 13.2447 2.02216 10.7553 3.6972 9.55879L3.96387 9.36831C4.25867 9.15774 4.41652 8.8042 4.37652 8.44414L4.28218 7.59513C4.06988 5.68439 5.68439 4.06988 7.59513 4.28218L8.44415 4.37652C8.8042 4.41652 9.15774 4.25867 9.36831 3.96387L9.55879 3.6972ZM15.7071 9.29289C16.0976 9.68342 16.0976 10.3166 15.7071 10.7071L11.8882 14.526C11.3977 15.0166 10.6023 15.0166 10.1118 14.526L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929L11 12.5858L14.2929 9.29289C14.6834 8.90237 15.3166 8.90237 15.7071 9.29289Z" fill="#4897fe"></path> </g></svg> -->
+                        <div class="header-modal-block">
+                            <a id="phone-call-block" href="">
+                                <i class="fa-solid fa-phone"></i>
+                                <!-- <svg width="30px" height="30px" xmlns="http://www.w3.org/2000/svg" fill="#01ae50" viewBox="0 0 640 640"><path d="M224.2 89C216.3 70.1 195.7 60.1 176.1 65.4L170.6 66.9C106 84.5 50.8 147.1 66.9 223.3C104 398.3 241.7 536 416.7 573.1C493 589.3 555.5 534 573.1 469.4L574.6 463.9C580 444.2 569.9 423.6 551.1 415.8L453.8 375.3C437.3 368.4 418.2 373.2 406.8 387.1L368.2 434.3C297.9 399.4 241.3 341 208.8 269.3L253 233.3C266.9 222 271.6 202.9 264.8 186.3L224.2 89z"></path></svg> -->
+                            </a>
+
+                            <div class="cancell-order-button" id="order-modal-cancel-button">
+                                <i class="fa-solid fa-trash"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Состояние 1: Такси едет -->
+                <div class="order-taxi-progress-container state-driving active">
+                    <div class="progress-container-header">
+                        <div class="order-taxi-progress-title">
+                            <svg style="margin-right: 7px;" width="16px" height="16px" viewBox="0 -4 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_503_4502)"> <rect width="28" height="20" rx="2" fill="white"></rect> <mask id="mask0_503_4502" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="28" height="20"> <rect width="28" height="20" rx="2" fill="white"></rect> </mask> <g mask="url(#mask0_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 6.66667H28V0H0V6.66667Z" fill="#24AAD5"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 20H28V13.3333H0V20Z" fill="#21BF75"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 13.3333H28V6.66666H0V13.3333Z" fill="#ED1845"></path> <g filter="url(#filter0_d_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M14 12C14.4113 12 14.7936 11.8759 15.1114 11.663C15.0747 11.6654 15.0376 11.6666 15.0002 11.6666C14.0797 11.6666 13.3335 10.9205 13.3335 9.99998C13.3335 9.0795 14.0797 8.33331 15.0002 8.33331C15.0375 8.33331 15.0746 8.33454 15.1114 8.33696C14.7935 8.12413 14.4113 8 14 8C12.8954 8 12 8.89543 12 10C12 11.1046 12.8954 12 14 12ZM15.9998 9.99998C15.9998 10.3682 15.7014 10.6666 15.3332 10.6666C14.965 10.6666 14.6665 10.3682 14.6665 9.99998C14.6665 9.63179 14.965 9.33331 15.3332 9.33331C15.7014 9.33331 15.9998 9.63179 15.9998 9.99998Z" fill="white"></path> </g> </g> </g> <defs> <filter id="filter0_d_503_4502" x="12" y="8" width="3.99988" height="5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"> <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood> <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix> <feOffset dy="1"></feOffset> <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"></feColorMatrix> <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_503_4502"></feBlend> <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_503_4502" result="shape"></feBlend> </filter> <clipPath id="clip0_503_4502"> <rect width="28" height="20" rx="2" fill="white"></rect> </clipPath> </defs> </g></svg>
+                            <div class="class-for-taxi-car-number">—</div>
+                        </div>
+
+                        <div class="client-taxi-end-address-order">—</div>
+                    </div>
+                    
+                    <div class="order-taxi-progress-vertical">
+                        
+                        <!-- Такси (слева) -->
+                        <div class="order-taxi-progress-item taxi-side">
+                            <!-- <div class="order-taxi-progress-icon">
+                                <img src="/static/images/going-taxi-icon.svg" width="40px" height="40px">
+                            </div> -->
+                            <div class="order-taxi-progress-content">
+                                <div class="order-taxi-progress-description" id="taxi-car-info">
+                                    <svg fill="#000000" style="margin-right: 7px;" width="18px" height="18px" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#4e4d4d" d="M28,13h1c0.6,0,1-0.4,1-1s-0.4-1-1-1h-2.8L25,8c-0.8-1.8-2.6-3-4.6-3h-8.7C9.6,5,7.8,6.2,7,8l-1.3,3H3c-0.6,0-1,0.4-1,1 s0.4,1,1,1h1c-1.2,0.9-2,2.4-2,4v4c0,0.9,0.4,1.7,1,2.2V25c0,1.7,1.3,3,3,3h2c1.7,0,3-1.3,3-3v-1h10v1c0,1.7,1.3,3,3,3h2 c1.7,0,3-1.3,3-3v-1.8c0.6-0.5,1-1.3,1-2.2v-4C30,15.4,29.2,13.9,28,13z M27,18c0,0.6-0.4,1-1,1h-3c-0.6,0-1-0.4-1-1s0.4-1,1-1h3 C26.6,17,27,17.4,27,18z M6,17h3c0.6,0,1,0.4,1,1s-0.4,1-1,1H6c-0.6,0-1-0.4-1-1S5.4,17,6,17z M10.4,22l1.2-2.3 c0.5-1,1.5-1.7,2.7-1.7h3.5c1.1,0,2.2,0.6,2.7,1.7l1.2,2.3H10.4z M8.9,8.8C9.4,7.7,10.4,7,11.6,7h8.7c1.2,0,2.3,0.7,2.8,1.8l1.4,3.2 h-17L8.9,8.8z"></path> </g></svg>
+                                    <div class="class-for-taxi-car-model">—</div>
+                                </div>
+                                <div class="order-taxi-progress-description" id="taxi-car-info">
+                                    
+                                    <svg fill="#4e4d4d" style="margin-right: 7px;" width="18px" height="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M541.9 139.5C546.4 127.7 543.6 114.3 534.7 105.4C525.8 96.5 512.4 93.6 500.6 98.2L84.6 258.2C71.9 263 63.7 275.2 64 288.7C64.3 302.2 73.1 314.1 85.9 318.3L262.7 377.2L321.6 554C325.9 566.8 337.7 575.6 351.2 575.9C364.7 576.2 376.9 568 381.8 555.4L541.8 139.4z"/></svg>
+                                    Ünvanınıza gedir!
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <!-- Стрелка -->
+                        <div class="order-taxi-progress-arrow">
+                            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                                <path d="M4 12H20M20 12L16 8M20 12L16 16" stroke="#01ae50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </div>
+
+                        <!-- Клиент (справа) -->
+                        <div class="order-taxi-progress-item">
+                            <div class="order-taxi-progress-content">
+                                <div class="order-taxi-progress-description" style="display: block;">Gözləmə vaxtı</div>
+                                <div class="order-taxi-progress-time" id="client-taxi-go-time-order">0 dəq.</div>
+                            </div>
+                            <!-- <div class="order-taxi-progress-icon ">
+                                <img src="/static/images/client-wainting-taxi.svg" width="40px" height="40px">
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Состояние 2: Такси приехал -->
+                <div class="order-taxi-progress-container state-arrived">
+                    <div class="progress-container-header">
+                        <div class="order-taxi-progress-title">
+                            <svg style="margin-right: 7px;" width="16px" height="16px" viewBox="0 -4 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_503_4502)"> <rect width="28" height="20" rx="2" fill="white"></rect> <mask id="mask0_503_4502" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="28" height="20"> <rect width="28" height="20" rx="2" fill="white"></rect> </mask> <g mask="url(#mask0_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 6.66667H28V0H0V6.66667Z" fill="#24AAD5"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 20H28V13.3333H0V20Z" fill="#21BF75"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 13.3333H28V6.66666H0V13.3333Z" fill="#ED1845"></path> <g filter="url(#filter0_d_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M14 12C14.4113 12 14.7936 11.8759 15.1114 11.663C15.0747 11.6654 15.0376 11.6666 15.0002 11.6666C14.0797 11.6666 13.3335 10.9205 13.3335 9.99998C13.3335 9.0795 14.0797 8.33331 15.0002 8.33331C15.0375 8.33331 15.0746 8.33454 15.1114 8.33696C14.7935 8.12413 14.4113 8 14 8C12.8954 8 12 8.89543 12 10C12 11.1046 12.8954 12 14 12ZM15.9998 9.99998C15.9998 10.3682 15.7014 10.6666 15.3332 10.6666C14.965 10.6666 14.6665 10.3682 14.6665 9.99998C14.6665 9.63179 14.965 9.33331 15.3332 9.33331C15.7014 9.33331 15.9998 9.63179 15.9998 9.99998Z" fill="white"></path> </g> </g> </g> <defs> <filter id="filter0_d_503_4502" x="12" y="8" width="3.99988" height="5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"> <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood> <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix> <feOffset dy="1"></feOffset> <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"></feColorMatrix> <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_503_4502"></feBlend> <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_503_4502" result="shape"></feBlend> </filter> <clipPath id="clip0_503_4502"> <rect width="28" height="20" rx="2" fill="white"></rect> </clipPath> </defs> </g></svg>
+                            <div class="class-for-taxi-car-number">—</div>
+                        </div>
+
+                        <div class="client-taxi-end-address-order">—</div>
+                    </div>
+                    
+                    <div class="order-taxi-progress-vertical">
+
+                        
+                        <!-- Такси (слева) -->
+                        <div class="order-taxi-progress-item taxi-side">
+                            <!-- <div class="order-taxi-progress-icon">
+                                <img src="/static/images/going-taxi-icon.svg" width="40px" height="40px">
+                            </div> -->
+                            <div class="order-taxi-progress-content">
+                                <div class="order-taxi-progress-description" id="taxi-car-info">
+                                    <svg fill="#000000" style="margin-right: 7px;" width="18px" height="18px" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#4e4d4d" d="M28,13h1c0.6,0,1-0.4,1-1s-0.4-1-1-1h-2.8L25,8c-0.8-1.8-2.6-3-4.6-3h-8.7C9.6,5,7.8,6.2,7,8l-1.3,3H3c-0.6,0-1,0.4-1,1 s0.4,1,1,1h1c-1.2,0.9-2,2.4-2,4v4c0,0.9,0.4,1.7,1,2.2V25c0,1.7,1.3,3,3,3h2c1.7,0,3-1.3,3-3v-1h10v1c0,1.7,1.3,3,3,3h2 c1.7,0,3-1.3,3-3v-1.8c0.6-0.5,1-1.3,1-2.2v-4C30,15.4,29.2,13.9,28,13z M27,18c0,0.6-0.4,1-1,1h-3c-0.6,0-1-0.4-1-1s0.4-1,1-1h3 C26.6,17,27,17.4,27,18z M6,17h3c0.6,0,1,0.4,1,1s-0.4,1-1,1H6c-0.6,0-1-0.4-1-1S5.4,17,6,17z M10.4,22l1.2-2.3 c0.5-1,1.5-1.7,2.7-1.7h3.5c1.1,0,2.2,0.6,2.7,1.7l1.2,2.3H10.4z M8.9,8.8C9.4,7.7,10.4,7,11.6,7h8.7c1.2,0,2.3,0.7,2.8,1.8l1.4,3.2 h-17L8.9,8.8z"></path> </g></svg>
+                                    <div class="class-for-taxi-car-model">Kia Rio</div>
+                                </div>
+                                <div class="order-taxi-progress-description" id="taxi-car-info">
+                                    <svg fill="#4e4d4d" style="margin-right: 7px;" width="18px" height="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M576 112C576 100.9 570.3 90.6 560.8 84.8C551.3 79 539.6 78.4 529.7 83.4L413.5 141.5L234.1 81.6C226 78.9 217.3 79.5 209.7 83.3L81.7 147.3C70.8 152.8 64 163.9 64 176L64 528C64 539.1 69.7 549.4 79.2 555.2C88.7 561 100.4 561.6 110.3 556.6L226.4 498.5L399.7 556.3C395.4 549.9 391.2 543.2 387.1 536.4C376.1 518.1 365.2 497.1 357.1 474.6L255.9 440.9L255.9 156.4L383.9 199.1L383.9 298.4C414.9 262.6 460.9 240 511.9 240C534.5 240 556.1 244.4 575.9 252.5L576 112zM512 288C445.7 288 392 340.8 392 405.9C392 474.8 456.1 556.3 490.6 595.2C502.2 608.2 521.9 608.2 533.5 595.2C568 556.3 632.1 474.8 632.1 405.9C632.1 340.8 578.4 288 512.1 288zM472 408C472 385.9 489.9 368 512 368C534.1 368 552 385.9 552 408C552 430.1 534.1 448 512 448C489.9 448 472 430.1 472 408z"></path></svg>
+                                    Ünvanınıza gəldi!
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Стрелка -->
+                        <div class="order-taxi-progress-arrow">
+                            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                                <path d="M4 12H20M20 12L16 8M20 12L16 16" stroke="#01ae50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </div>
+
+                        <!-- Клиент (справа) -->
+                        <div class="order-taxi-progress-item">
+                            <div class="order-taxi-progress-content" style="text-align: right;">
+                                <div class="order-taxi-progress-time" id="client-taxi-go-time-order">
+                                    <i class="fa-solid fa-spinner"></i>
+                                    Taksi sizi gözləyir..
+                                </div>
+                                <!-- <div class="order-taxi-progress-description">Gözləmə vaxtı</div> -->
+                            </div>
+                            <!-- <div class="order-taxi-progress-icon ">
+                                <img src="/static/images/client-wainting-taxi.svg" width="40px" height="40px">
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Состояние 3: Клиент сел -->
+                <div class="order-taxi-progress-container state-onboard">
+                    <div class="progress-container-header">
+                        <div class="order-taxi-progress-title">
+                            <svg style="margin-right: 7px;" width="16px" height="16px" viewBox="0 -4 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_503_4502)"> <rect width="28" height="20" rx="2" fill="white"></rect> <mask id="mask0_503_4502" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="28" height="20"> <rect width="28" height="20" rx="2" fill="white"></rect> </mask> <g mask="url(#mask0_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 6.66667H28V0H0V6.66667Z" fill="#24AAD5"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 20H28V13.3333H0V20Z" fill="#21BF75"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 13.3333H28V6.66666H0V13.3333Z" fill="#ED1845"></path> <g filter="url(#filter0_d_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M14 12C14.4113 12 14.7936 11.8759 15.1114 11.663C15.0747 11.6654 15.0376 11.6666 15.0002 11.6666C14.0797 11.6666 13.3335 10.9205 13.3335 9.99998C13.3335 9.0795 14.0797 8.33331 15.0002 8.33331C15.0375 8.33331 15.0746 8.33454 15.1114 8.33696C14.7935 8.12413 14.4113 8 14 8C12.8954 8 12 8.89543 12 10C12 11.1046 12.8954 12 14 12ZM15.9998 9.99998C15.9998 10.3682 15.7014 10.6666 15.3332 10.6666C14.965 10.6666 14.6665 10.3682 14.6665 9.99998C14.6665 9.63179 14.965 9.33331 15.3332 9.33331C15.7014 9.33331 15.9998 9.63179 15.9998 9.99998Z" fill="white"></path> </g> </g> </g> <defs> <filter id="filter0_d_503_4502" x="12" y="8" width="3.99988" height="5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"> <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood> <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix> <feOffset dy="1"></feOffset> <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"></feColorMatrix> <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_503_4502"></feBlend> <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_503_4502" result="shape"></feBlend> </filter> <clipPath id="clip0_503_4502"> <rect width="28" height="20" rx="2" fill="white"></rect> </clipPath> </defs> </g></svg>
+                            <div class="class-for-taxi-car-number">—</div>
+                        </div>
+
+                        <div class="client-taxi-end-address-order">—</div>
+                    </div>
+                    
+                    <div class="order-taxi-progress-vertical">
+                        
+                        <!-- Такси (слева) -->
+                        <div class="order-taxi-progress-item taxi-side">
+                            <!-- <div class="order-taxi-progress-icon">
+                                <img src="/static/images/going-taxi-icon.svg" width="40px" height="40px">
+                            </div> -->
+                            <div class="order-taxi-progress-content">
+                                <div class="order-taxi-progress-description" id="taxi-car-info">
+                                    <svg fill="#000000" style="margin-right: 7px;" width="18px" height="18px" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#4e4d4d" d="M28,13h1c0.6,0,1-0.4,1-1s-0.4-1-1-1h-2.8L25,8c-0.8-1.8-2.6-3-4.6-3h-8.7C9.6,5,7.8,6.2,7,8l-1.3,3H3c-0.6,0-1,0.4-1,1 s0.4,1,1,1h1c-1.2,0.9-2,2.4-2,4v4c0,0.9,0.4,1.7,1,2.2V25c0,1.7,1.3,3,3,3h2c1.7,0,3-1.3,3-3v-1h10v1c0,1.7,1.3,3,3,3h2 c1.7,0,3-1.3,3-3v-1.8c0.6-0.5,1-1.3,1-2.2v-4C30,15.4,29.2,13.9,28,13z M27,18c0,0.6-0.4,1-1,1h-3c-0.6,0-1-0.4-1-1s0.4-1,1-1h3 C26.6,17,27,17.4,27,18z M6,17h3c0.6,0,1,0.4,1,1s-0.4,1-1,1H6c-0.6,0-1-0.4-1-1S5.4,17,6,17z M10.4,22l1.2-2.3 c0.5-1,1.5-1.7,2.7-1.7h3.5c1.1,0,2.2,0.6,2.7,1.7l1.2,2.3H10.4z M8.9,8.8C9.4,7.7,10.4,7,11.6,7h8.7c1.2,0,2.3,0.7,2.8,1.8l1.4,3.2 h-17L8.9,8.8z"></path> </g></svg>
+                                    <div class="class-for-taxi-car-model">—</div>
+                                </div>
+                                <div class="order-taxi-progress-description" id="taxi-car-info">
+                                    <svg fill="#4e4d4d" style="margin-right: 7px;" width="18px" height="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M280 88C280 57.1 254.9 32 224 32C193.1 32 168 57.1 168 88C168 118.9 193.1 144 224 144C254.9 144 280 118.9 280 88zM304 300.7L341 350.6C353.8 333.1 369.5 317.9 387.3 305.6L331.1 229.9C306 196 266.3 176 224 176C181.7 176 142 196 116.8 229.9L46.3 324.9C35.8 339.1 38.7 359.1 52.9 369.7C67.1 380.3 87.1 377.3 97.7 363.1L144 300.7L144 576C144 593.7 158.3 608 176 608C193.7 608 208 593.7 208 576L208 416C208 407.2 215.2 400 224 400C232.8 400 240 407.2 240 416L240 576C240 593.7 254.3 608 272 608C289.7 608 304 593.7 304 576L304 300.7zM640 464C640 384.5 575.5 320 496 320C416.5 320 352 384.5 352 464C352 543.5 416.5 608 496 608C575.5 608 640 543.5 640 464zM553.4 403.1C560.5 408.3 562.1 418.3 556.9 425.4L492.9 513.4C490.1 517.2 485.9 519.6 481.2 519.9C476.5 520.2 471.9 518.6 468.6 515.3L428.6 475.3C422.4 469.1 422.4 458.9 428.6 452.7C434.8 446.5 445 446.5 451.2 452.7L478 479.5L531 406.6C536.2 399.5 546.2 397.9 553.4 403.1z"/></svg>
+                                    Səfər başladı!
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <!-- Стрелка -->
+                        <div class="order-taxi-progress-arrow">
+                            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                                <path d="M4 12H20M20 12L16 8M20 12L16 16" stroke="#01ae50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </div>
+
+                        <!-- Клиент (справа) -->
+                        <div class="order-taxi-progress-item">
+                            <div class="order-taxi-progress-content">
+                                <div class="order-taxi-progress-time" id="client-taxi-go-time-order">
+                                    <i class="fa-solid fa-spinner"></i>
+                                    Ünvanınız
+                                </div>
+                            </div>
+                            <!-- <div class="order-taxi-progress-icon ">
+                                <img src="/static/images/client-wainting-taxi.svg" width="40px" height="40px">
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Состояние 4: Завершение поездки -->
+                <div class="order-taxi-progress-container state-completed">
+                    <div class="order-taxi-progress-vertical">
+                        
+                        <div class="progress-container-header">
+                            <div class="order-taxi-progress-title">
+                                <svg style="margin-right: 7px;" width="16px" height="16px" viewBox="0 -4 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_503_4502)"> <rect width="28" height="20" rx="2" fill="white"></rect> <mask id="mask0_503_4502" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="28" height="20"> <rect width="28" height="20" rx="2" fill="white"></rect> </mask> <g mask="url(#mask0_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 6.66667H28V0H0V6.66667Z" fill="#24AAD5"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 20H28V13.3333H0V20Z" fill="#21BF75"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 13.3333H28V6.66666H0V13.3333Z" fill="#ED1845"></path> <g filter="url(#filter0_d_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M14 12C14.4113 12 14.7936 11.8759 15.1114 11.663C15.0747 11.6654 15.0376 11.6666 15.0002 11.6666C14.0797 11.6666 13.3335 10.9205 13.3335 9.99998C13.3335 9.0795 14.0797 8.33331 15.0002 8.33331C15.0375 8.33331 15.0746 8.33454 15.1114 8.33696C14.7935 8.12413 14.4113 8 14 8C12.8954 8 12 8.89543 12 10C12 11.1046 12.8954 12 14 12ZM15.9998 9.99998C15.9998 10.3682 15.7014 10.6666 15.3332 10.6666C14.965 10.6666 14.6665 10.3682 14.6665 9.99998C14.6665 9.63179 14.965 9.33331 15.3332 9.33331C15.7014 9.33331 15.9998 9.63179 15.9998 9.99998Z" fill="white"></path> </g> </g> </g> <defs> <filter id="filter0_d_503_4502" x="12" y="8" width="3.99988" height="5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"> <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood> <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix> <feOffset dy="1"></feOffset> <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"></feColorMatrix> <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_503_4502"></feBlend> <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_503_4502" result="shape"></feBlend> </filter> <clipPath id="clip0_503_4502"> <rect width="28" height="20" rx="2" fill="white"></rect> </clipPath> </defs> </g></svg>
+                                <div class="class-for-taxi-car-number">—</div>
+                            </div>
+
+                            <div class="client-taxi-end-address-order">—</div>
+                        </div>
+                        
+                        <!-- Такси (слева) -->
+                        <div class="order-taxi-progress-item taxi-side">
+                            <!-- <div class="order-taxi-progress-icon">
+                                <img src="/static/images/going-taxi-icon.svg" width="40px" height="40px">
+                            </div> -->
+                            <div class="order-taxi-progress-content">
+                                <div class="order-taxi-progress-description" id="taxi-car-info">
+                                    <svg fill="#000000" style="margin-right: 7px;" width="18px" height="18px" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#4e4d4d" d="M28,13h1c0.6,0,1-0.4,1-1s-0.4-1-1-1h-2.8L25,8c-0.8-1.8-2.6-3-4.6-3h-8.7C9.6,5,7.8,6.2,7,8l-1.3,3H3c-0.6,0-1,0.4-1,1 s0.4,1,1,1h1c-1.2,0.9-2,2.4-2,4v4c0,0.9,0.4,1.7,1,2.2V25c0,1.7,1.3,3,3,3h2c1.7,0,3-1.3,3-3v-1h10v1c0,1.7,1.3,3,3,3h2 c1.7,0,3-1.3,3-3v-1.8c0.6-0.5,1-1.3,1-2.2v-4C30,15.4,29.2,13.9,28,13z M27,18c0,0.6-0.4,1-1,1h-3c-0.6,0-1-0.4-1-1s0.4-1,1-1h3 C26.6,17,27,17.4,27,18z M6,17h3c0.6,0,1,0.4,1,1s-0.4,1-1,1H6c-0.6,0-1-0.4-1-1S5.4,17,6,17z M10.4,22l1.2-2.3 c0.5-1,1.5-1.7,2.7-1.7h3.5c1.1,0,2.2,0.6,2.7,1.7l1.2,2.3H10.4z M8.9,8.8C9.4,7.7,10.4,7,11.6,7h8.7c1.2,0,2.3,0.7,2.8,1.8l1.4,3.2 h-17L8.9,8.8z"></path> </g></svg>
+                                    <div class="class-for-taxi-car-model">Kia Rio</div>
+                                </div>
+                                <div class="order-taxi-progress-description" id="taxi-car-info">
+                                    <svg fill="#4e4d4d" style="margin-right: 7px;" width="18px" height="18px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M192 96C156.7 96 128 124.7 128 160L128 384C128 419.3 156.7 448 192 448L544 448C579.3 448 608 419.3 608 384L608 160C608 124.7 579.3 96 544 96L192 96zM368 192C412.2 192 448 227.8 448 272C448 316.2 412.2 352 368 352C323.8 352 288 316.2 288 272C288 227.8 323.8 192 368 192zM192 216L192 168C192 163.6 195.6 160 200 160L248 160C252.4 160 256.1 163.6 255.5 168C251.9 197 228.9 219.9 200 223.5C195.6 224 192 220.4 192 216zM192 328C192 323.6 195.6 319.9 200 320.5C229 324.1 251.9 347.1 255.5 376C256 380.4 252.4 384 248 384L200 384C195.6 384 192 380.4 192 376L192 328zM536 223.5C507 219.9 484.1 196.9 480.5 168C480 163.6 483.6 160 488 160L536 160C540.4 160 544 163.6 544 168L544 216C544 220.4 540.4 224.1 536 223.5zM544 328L544 376C544 380.4 540.4 384 536 384L488 384C483.6 384 479.9 380.4 480.5 376C484.1 347 507.1 324.1 536 320.5C540.4 320 544 323.6 544 328zM80 216C80 202.7 69.3 192 56 192C42.7 192 32 202.7 32 216L32 480C32 515.3 60.7 544 96 544L488 544C501.3 544 512 533.3 512 520C512 506.7 501.3 496 488 496L96 496C87.2 496 80 488.8 80 480L80 216z"></path></svg>
+                                    Səfər tamamlandı!
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Стрелка -->
+                        <div class="order-taxi-progress-arrow">
+                            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                                <path d="M4 12H20M20 12L16 8M20 12L16 16" stroke="#01ae50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </div>
+
+                        <!-- Клиент (справа) -->
+                        <div class="order-taxi-progress-item">
+                            <div class="order-taxi-progress-content" style="text-align: right;">
+                                <div class="order-taxi-progress-time" id="client-taxi-go-time-order">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="#00ae50" style="margin-right: 7px;" width="23px" height="23px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M31 169C21.6 159.6 21.6 144.4 31 135.1L103 63C112.4 53.6 127.6 53.6 136.9 63C146.2 72.4 146.3 87.6 136.9 96.9L105.9 127.9L173.6 127.9L173.6 127.9L511.9 127.9C547.2 127.9 575.9 156.6 575.9 191.9L575.9 370.1L570.8 365C542.7 336.9 497.1 336.9 469 365C441.8 392.2 440.9 435.6 466.2 463.9L533.9 463.9L502.9 432.9C493.5 423.5 493.5 408.3 502.9 399C512.3 389.7 527.5 389.6 536.8 399L608.8 471C618.2 480.4 618.2 495.6 608.8 504.9L536.8 576.9C527.4 586.3 512.2 586.3 502.9 576.9C493.6 567.5 493.5 552.3 502.9 543L533.9 512L127.8 512C92.5 512 63.8 483.3 63.8 448L63.8 269.8L68.9 274.9C97 303 142.6 303 170.7 274.9C197.9 247.7 198.8 204.3 173.5 176L105.8 176L136.8 207C146.2 216.4 146.2 231.6 136.8 240.9C127.4 250.2 112.2 250.3 102.9 240.9L31 169zM416 320C416 267 373 224 320 224C267 224 224 267 224 320C224 373 267 416 320 416C373 416 416 373 416 320zM504 255.5C508.4 256 512 252.4 512 248L512 200C512 195.6 508.4 192 504 192L456 192C451.6 192 447.9 195.6 448.5 200C452.1 229 475.1 251.9 504 255.5zM136 384.5C131.6 384 128 387.6 128 392L128 440C128 444.4 131.6 448 136 448L184 448C188.4 448 192.1 444.4 191.5 440C187.9 411 164.9 388.1 136 384.5z"/></svg>
+                                    Tamamlandı
+                                </div>
+                                <!-- <div class="order-taxi-progress-description">Gözləmə vaxtı</div> -->
+                            </div>
+                            <!-- <div class="order-taxi-progress-icon ">
+                                <img src="/static/images/client-wainting-taxi.svg" width="40px" height="40px">
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+
+                
+                <!-- <div class="order-taxi-progress-roud-waiting">
+                    <div style="display: flex;align-items: center;position: absolute;gap: 17px;justify-content: center; top: -10px;">
+                        <b id="client-taxi-go-time-order">0 dəq</b>
+                    </div>
+                    <div class="order-taxi-progress-icons">
+                        <img src="/static/images/going-taxi-icon.svg" width="50px" height="50px">
+                        <div class="order-taxi-progress-line"></div>
+                        <img src="/static/images/client-wainting-taxi.svg" width="50px" height="50px">
+                    </div>
+                </div> -->
+
+                <!-- <div class="order-taxi-progress-roud-driving">
+                    <div style="display: flex;align-items: center;position: absolute;gap: 17px;justify-content: center; top: -10px;">
+                        <b id="client-taxi-go-distance-driving">0 km</b>
+                        <svg style="opacity: 0.5;" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M20 12L16 8M20 12L16 16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                        <b id="client-taxi-go-time-order-driving">0 dəq</b>
+                    </div>
+                    <div class="order-taxi-progress-icons">
+                        <img src="/static/images/going-taxi-icon.svg" width="50px" height="50px">
+                        <div class="order-taxi-progress-line"></div>
+                        <img src="/static/images/client-to-address-icon.svg" width="50px" height="50px">
+                    </div>
+                </div> -->
+
+                <div class="order-taxi-progress-eta">
+                    <div class="additional-buttons-order">
+                        <div class="additional-item" style="width: 37%;">
+                            <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9.09557 20.7929L11.9274 14.6574C11.9505 14.6073 11.962 14.5822 11.978 14.5744C11.9919 14.5676 12.0081 14.5676 12.022 14.5744C12.038 14.5822 12.0495 14.6073 12.0726 14.6574L14.9044 20.7929C14.9337 20.8564 14.9484 20.8882 14.9425 20.9067C14.9374 20.9227 14.9247 20.9351 14.9085 20.9396C14.8899 20.9449 14.8586 20.9293 14.796 20.898L12.0358 19.5179L12.0358 19.5179C12.0227 19.5113 12.0161 19.508 12.0092 19.5068C12.0031 19.5056 11.9969 19.5056 11.9908 19.5068C11.9839 19.508 11.9773 19.5113 11.9642 19.5179L11.9642 19.5179L9.20399 20.898C9.14142 20.9293 9.11014 20.9449 9.09149 20.9396C9.07533 20.9351 9.06256 20.9227 9.05748 20.9067C9.0516 20.8882 9.06626 20.8564 9.09557 20.7929Z" stroke="#33363F" stroke-width="2" stroke-linecap="round"></path> <path d="M4 18L7 4" stroke="#33363F" stroke-width="2" stroke-linecap="round"></path> <path d="M20 18L17 4" stroke="#33363F" stroke-width="2" stroke-linecap="round"></path> <path d="M12 11L12 9" stroke="#33363F" stroke-width="2" stroke-linecap="round"></path> <path d="M12 6L12 4" stroke="#33363F" stroke-width="2" stroke-linecap="round"></path> </g></svg>
+                            <span id="additional-metrs-order">0m</span>
+                        </div>
+                        
+                        <div class="additional-item" style="width: 37%; background-color: #21ac4f29; color: var(--primary);">
+                            <svg width="25px" height="25px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#03af50"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M951.87 253.86c0-82.18-110.05-144.14-256-144.14s-256 61.96-256 144.14c0 0.73 0.16 1.42 0.18 2.14h-0.18v109.71h73.14v-9.06c45.77 25.81 109.81 41.33 182.86 41.33 67.39 0 126.93-13.33 171.71-35.64 6.94 7.18 11.15 14.32 11.15 20.58 0 28.25-72.93 70.98-182.86 70.98h-73.12v73.14h73.12c67.4 0 126.96-13.33 171.74-35.65 6.95 7.17 11.11 14.31 11.11 20.6 0 28.27-72.93 71-182.86 71l-25.89 0.12c-15.91 0.14-31.32 0.29-46.34-0.11l-1.79 73.11c8.04 0.2 16.18 0.27 24.48 0.27 7.93 0 16-0.05 24.2-0.12l25.34-0.12c67.44 0 127.02-13.35 171.81-35.69 6.97 7.23 11.04 14.41 11.04 20.62 0 28.27-72.93 71-182.86 71h-73.12v73.14h73.12c67.44 0 127.01-13.35 171.81-35.69 6.98 7.22 11.05 14.4 11.05 20.62 0 28.27-72.93 71-182.86 71h-73.12v73.14h73.12c145.95 0 256-61.96 256-144.14 0-0.68-0.09-1.45-0.11-2.14h0.11V256h-0.18c0.03-0.72 0.2-1.42 0.2-2.14z m-438.86 0c0-28.27 72.93-71 182.86-71s182.86 42.73 182.86 71c0 28.25-72.93 70.98-182.86 70.98s-182.86-42.73-182.86-70.98z" fill="#03af50"></path><path d="M330.15 365.71c-145.95 0-256 61.96-256 144.14 0 0.73 0.16 1.42 0.18 2.14h-0.18v256c0 82.18 110.05 144.14 256 144.14s256-61.96 256-144.14V512h-0.18c0.02-0.72 0.18-1.42 0.18-2.14 0-82.18-110.05-144.15-256-144.15zM147.29 638.93c0-6.32 4.13-13.45 11.08-20.62 44.79 22.33 104.36 35.67 171.78 35.67 67.39 0 126.93-13.33 171.71-35.64 6.94 7.18 11.15 14.32 11.15 20.58 0 28.25-72.93 70.98-182.86 70.98s-182.86-42.72-182.86-70.97z m182.86-200.07c109.93 0 182.86 42.73 182.86 71 0 28.25-72.93 70.98-182.86 70.98s-182.86-42.73-182.86-70.98c0-28.27 72.93-71 182.86-71z m0 400.14c-109.93 0-182.86-42.73-182.86-71 0-6.29 4.17-13.43 11.11-20.6 44.79 22.32 104.34 35.66 171.75 35.66 67.4 0 126.96-13.33 171.74-35.65 6.95 7.17 11.11 14.31 11.11 20.6 0.01 28.26-72.92 70.99-182.85 70.99z" fill="#03af50cf"></path></g></svg>
+                            <span id="additional-price-order">0.00 ₼</span>
+                        </div>
+
+                        <div class="additional-item" style="width: 37%;">
+                            <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-width="2"></circle> <path d="M16.5 12H12.25C12.1119 12 12 11.8881 12 11.75V8.5" stroke="#000000" stroke-width="2" stroke-linecap="round"></path> </g></svg>
+                            <span id="additional-timer-order">0 dəq</span>
+                        </div> 
+                    </div>
+                </div>
+
+                <div class="order-taxi-progress-cancel-button" id="order-progress-cancel-button">
+                    <i class="fa-solid fa-trash"></i>
+                    <span>Sifarişi ləğv edin</span>
+                </div>
+                
+                <div class="order-taxi-progress-arrived-button" id="order-taxi-progress-arrived-button" style="display: none;">
+                    <i class="fa-solid fa-circle-check"></i>
+                    Çatdım
+                </div>
+
+                <div class="order-taxi-progress-started-button" id="order-taxi-progress-started-button" style="display: none;">
+                    <i class="fa-solid fa-person-circle-check"></i>
+                    Müştəri oturdu
+                </div>
+
+                <div class="order-taxi-progress-started-button order-taxi-progress-destination-button" id="order-taxi-progress-destination-button" style="display: none;">
+                    <i class="fa-solid fa-flag-checkered"></i>
+                    Çatdıq
+                </div>
+                
+
+            </div>
+            
+            <!-- АНИМАЦИЯ ПОИСКА КЛИЕНТА (ДЛЯ ТАКСИСТА) -->
+            <div class="client-searching-animation-for-taxi" id="client-searching-panel">
+                <div class="searching-animation" id="searching-animation-x2">
+                    <img class="center" src="/static/images/logo.png" alt="" width="50px" height="50px">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+
+                <div class="searching-progress">
+                    <h3 class="searching-title" id="searching-title-x2">Müştəri axtarırıq</h3>
+                    <p class="searching-subtitle" id="searching-subtitle-x2">Bir az vaxt aparacaq..</p>
+                </div>
+
+                <div class="searching-cancel-button" id="searching-cancel-button">
+                    Bağla
+                </div>
+            </div>
+
+
+            <div class="order-panel">
+                <div class="address-inputs">
+                    <div class="address-input" id="from-input-location">
+                        <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="23px" height="23px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve" fill="#1b2c3d"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#1b2c3d" d="M62.79,29.172l-28-28C34.009,0.391,32.985,0,31.962,0s-2.047,0.391-2.828,1.172l-28,28 c-1.562,1.566-1.484,4.016,0.078,5.578c1.566,1.57,3.855,1.801,5.422,0.234L8,33.617V60c0,2.211,1.789,4,4,4h16V48h8v16h16 c2.211,0,4-1.789,4-4V33.695l1.195,1.195c1.562,1.562,3.949,1.422,5.516-0.141C64.274,33.188,64.356,30.734,62.79,29.172z"></path> </g></svg>
+                        <input type="text" id="from-input" placeholder="Haradan" list="locations">
+                        
+                    </div>
+                    <div class="address-input" id="to-input-location">
+                        <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M11.3856 23.789L11.3831 23.7871L11.3769 23.7822L11.355 23.765C11.3362 23.7501 11.3091 23.7287 11.2742 23.7008C11.2046 23.6451 11.1039 23.5637 10.9767 23.4587C10.7224 23.2488 10.3615 22.944 9.92939 22.5599C9.06662 21.793 7.91329 20.7041 6.75671 19.419C5.60303 18.1371 4.42693 16.639 3.53467 15.0528C2.64762 13.4758 2 11.7393 2 10C2 7.34784 3.05357 4.8043 4.92893 2.92893C6.8043 1.05357 9.34784 0 12 0C14.6522 0 17.1957 1.05357 19.0711 2.92893C20.9464 4.8043 22 7.34784 22 10C22 11.7393 21.3524 13.4758 20.4653 15.0528C19.5731 16.639 18.397 18.1371 17.2433 19.419C16.0867 20.7041 14.9334 21.793 14.0706 22.5599C13.6385 22.944 13.2776 23.2488 13.0233 23.4587C12.8961 23.5637 12.7954 23.6451 12.7258 23.7008C12.6909 23.7287 12.6638 23.7501 12.645 23.765L12.6231 23.7822L12.6169 23.7871L12.615 23.7885C12.615 23.7885 12.6139 23.7894 12 23L12.6139 23.7894C12.2528 24.0702 11.7467 24.0699 11.3856 23.789ZM12 23L11.3856 23.789C11.3856 23.789 11.3861 23.7894 12 23ZM15 10C15 11.6569 13.6569 13 12 13C10.3431 13 9 11.6569 9 10C9 8.34315 10.3431 7 12 7C13.6569 7 15 8.34315 15 10Z" fill="#f00000"></path> </g></svg>
+                        <input type="text" id="to-input" placeholder="Hara" list="locations">
+                        <!-- <datalist id="locations">
+                            <option value="Samur (SDK)" data-coords="41.634920,48.426122"></option>
+                            <option value="Kiri (Yeni Tahircal)" data-coords="41.660081,48.438773"></option>
+                            <option value="Kufoba" data-coords="41.676276,48.461530"></option>
+                            <option value="Şirvanovka" data-coords="41.696497,48.489094"></option>
+                            <option value="Salahoba" data-coords="41.702085,48.506341"></option>
+                            <option value="Yalama" data-coords="41.757738,48.579582"></option>
+                            <option value="Yukhari-Zeykhur" data-coords="41.571102,48.382025"></option>
+                            <option value="Quxuroba" data-coords="41.591502,48.532077"></option>
+                            <option value="Qusar" data-coords="41.430750,48.442629"></option>
+                            <option value="Quba" data-coords="41.362433,48.524514"></option>
+                            <option value="Xaçmaz" data-coords="41.459137,48.798778"></option>
+                            <option value="Sumgayit" data-coords="40.587663,49.627671"></option>
+                            <option value="Baku" data-coords="40.421557,49.795415"></option>
+                            <option value="Nabran" data-coords="41.763950,48.694334"></option>
+                        </datalist> -->
+                    </div>
+
+                    <div class="additional-buttons" style="display: none;">
+                        <div class="additional-item" style="width: 37%;">
+                            <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9.09557 20.7929L11.9274 14.6574C11.9505 14.6073 11.962 14.5822 11.978 14.5744C11.9919 14.5676 12.0081 14.5676 12.022 14.5744C12.038 14.5822 12.0495 14.6073 12.0726 14.6574L14.9044 20.7929C14.9337 20.8564 14.9484 20.8882 14.9425 20.9067C14.9374 20.9227 14.9247 20.9351 14.9085 20.9396C14.8899 20.9449 14.8586 20.9293 14.796 20.898L12.0358 19.5179L12.0358 19.5179C12.0227 19.5113 12.0161 19.508 12.0092 19.5068C12.0031 19.5056 11.9969 19.5056 11.9908 19.5068C11.9839 19.508 11.9773 19.5113 11.9642 19.5179L11.9642 19.5179L9.20399 20.898C9.14142 20.9293 9.11014 20.9449 9.09149 20.9396C9.07533 20.9351 9.06256 20.9227 9.05748 20.9067C9.0516 20.8882 9.06626 20.8564 9.09557 20.7929Z" stroke="#33363F" stroke-width="2" stroke-linecap="round"></path> <path d="M4 18L7 4" stroke="#33363F" stroke-width="2" stroke-linecap="round"></path> <path d="M20 18L17 4" stroke="#33363F" stroke-width="2" stroke-linecap="round"></path> <path d="M12 11L12 9" stroke="#33363F" stroke-width="2" stroke-linecap="round"></path> <path d="M12 6L12 4" stroke="#33363F" stroke-width="2" stroke-linecap="round"></path> </g></svg>
+                            <span id="additional-metrs">0m</span>
+                        </div>
+                        
+                        <div class="additional-item" style="width: 37%; background-color: #21ac4f29; color: var(--primary);">
+                            <svg width="25px" height="25px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#03af50"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M951.87 253.86c0-82.18-110.05-144.14-256-144.14s-256 61.96-256 144.14c0 0.73 0.16 1.42 0.18 2.14h-0.18v109.71h73.14v-9.06c45.77 25.81 109.81 41.33 182.86 41.33 67.39 0 126.93-13.33 171.71-35.64 6.94 7.18 11.15 14.32 11.15 20.58 0 28.25-72.93 70.98-182.86 70.98h-73.12v73.14h73.12c67.4 0 126.96-13.33 171.74-35.65 6.95 7.17 11.11 14.31 11.11 20.6 0 28.27-72.93 71-182.86 71l-25.89 0.12c-15.91 0.14-31.32 0.29-46.34-0.11l-1.79 73.11c8.04 0.2 16.18 0.27 24.48 0.27 7.93 0 16-0.05 24.2-0.12l25.34-0.12c67.44 0 127.02-13.35 171.81-35.69 6.97 7.23 11.04 14.41 11.04 20.62 0 28.27-72.93 71-182.86 71h-73.12v73.14h73.12c67.44 0 127.01-13.35 171.81-35.69 6.98 7.22 11.05 14.4 11.05 20.62 0 28.27-72.93 71-182.86 71h-73.12v73.14h73.12c145.95 0 256-61.96 256-144.14 0-0.68-0.09-1.45-0.11-2.14h0.11V256h-0.18c0.03-0.72 0.2-1.42 0.2-2.14z m-438.86 0c0-28.27 72.93-71 182.86-71s182.86 42.73 182.86 71c0 28.25-72.93 70.98-182.86 70.98s-182.86-42.73-182.86-70.98z" fill="#03af50"></path><path d="M330.15 365.71c-145.95 0-256 61.96-256 144.14 0 0.73 0.16 1.42 0.18 2.14h-0.18v256c0 82.18 110.05 144.14 256 144.14s256-61.96 256-144.14V512h-0.18c0.02-0.72 0.18-1.42 0.18-2.14 0-82.18-110.05-144.15-256-144.15zM147.29 638.93c0-6.32 4.13-13.45 11.08-20.62 44.79 22.33 104.36 35.67 171.78 35.67 67.39 0 126.93-13.33 171.71-35.64 6.94 7.18 11.15 14.32 11.15 20.58 0 28.25-72.93 70.98-182.86 70.98s-182.86-42.72-182.86-70.97z m182.86-200.07c109.93 0 182.86 42.73 182.86 71 0 28.25-72.93 70.98-182.86 70.98s-182.86-42.73-182.86-70.98c0-28.27 72.93-71 182.86-71z m0 400.14c-109.93 0-182.86-42.73-182.86-71 0-6.29 4.17-13.43 11.11-20.6 44.79 22.32 104.34 35.66 171.75 35.66 67.4 0 126.96-13.33 171.74-35.65 6.95 7.17 11.11 14.31 11.11 20.6 0.01 28.26-72.92 70.99-182.85 70.99z" fill="#03af50cf"></path></g></svg>
+                            <span id="additional-price">0.00 ₼</span>
+                        </div>
+
+                        <div class="additional-item" style="width: 37%;">
+                            <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-width="2"></circle> <path d="M16.5 12H12.25C12.1119 12 12 11.8881 12 11.75V8.5" stroke="#000000" stroke-width="2" stroke-linecap="round"></path> </g></svg>
+                            <span id="additional-timer">0 dəq</span>
+                        </div> 
+                    </div>
+                    <div class="map-buttons" role="toolbar" aria-label="Marşrut seçimi">
+                        <button type="button" class="set-route" id="set-route-btn" title="Ünvanla marşrut">
+                            <svg class="set-route__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M6.14214 6.14214C8.90356 3.38071 10.2843 2 12 2C13.7157 2 15.0964 3.38071 17.8579 6.14214C20.6193 8.90356 22 10.2843 22 12C22 13.7157 20.6193 15.0964 17.8579 17.8579C15.0964 20.6193 13.7157 22 12 22C10.2843 22 8.90356 20.6193 6.14214 17.8579C3.38071 15.0964 2 13.7157 2 12C2 10.2843 3.38071 8.90356 6.14214 6.14214ZM13.8463 8.45285C13.5441 8.16955 13.0695 8.18486 12.7862 8.48704C12.5029 8.78923 12.5182 9.26386 12.8204 9.54715L14.1034 10.75H10.6667C10.1116 10.75 9.28861 10.9003 8.5804 11.3784C7.83208 11.8835 7.25 12.7345 7.25 14C7.25 14.4142 7.58579 14.75 8 14.75C8.41421 14.75 8.75 14.4142 8.75 14C8.75 13.2655 9.05681 12.8665 9.41961 12.6216C9.8225 12.3497 10.3329 12.25 10.6667 12.25H14.1034L12.8204 13.4528C12.5182 13.7361 12.5029 14.2108 12.7862 14.513C13.0695 14.8151 13.5441 14.8305 13.8463 14.5472L16.513 12.0472C16.6642 11.9054 16.75 11.7073 16.75 11.5C16.75 11.2927 16.6642 11.0946 16.513 10.9528L13.8463 8.45285Z" fill="#758ca3"></path> </g></svg>
+                            <span class="set-route__label">Marşrut qur</span>
+                        </button>
+    
+                        <button type="button" class="point-to-map" id="point-to-map-btn" title="B nöqtəsi: xəritəni sürüşdür, mərkəzdə saxlayın">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="point-to-map__icon" width="22" height="22" viewBox="0 0 24 24"><title xmlns="">map-pin-fill</title><g fill="none" fill-rule="evenodd"><path d="m12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.018-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="#758ca3" d="M7 7a5 5 0 1 1 6 4.9V17a1 1 0 1 1-2 0v-5.1A5 5 0 0 1 7 7m2.489 9.1a1 1 0 0 1-.838 1.14c-1.278.195-2.293.489-2.96.815c-.335.164-.534.313-.637.422l-.021.023c.033.039.09.096.19.169c.28.207.749.435 1.418.644C7.968 19.728 9.863 20 12 20s4.032-.272 5.359-.687c.67-.209 1.138-.437 1.418-.644c.1-.073.157-.13.19-.169l-.021-.023c-.103-.109-.302-.258-.637-.422c-.667-.326-1.682-.62-2.96-.815a1 1 0 1 1 .301-1.977c1.388.21 2.622.547 3.539.996c.457.224.884.5 1.208.842c.33.347.603.82.603 1.399c0 .811-.524 1.4-1.034 1.777c-.53.392-1.233.702-2.01.945c-1.57.49-3.674.778-5.956.778s-4.387-.288-5.955-.778c-.778-.243-1.48-.553-2.01-.945C3.524 19.9 3 19.311 3 18.5c0-.58.273-1.052.603-1.4c.325-.342.751-.617 1.208-.84c.917-.45 2.152-.786 3.538-.997a1 1 0 0 1 1.14.838Z"/></g></svg>
+                            <span class="point-to-map__label">Xəritədə seç</span>
+                        </button>
+
+                        <button type="button" class="map-route-cancel" id="cancel-route-map-btn" title="Marşrutu sıfırla" aria-label="Marşrutu sıfırla">
+                            <span class="map-route-cancel__label">Ləğv</span>
+                            <svg class="map-route-cancel__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <button class="order-button" id="order-btn">
+                    <svg width="30px" height="30px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>taxi</title> <desc>Created with sketchtool.</desc> <g id="vehicles" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="taxi" fill="#ffffff" fill-rule="nonzero"> <path d="M8.31378846,5.05863462 L9,3 L15,3 L15.6862115,5.05863462 C17.5683952,5.3840365 19,7.02483364 19,9 L19,12 C20.1045695,12 21,12.8954305 21,14 L21,19 C21,20.1045695 20.1045695,21 19,21 C17.8954305,21 17,20.1045695 17,19 L7,19 C7,20.1045695 6.1045695,21 5,21 C3.8954305,21 3,20.1045695 3,19 L3,14 C3,12.8954305 3.8954305,12 5,12 L5,9 C5,7.02483364 6.43160483,5.3840365 8.31378846,5.05863462 Z M9,7 C7.8954305,7 7,7.8954305 7,9 L7,12 L17,12 L17,9 C17,7.8954305 16.1045695,7 15,7 L9,7 Z M6,16 C6.55228475,16 7,15.5522847 7,15 C7,14.4477153 6.55228475,14 6,14 C5.44771525,14 5,14.4477153 5,15 C5,15.5522847 5.44771525,16 6,16 Z M18,16 C18.5522847,16 19,15.5522847 19,15 C19,14.4477153 18.5522847,14 18,14 C17.4477153,14 17,14.4477153 17,15 C17,15.5522847 17.4477153,16 18,16 Z" id="Shape"> </path> </g> </g> </g></svg>
+                    Taksi çağır
+                </button>
+            </div>
+
+            <div class="navigation-panel">
+                <a href="#" class="nav-item active" onclick="window.taxiApp.showScreen('main-screen')">
+                    <i class="fas fa-map nav-icon"></i>
+                    <span>Ev</span>
+                </a>
+                <a href="#" class="nav-item" onclick="window.profileManager.showProfile()">
+                    <i class="fas fa-user-circle nav-icon"></i>
+                    <span>Profil</span>
+                </a>
+                <a href="#" class="nav-item" onclick="window.taxiApp.showScreen('register-screen')" style="display: none;">
+                    <i class="fas fa-user-plus nav-icon"></i>
+                    <span>Qeydiyyat</span>
+                </a>
+                <a href="#" class="nav-item" onclick="window.taxiApp.showScreen('settings-screen')">
+                    <i class="fa-solid fa-gear nav-icon"></i> 
+                    <span>Ayarlar</span>
+                </a>
+            </div>
+        </div>
+
+        <div id="trip-rating-modal" class="modal trip-rating-modal" style="display: none; z-index: 12000;">
+            <div class="modal-content trip-rating-modal-inner">
+                <h3 id="trip-rating-title" class="trip-rating-modal-inner__title">Qiymətləndirmə</h3>
+                <div class="trip-rating-peer">
+                    <img id="trip-rating-peer-photo" class="trip-rating-peer__photo" src="/static/images/user-profile-avatar.png" alt="">
+                    <div class="trip-rating-peer__meta">
+                        <div id="trip-rating-peer-name" class="trip-rating-peer__name"></div>
+                        <div id="trip-rating-peer-rating" class="trip-rating-peer__rating" aria-label="rating value"></div>
+                    </div>
+                </div>
+                <p id="trip-rating-stars-hint" class="trip-rating-stars-hint">Ulduzlar</p>
+                <div id="trip-rating-stars" class="trip-rating-stars-row" aria-label="Qiymət"></div>
+                <div id="trip-rating-reasons-wrap" class="trip-rating-reasons-wrap" hidden>
+                    <p id="trip-rating-reasons-hint" class="trip-rating-reasons-hint"></p>
+                    <div id="trip-rating-reasons" class="trip-rating-reasons" role="group" aria-label="Səbəblər"></div>
+                </div>
+                <button type="button" class="btn confirm trip-rating-modal-inner__submit" id="trip-rating-submit">Göndər</button>
+            </div>
+        </div>
+
+        <!-- Модальное окно подтверждения заказа -->
+        <div id="order-modal" class="modal">
+            <div class="modal-content">
+
+                <div class="order-cancel-reasons-modal" id="order-cancel-reasons-modal" style="display: none;">
+                    <div class="modal-header">
+                        <div class="modal-header-icon" onclick="window.taxiApp.closeTaxiReasonsModal(); window.taxiApp.closeClientReasonsModal();">
+                            <i class="fa-solid fa-xmark"></i>
+                        </div>
+                        <div class="modal-header-text">
+                            <h3>Sifarişin ləğvi</h3>
+                            <p>Ləğv etmə səbəbini seçin</p>
+                        </div>
+                    </div>
+                    
+                    <div class="taxi-reasons" style="display: none;">
+
+                        <label class="reason-item">
+                            <input type="radio" name="taxi-cancel-reason" value="Клиент не отвечает">
+                            <i class="fa-solid fa-phone-slash"></i>
+                            <span>Müştəri cavab vermir</span>
+                        </label>
+
+                        <label class="reason-item">
+                            <input type="radio" name="taxi-cancel-reason" value="Слишком далеко">
+                            <i class="fa-solid fa-road-circle-exclamation"></i>
+                            <span>Çox uzaqdır</span>
+                        </label>
+
+                        <label class="reason-item">
+                            <input type="radio" name="taxi-cancel-reason" value="Адрес неверный">
+                            <i class="fa-solid fa-location-crosshairs"></i>
+                            <span>Ünvan düzgün deyil</span>
+                        </label>
+
+                        <label class="custom-reason-input" onclick="document.querySelectorAll('input[name=&quot;taxi-cancel-reason&quot;]').forEach(r=>r.checked=false)">
+                            <div class="item-group">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                                <span>Başqa</span>
+                            </div>
+                            <input type="text" placeholder="İmtina səbəbini daxil edin..">
+                        </label>
+
+                    </div>
+
+                    <div class="client-reasons" style="display: none;">
+
+                        <label class="reason-item">
+                            <input type="radio" name="client-cancel-reason" value="Водитель не отвечает">
+                            <i class="fa-solid fa-phone-slash"></i>
+                            <span>Sürücü cavab vermir</span>
+                        </label>
+
+                        <label class="reason-item">
+                            <input type="radio" name="client-cancel-reason" value="Водитель долго едет">
+                            <i class="fa-solid fa-clock"></i>
+                            <span>Sürücü çox gecikir</span>
+                        </label>
+
+                        <label class="reason-item">
+                            <input type="radio" name="client-cancel-reason" value="Заказал по ошибке">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>Sifarişi səhvən verdim</span>
+                        </label>
+
+                        <label class="custom-reason-input" onclick="document.querySelectorAll('input[name=&quot;client-cancel-reason&quot;]').forEach(r=>r.checked=false); this.querySelector('input').focus();">
+                            <div class="item-group">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                                <span>Başqa</span>
+                            </div>
+                            <input type="text" placeholder="İmtina səbəbini daxil edin..">
+                        </label>
+
+                    </div>
+
+                    <div class="resons-confirmation" id="resons-confirmation-button">
+                        <div class="resons-error">Səfərinizi ləğv etmək üçün bir səbəb seçin!</div>
+
+                        <span class="confirm-btn">
+                            <i class="fa-solid fa-trash-can"></i>
+                            Təsdiq
+                        </span>
+                    </div>
+                    
+                </div>
+
+                <div id="order-modal-taxi-searching" class="modal-taxi-searching" style="display: none;">
+                    <div class="searching-content">
+                        <div class="searching-animation">
+                            <img class="center" src="/static/images/logo.png" alt="" width="50px" height="50px">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            
+                        </div>
+                        
+                        <div class="searching-progress">
+                            <h3 class="searching-title">Doğru taksi axtarırıq</h3>
+                            <p class="searching-subtitle">Bir az vaxt aparacaq..</p>
+                            <div class="taxi-searching-timer" id="taxi-searching-timer">0:00</div>
+                        </div>
+
+                        <div class="searching-cancel-button" id="searching-cancel-button-client">
+                            Bağla
+                        </div>
+
+                        <div id="dispatch-wait-hint-row" style="display: none;margin-top: 10px;text-align: left;margin-left: auto;margin-right: auto;background: #0000000f;padding: 15px;border-radius: 12px;">
+                            <p id="dispatch-wait-hint-text" class="searching-subtitle" style="margin-bottom:8px;font-size:0.95rem;"></p>
+                            <button type="button" id="dispatch-wait-boost-btn" class="register-btn" style="font-size:0.9rem;width: 100%;height: 49px;display: flex; margin-top: 10px;justify-content: center;border-radius: 50px;align-items: center;"></button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="order-modal-get-register" class="modal-get-register" style="display: none;">
+                    <div class="modal-get-register-content">
+                        <svg style="width: 100%;padding: 10px;background: #cccccc30;border-radius: 10px" width="84px" height="84px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20.1633 4.09295L15.0612 2.17072C14.1429 1.86721 13.2245 1.96838 12.5102 2.47423C12.2041 2.67657 12 2.87891 11.7959 3.08125H7.91837C6.38776 3.08125 5.06122 4.39646 5.06122 5.91401V6.9257C5.06122 7.33038 5.36735 7.73506 5.87755 7.73506C6.38776 7.73506 6.69388 7.33038 6.69388 6.9257V5.91401C6.69388 5.20582 7.30612 4.69997 7.91837 4.69997H11.2857V19.3696H7.91837C7.20408 19.3696 6.69388 18.7626 6.69388 18.1555V17.1439C6.69388 16.7392 6.38776 16.3345 5.87755 16.3345C5.36735 16.3345 5.06122 16.638 5.06122 17.0427V18.0544C5.06122 19.5719 6.28572 20.8871 7.91837 20.8871H11.7959C12 21.0895 12.2041 21.393 12.4082 21.4942C12.9184 21.7977 13.4286 22 14.0408 22C14.3469 22 14.7551 21.8988 15.0612 21.7977L20.1633 19.8754C21.2857 19.4708 22 18.4591 22 17.245V6.62219C22 5.50933 21.1837 4.39646 20.1633 4.09295Z" fill="#01ae50"></path> <path d="M6.38776 13.5017C6.08163 13.8052 6.08163 14.3111 6.38776 14.6146C6.4898 14.7158 6.69388 14.8169 6.89796 14.8169C7.10204 14.8169 7.30612 14.7158 7.40816 14.6146L9.44898 12.5912C9.55102 12.49 9.55102 12.3889 9.65306 12.3889C9.65306 12.2877 9.7551 12.1865 9.7551 12.0854C9.7551 11.9842 9.7551 11.883 9.65306 11.7819C9.65306 11.6807 9.55102 11.5795 9.44898 11.5795L7.40816 9.55612C7.10204 9.25261 6.59184 9.25261 6.28571 9.55612C5.97959 9.85963 5.97959 10.3655 6.28571 10.669L7 11.3772H2.81633C2.40816 11.3772 2 11.6807 2 12.1865C2 12.6924 2.30612 12.9959 2.81633 12.9959H7.10204L6.38776 13.5017Z" fill="#20a85b7d"></path> </g></svg>
+                        
+                        <div class="searching-progress">
+                            <h3 class="searching-title">Qeydiyyat tələb olunur!</h3>
+                            <p class="searching-subtitle">Üçün taksi sifariş qeydiyyatdan keçməlisiniz.</p>
+                        </div>
+                        <div class="register-actions">
+                        <button class="register-btn" id="get-register-btn">
+                            <i class="fas fa-user-plus"></i>
+                            Qeydiyyat
+                        </button>
+                        
+                        <div class="register-divider">
+                            <span>və ya</span>
+                        </div>
+                        
+                        <button class="taxi-to-login-redirect-btn" id="get-login-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Daxil ol
+                        </button>
+                    </div>
+                    </div>
+                </div>
+
+                <div id="order-modal-taxi-details" class="modal-taxi-details-container" style="display: none;">
+                    <input type="hidden" id="taxi-id">
+                    <div class="modal-taxi-content">
+                        <img class="modal-taxi-avatar" id="modal-taxi-avatar" src="" alt="">
+                        <div class="modal-taxi-details">
+                            <div style="display: flex;flex-direction: column;align-items: flex-start;">
+                                <b id="modal-taxi-name"></b>
+                                <span class="modal-taxi-rating">
+                                    <i class="fas fa-star"></i> <span id="modal-taxi-rating">0.0</span>
+                                </span>
+                            </div>
+    
+                            <div class="modal-taxi-category">
+                                <span id="modal-taxi-category-car">
+                                    <!-- <svg width="30px" height="30px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M3 1L1.66667 5H0V8H1V15H3V13H13V15H15V8H16V5H14.3333L13 1H3ZM4 9C3.44772 9 3 9.44772 3 10C3 10.5523 3.44772 11 4 11C4.55228 11 5 10.5523 5 10C5 9.44772 4.55228 9 4 9ZM11.5585 3H4.44152L3.10819 7H12.8918L11.5585 3ZM12 9C11.4477 9 11 9.44772 11 10C11 10.5523 11.4477 11 12 11C12.5523 11 13 10.5523 13 10C13 9.44772 12.5523 9 12 9Z" fill="#01ae50"></path> </g></svg> -->
+                                    <svg width="30px" height="30px" fill="#01ae50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M256 64C238.3 64 224 78.3 224 96L224 128L215.1 128C173.1 128 136 155.3 123.5 195.4L100.5 268.9C78.5 283.1 64 307.9 64 336L64 512C64 529.7 78.3 544 96 544L128 544C145.7 544 160 529.7 160 512L160 480L480 480L480 512C480 529.7 494.3 544 512 544L544 544C561.7 544 576 529.7 576 512L576 336C576 307.9 561.5 283.1 539.6 268.9L516.6 195.4C504.1 155.3 466.9 128 424.9 128L416 128L416 96C416 78.3 401.7 64 384 64L256 64zM215.1 192L425 192C439 192 451.4 201.1 455.5 214.5L468.5 256L171.6 256L184.6 214.5C188.8 201.1 201.1 192 215.1 192zM160 336C177.7 336 192 350.3 192 368C192 385.7 177.7 400 160 400C142.3 400 128 385.7 128 368C128 350.3 142.3 336 160 336zM448 368C448 350.3 462.3 336 480 336C497.7 336 512 350.3 512 368C512 385.7 497.7 400 480 400C462.3 400 448 385.7 448 368z"/></svg>
+                                </span>
+    
+                                <span id="modal-taxi-category-delivery">
+                                    <svg width="30px" height="30px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="#01ae50"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Layer_2" data-name="Layer 2"> <g id="invisible_box" data-name="invisible box"> <rect width="48" height="48" fill="none"></rect> </g> <g id="Layer_7" data-name="Layer 7"> <path d="M35.8,11a3.2,3.2,0,0,0-2.2-1H32V8a2.9,2.9,0,0,0-3-3H5A2.9,2.9,0,0,0,2,8V35a2.9,2.9,0,0,0,3,3H7.3a7,7,0,0,0,13.4,0h6.6a7,7,0,0,0,13.4,0H43a2.9,2.9,0,0,0,3-3V22.2Zm-2.7,3,7.3,8H32V14ZM14,39a3,3,0,1,1,3-3A2.9,2.9,0,0,1,14,39Zm20,0a3,3,0,1,1,3-3A2.9,2.9,0,0,1,34,39Z"></path> </g> </g> </g></svg>
+                                </span>
+    
+                            </div>
+                        
+                        </div>
+                    </div>
+    
+                    <div class="modal-taxi-car-info">
+                        <div class="modal-taxi-car-photo">
+                            <img id="modal-taxi-car-photo" src="" width="140px">
+                        </div>
+
+                        <div class="modal-taxi-car-details">
+                            <img src="/static/images/logo.png">                            
+                        </div>
+                    </div>
+
+                    <div class="new-notification-message-for-taxi" style="display: flex;">
+                        <b><i class="fa-solid fa-circle-check"></i></i>Sürücü təsdiqlənib</b>
+                        <p>Sürücü və avtomobil məlumatları yoxlanılıb.</p>
+                    </div>
+
+                    <div class="order-taxi-progress-container state-driving">
+                        <div class="order-taxi-progress-vertical">
+                            
+                            <!-- Такси (слева) -->
+                            <div class="order-taxi-progress-item taxi-side">
+                                <div class="order-taxi-progress-content">
+                                    <div class="order-taxi-progress-title">
+                                        <svg style="margin-right: 7px;" width="16px" height="16px" viewBox="0 -4 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0_503_4502)"> <rect width="28" height="20" rx="2" fill="white"></rect> <mask id="mask0_503_4502" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="28" height="20"> <rect width="28" height="20" rx="2" fill="white"></rect> </mask> <g mask="url(#mask0_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 6.66667H28V0H0V6.66667Z" fill="#24AAD5"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 20H28V13.3333H0V20Z" fill="#21BF75"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M0 13.3333H28V6.66666H0V13.3333Z" fill="#ED1845"></path> <g filter="url(#filter0_d_503_4502)"> <path fill-rule="evenodd" clip-rule="evenodd" d="M14 12C14.4113 12 14.7936 11.8759 15.1114 11.663C15.0747 11.6654 15.0376 11.6666 15.0002 11.6666C14.0797 11.6666 13.3335 10.9205 13.3335 9.99998C13.3335 9.0795 14.0797 8.33331 15.0002 8.33331C15.0375 8.33331 15.0746 8.33454 15.1114 8.33696C14.7935 8.12413 14.4113 8 14 8C12.8954 8 12 8.89543 12 10C12 11.1046 12.8954 12 14 12ZM15.9998 9.99998C15.9998 10.3682 15.7014 10.6666 15.3332 10.6666C14.965 10.6666 14.6665 10.3682 14.6665 9.99998C14.6665 9.63179 14.965 9.33331 15.3332 9.33331C15.7014 9.33331 15.9998 9.63179 15.9998 9.99998Z" fill="white"></path> </g> </g> </g> <defs> <filter id="filter0_d_503_4502" x="12" y="8" width="3.99988" height="5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"> <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood> <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix> <feOffset dy="1"></feOffset> <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"></feColorMatrix> <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_503_4502"></feBlend> <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_503_4502" result="shape"></feBlend> </filter> <clipPath id="clip0_503_4502"> <rect width="28" height="20" rx="2" fill="white"></rect> </clipPath> </defs> </g></svg>
+                                        <span id="modal-taxi-car-number-client"></span>
+                                    </div>
+                                    <div class="order-taxi-progress-description" id="taxi-car-info">
+                                        <svg fill="#000000" style="margin-right: 7px;" width="18px" height="18px" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#4e4d4d" d="M28,13h1c0.6,0,1-0.4,1-1s-0.4-1-1-1h-2.8L25,8c-0.8-1.8-2.6-3-4.6-3h-8.7C9.6,5,7.8,6.2,7,8l-1.3,3H3c-0.6,0-1,0.4-1,1 s0.4,1,1,1h1c-1.2,0.9-2,2.4-2,4v4c0,0.9,0.4,1.7,1,2.2V25c0,1.7,1.3,3,3,3h2c1.7,0,3-1.3,3-3v-1h10v1c0,1.7,1.3,3,3,3h2 c1.7,0,3-1.3,3-3v-1.8c0.6-0.5,1-1.3,1-2.2v-4C30,15.4,29.2,13.9,28,13z M27,18c0,0.6-0.4,1-1,1h-3c-0.6,0-1-0.4-1-1s0.4-1,1-1h3 C26.6,17,27,17.4,27,18z M6,17h3c0.6,0,1,0.4,1,1s-0.4,1-1,1H6c-0.6,0-1-0.4-1-1S5.4,17,6,17z M10.4,22l1.2-2.3 c0.5-1,1.5-1.7,2.7-1.7h3.5c1.1,0,2.2,0.6,2.7,1.7l1.2,2.3H10.4z M8.9,8.8C9.4,7.7,10.4,7,11.6,7h8.7c1.2,0,2.3,0.7,2.8,1.8l1.4,3.2 h-17L8.9,8.8z"></path> </g></svg>
+                                        <div id="modal-taxi-car-model-client"></div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                            <!-- Стрелка -->
+                            <div class="order-taxi-progress-arrow">
+                                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                                    <path d="M4 12H20M20 12L16 8M20 12L16 16" stroke="#01ae50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </div>
+
+                            <!-- Клиент (справа) -->
+                            <div class="order-taxi-progress-item">
+                                <div class="order-taxi-progress-content" style="text-align: right;">
+                                    <div class="order-taxi-progress-title">Gözləmə vaxtı</div>
+                                    <!-- <div class="order-taxi-progress-description">Gözləmə vaxtı</div> -->
+                                    <div class="order-taxi-progress-time" id="client-taxi-go-time-order-client">0 dəq</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="eta-card">
+                        <div class="road">
+                            <div class="pin-start">
+                                <div class="pin start" title="Вы">
+                                    <i class="fas fa-taxi"></i>
+                                </div>
+                            </div>
+    
+                            <div style="display: flex;align-items: center;justify-content: center;gap: 17px;">
+                                <b id="client-taxi-go-distance">0 km</b>
+                                <svg style="opacity: 0.5;" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M20 12L16 8M20 12L16 16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                <b id="client-taxi-go-time">0 dəq</b>
+                            </div>
+                            
+                            <div class="pin-finish">
+                                <div class="pin finish" title="Пункт назначения">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="eta-info">
+                            <div class="additional-item">
+                                <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9.09557 20.7929L11.9274 14.6574C11.9505 14.6073 11.962 14.5822 11.978 14.5744C11.9919 14.5676 12.0081 14.5676 12.022 14.5744C12.038 14.5822 12.0495 14.6073 12.0726 14.6574L14.9044 20.7929C14.9337 20.8564 14.9484 20.8882 14.9425 20.9067C14.9374 20.9227 14.9247 20.9351 14.9085 20.9396C14.8899 20.9449 14.8586 20.9293 14.796 20.898L12.0358 19.5179L12.0358 19.5179C12.0227 19.5113 12.0161 19.508 12.0092 19.5068C12.0031 19.5056 11.9969 19.5056 11.9908 19.5068C11.9839 19.508 11.9773 19.5113 11.9642 19.5179L11.9642 19.5179L9.20399 20.898C9.14142 20.9293 9.11014 20.9449 9.09149 20.9396C9.07533 20.9351 9.06256 20.9227 9.05748 20.9067C9.0516 20.8882 9.06626 20.8564 9.09557 20.7929Z" stroke="#33363F" stroke-width="2" stroke-linecap="round"></path> <path d="M4 18L7 4" stroke="#33363F" stroke-width="2" stroke-linecap="round"></path> <path d="M20 18L17 4" stroke="#33363F" stroke-width="2" stroke-linecap="round"></path> <path d="M12 11L12 9" stroke="#33363F" stroke-width="2" stroke-linecap="round"></path> <path d="M12 6L12 4" stroke="#33363F" stroke-width="2" stroke-linecap="round"></path> </g></svg>
+                                <b>46.1 km</b>
+                            </div>
+                            <div class="additional-item">
+                                <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="9" stroke="#000000" stroke-width="2"></circle> <path d="M16.5 12H12.25C12.1119 12 12 11.8881 12 11.75V8.5" stroke="#000000" stroke-width="2" stroke-linecap="round"></path> </g></svg>
+                                <b>43 dəq</b>
+                            </div>
+                            <div style="display: flex;align-items: center;gap: 7px;justify-content: center;">
+                                <svg width="27px" height="27px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#03af50"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M951.87 253.86c0-82.18-110.05-144.14-256-144.14s-256 61.96-256 144.14c0 0.73 0.16 1.42 0.18 2.14h-0.18v109.71h73.14v-9.06c45.77 25.81 109.81 41.33 182.86 41.33 67.39 0 126.93-13.33 171.71-35.64 6.94 7.18 11.15 14.32 11.15 20.58 0 28.25-72.93 70.98-182.86 70.98h-73.12v73.14h73.12c67.4 0 126.96-13.33 171.74-35.65 6.95 7.17 11.11 14.31 11.11 20.6 0 28.27-72.93 71-182.86 71l-25.89 0.12c-15.91 0.14-31.32 0.29-46.34-0.11l-1.79 73.11c8.04 0.2 16.18 0.27 24.48 0.27 7.93 0 16-0.05 24.2-0.12l25.34-0.12c67.44 0 127.02-13.35 171.81-35.69 6.97 7.23 11.04 14.41 11.04 20.62 0 28.27-72.93 71-182.86 71h-73.12v73.14h73.12c67.44 0 127.01-13.35 171.81-35.69 6.98 7.22 11.05 14.4 11.05 20.62 0 28.27-72.93 71-182.86 71h-73.12v73.14h73.12c145.95 0 256-61.96 256-144.14 0-0.68-0.09-1.45-0.11-2.14h0.11V256h-0.18c0.03-0.72 0.2-1.42 0.2-2.14z m-438.86 0c0-28.27 72.93-71 182.86-71s182.86 42.73 182.86 71c0 28.25-72.93 70.98-182.86 70.98s-182.86-42.73-182.86-70.98z" fill="#03af50"></path><path d="M330.15 365.71c-145.95 0-256 61.96-256 144.14 0 0.73 0.16 1.42 0.18 2.14h-0.18v256c0 82.18 110.05 144.14 256 144.14s256-61.96 256-144.14V512h-0.18c0.02-0.72 0.18-1.42 0.18-2.14 0-82.18-110.05-144.15-256-144.15zM147.29 638.93c0-6.32 4.13-13.45 11.08-20.62 44.79 22.33 104.36 35.67 171.78 35.67 67.39 0 126.93-13.33 171.71-35.64 6.94 7.18 11.15 14.32 11.15 20.58 0 28.25-72.93 70.98-182.86 70.98s-182.86-42.72-182.86-70.97z m182.86-200.07c109.93 0 182.86 42.73 182.86 71 0 28.25-72.93 70.98-182.86 70.98s-182.86-42.73-182.86-70.98c0-28.27 72.93-71 182.86-71z m0 400.14c-109.93 0-182.86-42.73-182.86-71 0-6.29 4.17-13.43 11.11-20.6 44.79 22.32 104.34 35.66 171.75 35.66 67.4 0 126.96-13.33 171.74-35.65 6.95 7.17 11.11 14.31 11.11 20.6 0.01 28.26-72.92 70.99-182.85 70.99z" fill="#03af50cf"></path></g></svg>
+                                <b id="client-totla-price" style="font-family: &quot;Noto Sans&quot;, sans-serif;font-size: 21px;">0.00 ₼</b>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <div class="eta-actions">
+                        <button class="btn cancel" id="order-taxi-cancel-button">Bağla</button> 
+                        <!--  onclick="window.taxiApp.handleTaxiOrderConfirmation()" -->
+                        <button class="btn confirm" id="order-taxi-confirm-button"><span id="client-totla-price">0,00 ₼</span> • Təsdiq et</button>
+                    </div>
+                </div>
+
+                <!-- ПОДТВЕРЖДЕНИЕ ДЛЯ ТАКСИСТА -->
+                <div class="taxi-notification-block" id="taxi-notification-block" style="display: none;">
+                    <div class="new-notification-title">
+                        <div class="client-info">
+                            <i class="fas fa-user-circle"></i>
+                            
+                            <div class="client-info-text">
+                                <b id="notification-roud-client-name">Фамилия Имя</b>
+                                <div class="profile-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span id="notification-roud-client-rating">0.0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ПОДТВЕРЖДЕНИЕ -->
+                        <!-- <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <rect width="24" height="24" fill="white"></rect> <path fill-rule="evenodd" clip-rule="evenodd" d="M9.55879 3.6972C10.7552 2.02216 13.2447 2.02216 14.4412 3.6972L14.6317 3.96387C14.8422 4.25867 15.1958 4.41652 15.5558 4.37652L16.4048 4.28218C18.3156 4.06988 19.9301 5.68439 19.7178 7.59513L19.6235 8.44415C19.5835 8.8042 19.7413 9.15774 20.0361 9.36831L20.3028 9.55879C21.9778 10.7552 21.9778 13.2447 20.3028 14.4412L20.0361 14.6317C19.7413 14.8422 19.5835 15.1958 19.6235 15.5558L19.7178 16.4048C19.9301 18.3156 18.3156 19.9301 16.4048 19.7178L15.5558 19.6235C15.1958 19.5835 14.8422 19.7413 14.6317 20.0361L14.4412 20.3028C13.2447 21.9778 10.7553 21.9778 9.55879 20.3028L9.36831 20.0361C9.15774 19.7413 8.8042 19.5835 8.44414 19.6235L7.59513 19.7178C5.68439 19.9301 4.06988 18.3156 4.28218 16.4048L4.37652 15.5558C4.41652 15.1958 4.25867 14.8422 3.96387 14.6317L3.6972 14.4412C2.02216 13.2447 2.02216 10.7553 3.6972 9.55879L3.96387 9.36831C4.25867 9.15774 4.41652 8.8042 4.37652 8.44414L4.28218 7.59513C4.06988 5.68439 5.68439 4.06988 7.59513 4.28218L8.44415 4.37652C8.8042 4.41652 9.15774 4.25867 9.36831 3.96387L9.55879 3.6972ZM15.7071 9.29289C16.0976 9.68342 16.0976 10.3166 15.7071 10.7071L11.8882 14.526C11.3977 15.0166 10.6023 15.0166 10.1118 14.526L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929L11 12.5858L14.2929 9.29289C14.6834 8.90237 15.3166 8.90237 15.7071 9.29289Z" fill="#4897fe"></path> </g></svg> -->
+                        <div class="client-tag">
+                            <svg width="30px" height="30px" fill="#01ae50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M320 312C386.3 312 440 258.3 440 192C440 125.7 386.3 72 320 72C253.7 72 200 125.7 200 192C200 258.3 253.7 312 320 312zM290.3 368C191.8 368 112 447.8 112 546.3C112 562.7 125.3 576 141.7 576L498.3 576C514.7 576 528 562.7 528 546.3C528 447.8 448.2 368 349.7 368L290.3 368z"/></svg>
+                        </div>
+
+                    </div>
+
+                    <div class="order-taxi-progress-container state-driving active">
+                        <div class="order-taxi-progress-vertical">
+
+                            <!-- Такси (слева) -->
+                            <div class="order-taxi-progress-item taxi-side">
+                                <div class="order-taxi-progress-content">
+                                    <div class="order-taxi-progress-title">Marşrut</div>
+                                    <div class="order-taxi-progress-description">Təxmini vaxt və məsafə</div>
+                                    <div class="order-taxi-progress-time" style="display: flex;justify-content: flex-start;gap: 7px;align-items: center;">
+                                        <div id="notification-roud-distance">0.0 km</div>
+                                        <i class="fa-solid fa-caret-right" style="animation: none; font-size: 11px; color: #0000005c;"></i>
+                                        <div id="notification-roud-time">0 dəq</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Стрелка -->
+                            <div class="order-taxi-progress-arrow">
+                                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                                    <path d="M4 12H20M20 12L16 8M20 12L16 16" stroke="#01ae50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </div>
+
+                            <!-- Клиент (справа) -->
+                            <div class="order-taxi-progress-item">
+                                <div class="order-taxi-progress-content" style="text-align: right;">
+                                    <div class="order-taxi-progress-title">Müştəriniz</div>
+                                    <div class="order-taxi-progress-description">Gözləmə vaxtı</div>
+                                    <div class="order-taxi-progress-time" id="client-taxi-go-time-order-taxi">0 dəq</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-taxi-end-adderss" style="font-size: 14px;margin-bottom: 15px; background: #f6f6f6;border-radius: 10px;padding: 10px;font-weight: 500;">—</div>
+
+                    <div class="new-notification-content">
+                        <div class="mini-map" id="mini-map">
+                            <div class="mini-map-loadin"></div>
+                        </div>
+                        <!-- <div class="order-info"> -->
+                            <!-- <div class="order-detail">
+                                <i class="fa-regular fa-clock"></i>
+                                <div class="detail-value" id="notification-roud-time">0 dəq</div>
+                                <div class="detail-label">Vaxt</div>
+                            </div>
+                            <div class="order-detail">
+                                <i class="fa-regular fa-money-bill-1"></i>
+                                <div class="detail-value" >0.00₼</div>
+                                <div class="detail-label">Qiymət</div>
+                            </div>
+                            <div class="order-detail">
+                                <i class="fa-regular fa-map"></i>
+                                <div class="detail-value" id="notification-roud-distance">0.0 km</div>
+                                <div class="detail-label">Məsafə</div>
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <div class="new-notification-footer">
+                        <div class="new-notification-button" id="allow-taxi-order-button">
+                           
+                            <span class="notification-roud-text-for-button" style="display: flex;gap: 5px; font-weight: 400;">
+                                <div id="notification-roud-price" style="font-weight: 600;"></div> 
+                                • Qəbul edin
+                            </span>
+
+                            <div class="progress-bar"></div>
+                        </div>
+
+                        <div class="new-notification-message-for-taxi" id="new-notification-message-text-block" style="display: none;">
+                            <b><i class="fa-solid fa-circle-info" ></i>Müştəridən cavab gözləyirik</b>
+                            <p>Müştəridən sifarişin təsdiqini gözləyirik. Əgər gözləmək istəmirsinizsə, sifarişi ləğv edə bilərsiniz.</p>
+                        </div>
+                        
+                        <div class="new-notification-button cancel" id="decline-taxi-order-button" style="display: none; background: #292929;">
+                            <span>Bağla</span> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Onboarding (первый запуск) -->
+    <div id="ji-onboarding" class="ji-onboarding" hidden aria-hidden="true">
+        <div class="ji-onb-backdrop" data-onb-close="1" aria-hidden="true"></div>
+        <div class="ji-onb-sheet" role="dialog" aria-modal="true" aria-label="Добро пожаловать">
+            <span class="ji-onb-sheet-span">JI TAKSI <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="#00b2ff" style="width: 20px; height: 20px;"><title xmlns="" fill="#00b2ff">verified-rounded</title><path fill="#00b2ff" d="M10.95 12.7L9.5 11.275Q9.225 11 8.813 11t-.713.3q-.275.275-.275.7t.275.7l2.15 2.15q.3.3.7.3t.7-.3l4.25-4.25q.3-.3.287-.7t-.287-.7q-.3-.3-.712-.312t-.713.287zm-2.8 9.05L6.7 19.3l-2.75-.6q-.375-.075-.6-.387t-.175-.688L3.45 14.8l-1.875-2.15q-.25-.275-.25-.65t.25-.65L3.45 9.2l-.275-2.825q-.05-.375.175-.688t.6-.387l2.75-.6l1.45-2.45q.2-.325.55-.438t.7.038l2.6 1.1l2.6-1.1q.35-.15.7-.038t.55.438L17.3 4.7l2.75.6q.375.075.6.388t.175.687L20.55 9.2l1.875 2.15q.25.275.25.65t-.25.65L20.55 14.8l.275 2.825q.05.375-.175.688t-.6.387l-2.75.6l-1.45 2.45q-.2.325-.55.438t-.7-.038l-2.6-1.1l-2.6 1.1q-.35.15-.7.038t-.55-.438"></path></svg> </span>
+            
+            <div class="ji-onb-viewport">
+                <div class="ji-onb-track" id="ji-onb-track"></div>
+            </div>
+            <div class="ji-onb-footer">
+                <div class="ji-onb-dots" id="ji-onb-dots" aria-label="Прогресс"></div>
+                <div class="ji-onb-actions">
+                    <button type="button" class="ji-onb-btn ji-onb-btn--ghost" id="ji-onb-prev" disabled>
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Назад
+                    </button>
+                    <button type="button" class="ji-onb-btn ji-onb-btn--primary" id="ji-onb-next">
+                        <i class="fa-solid fa-arrow-right-long"></i>
+                        Далее
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-rotate@0.2.8/dist/leaflet-rotate.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="/static/js/leaflet.rotatedMarker.js?v={{ static_v }}"></script>
+    <script src="/static/js/tripEnums.js?v={{ static_v }}"></script>
+    <script src="/static/js/trip-rating-shared.js?v={{ static_v }}"></script>
+    <script src="/static/js/app-toast.js?v={{ static_v }}"></script>
+    <script src="/static/js/map.js?v={{ static_v }}"></script>
+    <script src="/static/js/services.js?v={{ static_v }}"></script>
+    <script src="/static/js/services-adapter.js?v={{ static_v }}"></script>
+    <script src="/static/js/taxi.js?v={{ static_v }}"></script>
+    <script src="/static/js/controllers.js?v={{ static_v }}"></script>
+    <script src="/static/js/trip-offline-cache.js?v={{ static_v }}"></script>
+    <script src="/static/js/pwa.js?v={{ static_v }}"></script>
+    <script src="/static/js/main.js?v={{ static_v }}"></script>
+    <script src="/static/js/registration-client.js?v={{ static_v }}"></script>
+    <script src="/static/js/registration-taxi.js?v={{ static_v }}"></script>
+    <script src="/static/js/login.js?v={{ static_v }}"></script>
+
+
+
+</body>
+</html>
