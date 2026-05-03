@@ -1,0 +1,3499 @@
+{
+  "radars": {
+    "275": {
+      "coordinates": [
+        40.3945126,
+        49.9349402
+      ],
+      "speedLimit": 60
+    },
+    "277": {
+      "coordinates": [
+        40.4691681,
+        49.7405734
+      ],
+      "speedLimit": 90
+    },
+    "278": {
+      "coordinates": [
+        40.4691471,
+        49.7403671
+      ],
+      "speedLimit": 90
+    },
+    "279": {
+      "coordinates": [
+        40.434402,
+        49.9293451
+      ],
+      "speedLimit": 90
+    },
+    "280": {
+      "coordinates": [
+        40.434344,
+        49.929587
+      ],
+      "speedLimit": 90
+    },
+    "281": {
+      "coordinates": [
+        40.4399021,
+        49.9395637
+      ],
+      "speedLimit": 90
+    },
+    "282": {
+      "coordinates": [
+        40.4397357,
+        49.9395831
+      ],
+      "speedLimit": 90
+    },
+    "283": {
+      "coordinates": [
+        40.40724,
+        49.835622
+      ],
+      "speedLimit": 60
+    },
+    "285": {
+      "coordinates": [
+        40.4219718,
+        49.8713049
+      ],
+      "speedLimit": 90
+    },
+    "286": {
+      "coordinates": [
+        40.5807691,
+        48.3994943
+      ],
+      "speedLimit": 60
+    },
+    "288": {
+      "coordinates": [
+        40.521674,
+        50.0340408
+      ],
+      "speedLimit": 60
+    },
+    "290": {
+      "coordinates": [
+        40.3983761,
+        49.8267352
+      ],
+      "speedLimit": 60
+    },
+    "291": {
+      "coordinates": [
+        40.4185407,
+        49.817529
+      ],
+      "speedLimit": 60
+    },
+    "293": {
+      "coordinates": [
+        40.4140893,
+        49.9019125
+      ],
+      "speedLimit": 70
+    },
+    "295": {
+      "coordinates": [
+        40.5048624,
+        49.9732866
+      ],
+      "speedLimit": 50
+    },
+    "297": {
+      "coordinates": [
+        40.4147809,
+        49.9244702
+      ],
+      "speedLimit": 60
+    },
+    "299": {
+      "coordinates": [
+        40.4122925,
+        49.9583229
+      ],
+      "speedLimit": 60
+    },
+    "301": {
+      "coordinates": [
+        40.4683351,
+        49.9453418
+      ],
+      "speedLimit": 50
+    },
+    "302": {
+      "coordinates": [
+        40.4683229,
+        49.9455296
+      ],
+      "speedLimit": 50
+    },
+    "303": {
+      "coordinates": [
+        40.4197874,
+        49.9239187
+      ],
+      "speedLimit": 60
+    },
+    "304": {
+      "coordinates": [
+        40.4195881,
+        49.9238149
+      ],
+      "speedLimit": 60
+    },
+    "305": {
+      "coordinates": [
+        40.3952867,
+        49.8338472
+      ],
+      "speedLimit": 60
+    },
+    "307": {
+      "coordinates": [
+        40.4006661,
+        49.810337
+      ],
+      "speedLimit": 80
+    },
+    "309": {
+      "coordinates": [
+        40.393778,
+        49.846416
+      ],
+      "speedLimit": 60
+    },
+    "311": {
+      "coordinates": [
+        40.4905961,
+        49.9547654
+      ],
+      "speedLimit": 50
+    },
+    "313": {
+      "coordinates": [
+        40.4306457,
+        49.7852584
+      ],
+      "speedLimit": 60
+    },
+    "315": {
+      "coordinates": [
+        40.4059474,
+        49.8418196
+      ],
+      "speedLimit": 60
+    },
+    "316": {
+      "coordinates": [
+        40.4063033,
+        49.8427944
+      ],
+      "speedLimit": 60
+    },
+    "317": {
+      "coordinates": [
+        40.4395135,
+        49.9539277
+      ],
+      "speedLimit": 90
+    },
+    "318": {
+      "coordinates": [
+        40.4397076,
+        49.9539259
+      ],
+      "speedLimit": 90
+    },
+    "319": {
+      "coordinates": [
+        40.4411689,
+        50.0100749
+      ],
+      "speedLimit": 90
+    },
+    "320": {
+      "coordinates": [
+        40.441351,
+        50.0101534
+      ],
+      "speedLimit": 90
+    },
+    "321": {
+      "coordinates": [
+        40.4128913,
+        49.8468461
+      ],
+      "speedLimit": 60
+    },
+    "322": {
+      "coordinates": [
+        40.441669,
+        49.7857675
+      ],
+      "speedLimit": 60
+    },
+    "324": {
+      "coordinates": [
+        40.3942974,
+        49.8353079
+      ],
+      "speedLimit": 60
+    },
+    "325": {
+      "coordinates": [
+        40.3941569,
+        49.8353228
+      ],
+      "speedLimit": 60
+    },
+    "326": {
+      "coordinates": [
+        40.5673018,
+        49.7974612
+      ],
+      "speedLimit": 60
+    },
+    "328": {
+      "coordinates": [
+        40.473622,
+        49.83792
+      ],
+      "speedLimit": 60
+    },
+    "330": {
+      "coordinates": [
+        40.4720294,
+        49.8361897
+      ],
+      "speedLimit": 60
+    },
+    "332": {
+      "coordinates": [
+        40.420381,
+        49.942343
+      ],
+      "speedLimit": 60
+    },
+    "333": {
+      "coordinates": [
+        40.4153245,
+        49.9478408
+      ],
+      "speedLimit": 60
+    },
+    "334": {
+      "coordinates": [
+        40.411115,
+        49.846726
+      ],
+      "speedLimit": 60
+    },
+    "335": {
+      "coordinates": [
+        40.4432366,
+        50.046036
+      ],
+      "speedLimit": 90
+    },
+    "336": {
+      "coordinates": [
+        40.443394,
+        50.0459
+      ],
+      "speedLimit": 90
+    },
+    "337": {
+      "coordinates": [
+        40.405269,
+        49.8024538
+      ],
+      "speedLimit": 60
+    },
+    "339": {
+      "coordinates": [
+        40.4108331,
+        49.9242566
+      ],
+      "speedLimit": 50
+    },
+    "340": {
+      "coordinates": [
+        40.4109084,
+        49.9244747
+      ],
+      "speedLimit": 50
+    },
+    "341": {
+      "coordinates": [
+        40.3952282,
+        49.78804
+      ],
+      "speedLimit": 60
+    },
+    "343": {
+      "coordinates": [
+        40.4891077,
+        49.8550526
+      ],
+      "speedLimit": 50
+    },
+    "344": {
+      "coordinates": [
+        40.4892036,
+        49.8549274
+      ],
+      "speedLimit": 50
+    },
+    "345": {
+      "coordinates": [
+        40.525155,
+        49.790314
+      ],
+      "speedLimit": 60
+    },
+    "347": {
+      "coordinates": [
+        40.39455,
+        49.86178
+      ],
+      "speedLimit": 60
+    },
+    "348": {
+      "coordinates": [
+        40.4354255,
+        50.0587644
+      ],
+      "speedLimit": 110
+    },
+    "349": {
+      "coordinates": [
+        40.4354968,
+        50.0589287
+      ],
+      "speedLimit": 110
+    },
+    "350": {
+      "coordinates": [
+        40.4242477,
+        50.0609489
+      ],
+      "speedLimit": 110
+    },
+    "351": {
+      "coordinates": [
+        40.4242288,
+        50.0611455
+      ],
+      "speedLimit": 110
+    },
+    "352": {
+      "coordinates": [
+        40.4032796,
+        49.8072635
+      ],
+      "speedLimit": 60
+    },
+    "353": {
+      "coordinates": [
+        40.4033919,
+        49.8071328
+      ],
+      "speedLimit": 60
+    },
+    "354": {
+      "coordinates": [
+        40.3937373,
+        49.8156874
+      ],
+      "speedLimit": 60
+    },
+    "355": {
+      "coordinates": [
+        40.5299791,
+        49.7132461
+      ],
+      "speedLimit": 60
+    },
+    "357": {
+      "coordinates": [
+        40.458348,
+        49.756015
+      ],
+      "speedLimit": 60
+    },
+    "359": {
+      "coordinates": [
+        40.51192,
+        49.75369
+      ],
+      "speedLimit": 60
+    },
+    "361": {
+      "coordinates": [
+        40.5879068,
+        50.0440446
+      ],
+      "speedLimit": 90
+    },
+    "363": {
+      "coordinates": [
+        40.5807436,
+        49.9747911
+      ],
+      "speedLimit": 70
+    },
+    "365": {
+      "coordinates": [
+        40.5697086,
+        49.950859
+      ],
+      "speedLimit": 70
+    },
+    "367": {
+      "coordinates": [
+        40.5634391,
+        49.9288487
+      ],
+      "speedLimit": 70
+    },
+    "368": {
+      "coordinates": [
+        40.5635718,
+        49.9287772
+      ],
+      "speedLimit": 70
+    },
+    "369": {
+      "coordinates": [
+        40.5569096,
+        49.9073458
+      ],
+      "speedLimit": 90
+    },
+    "371": {
+      "coordinates": [
+        40.402836,
+        49.7919337
+      ],
+      "speedLimit": 90
+    },
+    "372": {
+      "coordinates": [
+        40.4029482,
+        49.7916905
+      ],
+      "speedLimit": 100
+    },
+    "373": {
+      "coordinates": [
+        40.50734,
+        49.94362
+      ],
+      "speedLimit": 50
+    },
+    "375": {
+      "coordinates": [
+        40.4546368,
+        50.0525928
+      ],
+      "speedLimit": 60
+    },
+    "376": {
+      "coordinates": [
+        40.454704,
+        50.052843
+      ],
+      "speedLimit": 60
+    },
+    "377": {
+      "coordinates": [
+        40.4523678,
+        50.0535778
+      ],
+      "speedLimit": 60
+    },
+    "378": {
+      "coordinates": [
+        40.4250855,
+        49.8789188
+      ],
+      "speedLimit": 70
+    },
+    "379": {
+      "coordinates": [
+        40.4253249,
+        49.8787613
+      ],
+      "speedLimit": 70
+    },
+    "380": {
+      "coordinates": [
+        40.4255765,
+        49.908899
+      ],
+      "speedLimit": 70
+    },
+    "381": {
+      "coordinates": [
+        40.4257832,
+        49.9089077
+      ],
+      "speedLimit": 70
+    },
+    "382": {
+      "coordinates": [
+        40.4116563,
+        49.8399903
+      ],
+      "speedLimit": 70
+    },
+    "383": {
+      "coordinates": [
+        40.4118054,
+        49.8399776
+      ],
+      "speedLimit": 70
+    },
+    "384": {
+      "coordinates": [
+        40.4396262,
+        49.8537947
+      ],
+      "speedLimit": 60
+    },
+    "386": {
+      "coordinates": [
+        40.3975135,
+        49.8929514
+      ],
+      "speedLimit": 60
+    },
+    "388": {
+      "coordinates": [
+        40.4141495,
+        49.8698053
+      ],
+      "speedLimit": 60
+    },
+    "390": {
+      "coordinates": [
+        40.5596914,
+        49.8892054
+      ],
+      "speedLimit": 40
+    },
+    "392": {
+      "coordinates": [
+        40.586586,
+        49.989469
+      ],
+      "speedLimit": 60
+    },
+    "394": {
+      "coordinates": [
+        40.5232018,
+        49.6875339
+      ],
+      "speedLimit": 60
+    },
+    "395": {
+      "coordinates": [
+        40.5321382,
+        48.8976465
+      ],
+      "speedLimit": 60
+    },
+    "396": {
+      "coordinates": [
+        40.4385073,
+        49.7770401
+      ],
+      "speedLimit": 90
+    },
+    "397": {
+      "coordinates": [
+        40.4693001,
+        49.628379
+      ],
+      "speedLimit": 60
+    },
+    "398": {
+      "coordinates": [
+        40.4314734,
+        50.0221138
+      ],
+      "speedLimit": 60
+    },
+    "399": {
+      "coordinates": [
+        40.9416971,
+        49.2840219
+      ],
+      "speedLimit": 60
+    },
+    "401": {
+      "coordinates": [
+        40.4143482,
+        49.8516814
+      ],
+      "speedLimit": 70
+    },
+    "402": {
+      "coordinates": [
+        40.7572573,
+        48.2213132
+      ],
+      "speedLimit": 60
+    },
+    "404": {
+      "coordinates": [
+        40.995879,
+        47.813017
+      ],
+      "speedLimit": 60
+    },
+    "405": {
+      "coordinates": [
+        41.0014553,
+        47.8698999
+      ],
+      "speedLimit": 60
+    },
+    "407": {
+      "coordinates": [
+        41.8117382,
+        48.6407698
+      ],
+      "speedLimit": 60
+    },
+    "408": {
+      "coordinates": [
+        40.5634567,
+        50.0392792
+      ],
+      "speedLimit": 50
+    },
+    "409": {
+      "coordinates": [
+        40.440661,
+        49.9427205
+      ],
+      "speedLimit": 60
+    },
+    "410": {
+      "coordinates": [
+        40.4341388,
+        49.7829034
+      ],
+      "speedLimit": 90
+    },
+    "411": {
+      "coordinates": [
+        40.4340128,
+        49.7827111
+      ],
+      "speedLimit": 90
+    },
+    "412": {
+      "coordinates": [
+        40.4259915,
+        49.7930916
+      ],
+      "speedLimit": 90
+    },
+    "413": {
+      "coordinates": [
+        40.4260873,
+        49.7933363
+      ],
+      "speedLimit": 90
+    },
+    "414": {
+      "coordinates": [
+        40.5435392,
+        49.6624529
+      ],
+      "speedLimit": 60
+    },
+    "415": {
+      "coordinates": [
+        40.51995,
+        49.9365232
+      ],
+      "speedLimit": 50
+    },
+    "417": {
+      "coordinates": [
+        40.4107342,
+        49.7969199
+      ],
+      "speedLimit": 70
+    },
+    "418": {
+      "coordinates": [
+        40.46303,
+        49.74823
+      ],
+      "speedLimit": 90
+    },
+    "419": {
+      "coordinates": [
+        40.4629292,
+        49.7480618
+      ],
+      "speedLimit": 90
+    },
+    "420": {
+      "coordinates": [
+        40.4883825,
+        49.7200889
+      ],
+      "speedLimit": 90
+    },
+    "422": {
+      "coordinates": [
+        40.5063655,
+        49.7057017
+      ],
+      "speedLimit": 90
+    },
+    "423": {
+      "coordinates": [
+        40.509907,
+        49.702471
+      ],
+      "speedLimit": 90
+    },
+    "424": {
+      "coordinates": [
+        40.5819434,
+        49.5809845
+      ],
+      "speedLimit": 90
+    },
+    "426": {
+      "coordinates": [
+        40.6668638,
+        49.5158891
+      ],
+      "speedLimit": 90
+    },
+    "428": {
+      "coordinates": [
+        41.206283,
+        48.970532
+      ],
+      "speedLimit": 70
+    },
+    "429": {
+      "coordinates": [
+        40.5686789,
+        49.6319007
+      ],
+      "speedLimit": 60
+    },
+    "430": {
+      "coordinates": [
+        41.2351909,
+        48.9355962
+      ],
+      "speedLimit": 70
+    },
+    "432": {
+      "coordinates": [
+        40.7900881,
+        49.4149875
+      ],
+      "speedLimit": 90
+    },
+    "433": {
+      "coordinates": [
+        41.3790118,
+        48.5306333
+      ],
+      "speedLimit": 60
+    },
+    "435": {
+      "coordinates": [
+        40.6272,
+        49.54787
+      ],
+      "speedLimit": 60
+    },
+
+    "436": {
+      "coordinates": [
+        41.4300692,
+        48.4341888
+      ],
+      "speedLimit": 60
+    },
+
+    "437": {
+      "coordinates": [
+        41.3635137,
+        48.5798699
+      ],
+      "speedLimit": 60
+    },
+    "439": {
+      "coordinates": [
+        41.3645538,
+        48.5575444
+      ],
+      "speedLimit": 60
+    },
+    "441": {
+      "coordinates": [
+        41.3731008,
+        48.5390103
+      ],
+      "speedLimit": 60
+    },
+    "443": {
+      "coordinates": [
+        41.3701492,
+        48.553675
+      ],
+      "speedLimit": 60
+    },
+    "445": {
+      "coordinates": [
+        40.5195108,
+        49.6905625
+      ],
+      "speedLimit": 90
+    },
+    "447": {
+      "coordinates": [
+        41.2469816,
+        48.921206
+      ],
+      "speedLimit": 60
+    },
+    "448": {
+      "coordinates": [
+        41.2455212,
+        48.9229568
+      ],
+      "speedLimit": 90
+    },
+    "449": {
+      "coordinates": [
+        41.3115639,
+        48.8228296
+      ],
+      "speedLimit": 60
+    },
+    "451": {
+      "coordinates": [
+        41.2660372,
+        48.8937662
+      ],
+      "speedLimit": 60
+    },
+    "453": {
+      "coordinates": [
+        41.3520641,
+        48.6685627
+      ],
+      "speedLimit": 90
+    },
+    "455": {
+      "coordinates": [
+        41.3429361,
+        48.7529604
+      ],
+      "speedLimit": 60
+    },
+    "457": {
+      "coordinates": [
+        41.3540784,
+        48.6455857
+      ],
+      "speedLimit": 60
+    },
+    "459": {
+      "coordinates": [
+        41.3468279,
+        48.7255545
+      ],
+      "speedLimit": 60
+    },
+    "461": {
+      "coordinates": [
+        41.2933239,
+        48.8532142
+      ],
+      "speedLimit": 60
+    },
+    "463": {
+      "coordinates": [
+        41.398334,
+        48.5478606
+      ],
+      "speedLimit": 60
+    },
+    "465": {
+      "coordinates": [
+        41.4410896,
+        48.5658747
+      ],
+      "speedLimit": 60
+    },
+    "467": {
+      "coordinates": [
+        41.470392,
+        48.5654293
+      ],
+      "speedLimit": 90
+    },
+    "469": {
+      "coordinates": [
+        41.502624,
+        48.5425571
+      ],
+      "speedLimit": 90
+    },
+    "471": {
+      "coordinates": [
+        41.5265419,
+        48.5388712
+      ],
+      "speedLimit": 90
+    },
+    "473": {
+      "coordinates": [
+        41.5809844,
+        48.5296509
+      ],
+      "speedLimit": 60
+    },
+    "475": {
+      "coordinates": [
+        40.5974573,
+        48.6962218
+      ],
+      "speedLimit": 60
+    },
+    "476": {
+      "coordinates": [
+        40.4129542,
+        49.951319
+      ],
+      "speedLimit": 60
+    },
+    "477": {
+      "coordinates": [
+        40.5536376,
+        47.3764345
+      ],
+      "speedLimit": 90
+    },
+    "478": {
+      "coordinates": [
+        40.5537716,
+        47.3765581
+      ],
+      "speedLimit": 90
+    },
+    "479": {
+      "coordinates": [
+        40.5901246,
+        48.7077181
+      ],
+      "speedLimit": 60
+    },
+    "480": {
+      "coordinates": [
+        40.5900327,
+        48.7075602
+      ],
+      "speedLimit": 60
+    },
+    "481": {
+      "coordinates": [
+        40.6156989,
+        48.6643708
+      ],
+      "speedLimit": 60
+    },
+    "482": {
+      "coordinates": [
+        40.6156214,
+        48.6641716
+      ],
+      "speedLimit": 60
+    },
+    "483": {
+      "coordinates": [
+        40.637703,
+        48.604761
+      ],
+      "speedLimit": 90
+    },
+    "485": {
+      "coordinates": [
+        40.649137,
+        48.570972
+      ],
+      "speedLimit": 60
+    },
+    "487": {
+      "coordinates": [
+        40.5394315,
+        47.4198135
+      ],
+      "speedLimit": 70
+    },
+    "488": {
+      "coordinates": [
+        40.5396219,
+        47.4199495
+      ],
+      "speedLimit": 70
+    },
+    "489": {
+      "coordinates": [
+        40.5143708,
+        47.4987042
+      ],
+      "speedLimit": 90
+    },
+    "490": {
+      "coordinates": [
+        40.5144761,
+        47.4988235
+      ],
+      "speedLimit": 90
+    },
+    "491": {
+      "coordinates": [
+        40.4991226,
+        47.5670946
+      ],
+      "speedLimit": 90
+    },
+    "492": {
+      "coordinates": [
+        40.4992669,
+        47.5671536
+      ],
+      "speedLimit": 90
+    },
+    "493": {
+      "coordinates": [
+        40.4950871,
+        47.6633269
+      ],
+      "speedLimit": 90
+    },
+    "495": {
+      "coordinates": [
+        40.4944757,
+        47.7252528
+      ],
+      "speedLimit": 90
+    },
+    "497": {
+      "coordinates": [
+        40.482789,
+        47.7976952
+      ],
+      "speedLimit": 90
+    },
+    "499": {
+      "coordinates": [
+        40.4670583,
+        47.8431139
+      ],
+      "speedLimit": 90
+    },
+    "501": {
+      "coordinates": [
+        40.4494134,
+        47.8858054
+      ],
+      "speedLimit": 90
+    },
+    "503": {
+      "coordinates": [
+        40.4276336,
+        47.9390225
+      ],
+      "speedLimit": 90
+    },
+    "505": {
+      "coordinates": [
+        40.4075358,
+        47.988361
+      ],
+      "speedLimit": 110
+    },
+    "507": {
+      "coordinates": [
+        40.4691516,
+        49.6282843
+      ],
+      "speedLimit": 60
+    },
+    "508": {
+      "coordinates": [
+        40.6361798,
+        47.4505513
+      ],
+      "speedLimit": 60
+    },
+    "510": {
+      "coordinates": [
+        40.4614473,
+        49.6507144
+      ],
+      "speedLimit": 60
+    },
+    "512": {
+      "coordinates": [
+        40.4533764,
+        49.6772123
+      ],
+      "speedLimit": 60
+    },
+    "514": {
+      "coordinates": [
+        40.6374,
+        47.4883
+      ],
+      "speedLimit": 60
+    },
+    "516": {
+      "coordinates": [
+        40.6763429,
+        47.3576141
+      ],
+      "speedLimit": 90
+    },
+    "518": {
+      "coordinates": [
+        40.6447126,
+        47.5008548
+      ],
+      "speedLimit": 60
+    },
+    "520": {
+      "coordinates": [
+        40.6682938,
+        47.3792622
+      ],
+      "speedLimit": 90
+    },
+    "522": {
+      "coordinates": [
+        40.4373662,
+        49.7654456
+      ],
+      "speedLimit": 60
+    },
+    "524": {
+      "coordinates": [
+        40.4433016,
+        49.7217214
+      ],
+      "speedLimit": 60
+    },
+    "526": {
+      "coordinates": [
+        40.4469196,
+        49.7004784
+      ],
+      "speedLimit": 60
+    },
+    "528": {
+      "coordinates": [
+        40.4503004,
+        49.6881842
+      ],
+      "speedLimit": 60
+    },
+    "530": {
+      "coordinates": [
+        40.4581335,
+        49.6613945
+      ],
+      "speedLimit": 60
+    },
+    "532": {
+      "coordinates": [
+        40.4795537,
+        49.589525
+      ],
+      "speedLimit": 90
+    },
+    "534": {
+      "coordinates": [
+        40.4848021,
+        49.5597972
+      ],
+      "speedLimit": 110
+    },
+    "536": {
+      "coordinates": [
+        40.4938309,
+        49.499556
+      ],
+      "speedLimit": 90
+    },
+    "538": {
+      "coordinates": [
+        40.4853552,
+        49.4207024
+      ],
+      "speedLimit": 110
+    },
+    "540": {
+      "coordinates": [
+        40.4428057,
+        49.728568
+      ],
+      "speedLimit": 60
+    },
+    "542": {
+      "coordinates": [
+        40.4741346,
+        49.6140665
+      ],
+      "speedLimit": 60
+    },
+    "543": {
+      "coordinates": [
+        40.4741463,
+        49.6142578
+      ],
+      "speedLimit": 60
+    },
+    "544": {
+      "coordinates": [
+        40.4934546,
+        49.3694023
+      ],
+      "speedLimit": 110
+    },
+    "546": {
+      "coordinates": [
+        40.4992361,
+        49.2939623
+      ],
+      "speedLimit": 90
+    },
+    "548": {
+      "coordinates": [
+        40.4850408,
+        49.1868979
+      ],
+      "speedLimit": 110
+    },
+    "550": {
+      "coordinates": [
+        40.4761836,
+        49.1528014
+      ],
+      "speedLimit": 110
+    },
+    "552": {
+      "coordinates": [
+        40.4761707,
+        49.0867317
+      ],
+      "speedLimit": 110
+    },
+    "554": {
+      "coordinates": [
+        40.4938891,
+        49.0508605
+      ],
+      "speedLimit": 110
+    },
+    "556": {
+      "coordinates": [
+        40.5014082,
+        48.9719195
+      ],
+      "speedLimit": 110
+    },
+    "558": {
+      "coordinates": [
+        40.5304332,
+        48.9209569
+      ],
+      "speedLimit": 90
+    },
+    "559": {
+      "coordinates": [
+        40.5305354,
+        48.9210891
+      ],
+      "speedLimit": 90
+    },
+    "560": {
+      "coordinates": [
+        40.5238601,
+        48.8617369
+      ],
+      "speedLimit": 110
+    },
+    "562": {
+      "coordinates": [
+        40.5224958,
+        48.8112359
+      ],
+      "speedLimit": 110
+    },
+    "564": {
+      "coordinates": [
+        40.501917,
+        49.268707
+      ],
+      "speedLimit": 90
+    },
+    "566": {
+      "coordinates": [
+        40.5397067,
+        49.7828831
+      ],
+      "speedLimit": 60
+    },
+    "568": {
+      "coordinates": [
+        41.4422766,
+        48.7996488
+      ],
+      "speedLimit": 60
+    },
+    "570": {
+      "coordinates": [
+        41.278601,
+        48.9017127
+      ],
+      "speedLimit": 90
+    },
+    "572": {
+      "coordinates": [
+        41.3083507,
+        48.8750051
+      ],
+      "speedLimit": 90
+    },
+    "574": {
+      "coordinates": [
+        40.5264284,
+        49.932726
+      ],
+      "speedLimit": 50
+    },
+    "576": {
+      "coordinates": [
+        41.3631321,
+        48.8612389
+      ],
+      "speedLimit": 90
+    },
+    "578": {
+      "coordinates": [
+        41.379528,
+        48.853725
+      ],
+      "speedLimit": 90
+    },
+    "580": {
+      "coordinates": [
+        41.3928057,
+        48.8472575
+      ],
+      "speedLimit": 90
+    },
+    "582": {
+      "coordinates": [
+        41.4171725,
+        48.8227126
+      ],
+      "speedLimit": 90
+    },
+    "584": {
+      "coordinates": [
+        41.3753155,
+        48.4977821
+      ],
+      "speedLimit": 60
+    },
+    "586": {
+      "coordinates": [
+        41.4188486,
+        48.4490925
+      ],
+      "speedLimit": 60
+    },
+    "588": {
+      "coordinates": [
+        40.653993,
+        48.4997594
+      ],
+      "speedLimit": 90
+    },
+    "589": {
+      "coordinates": [
+        40.4209847,
+        49.7973961
+      ],
+      "speedLimit": 90
+    },
+    "590": {
+      "coordinates": [
+        40.6634116,
+        48.5255435
+      ],
+      "speedLimit": 60
+    },
+    "592": {
+      "coordinates": [
+        40.4613015,
+        49.6300543
+      ],
+      "speedLimit": 50
+    },
+    "594": {
+      "coordinates": [
+        40.4475752,
+        49.6201079
+      ],
+      "speedLimit": 70
+    },
+    "596": {
+      "coordinates": [
+        40.4882704,
+        49.6380785
+      ],
+      "speedLimit": 90
+    },
+    "598": {
+      "coordinates": [
+        40.5290741,
+        49.622032
+      ],
+      "speedLimit": 90
+    },
+    "600": {
+      "coordinates": [
+        40.9762359,
+        47.8597607
+      ],
+      "speedLimit": 60
+    },
+    "602": {
+      "coordinates": [
+        40.9608616,
+        47.8322322
+      ],
+      "speedLimit": 60
+    },
+    "604": {
+      "coordinates": [
+        40.6525492,
+        47.4967822
+      ],
+      "speedLimit": 60
+    },
+    "606": {
+      "coordinates": [
+        40.5595468,
+        49.7022582
+      ],
+      "speedLimit": 60
+    },
+    "607": {
+      "coordinates": [
+        40.5594095,
+        49.7022028
+      ],
+      "speedLimit": 60
+    },
+    "608": {
+      "coordinates": [
+        40.565786,
+        49.6868158
+      ],
+      "speedLimit": 60
+    },
+    "610": {
+      "coordinates": [
+        40.5767122,
+        49.6458378
+      ],
+      "speedLimit": 60
+    },
+    "612": {
+      "coordinates": [
+        40.5653018,
+        49.6988575
+      ],
+      "speedLimit": 60
+    },
+    "613": {
+      "coordinates": [
+        40.57086,
+        49.634707
+      ],
+      "speedLimit": 60
+    },
+    "615": {
+      "coordinates": [
+        40.579359,
+        49.667346
+      ],
+      "speedLimit": 60
+    },
+    "617": {
+      "coordinates": [
+        40.552624,
+        49.711638
+      ],
+      "speedLimit": 60
+    },
+    "619": {
+      "coordinates": [
+        40.5819647,
+        49.6891263
+      ],
+      "speedLimit": 60
+    },
+    "621": {
+      "coordinates": [
+        40.591228,
+        49.680945
+      ],
+      "speedLimit": 60
+    },
+    "623": {
+      "coordinates": [
+        40.583255,
+        49.659008
+      ],
+      "speedLimit": 60
+    },
+    "624": {
+      "coordinates": [
+        40.56402,
+        49.70965
+      ],
+      "speedLimit": 60
+    },
+    "626": {
+      "coordinates": [
+        40.6063385,
+        49.6478379
+      ],
+      "speedLimit": 60
+    },
+    "627": {
+      "coordinates": [
+        40.7899673,
+        49.414794
+      ],
+      "speedLimit": 90
+    },
+    "628": {
+      "coordinates": [
+        40.597411,
+        49.6751366
+      ],
+      "speedLimit": 60
+    },
+    "630": {
+      "coordinates": [
+        40.6231572,
+        49.5692376
+      ],
+      "speedLimit": 60
+    },
+    "632": {
+      "coordinates": [
+        40.5736036,
+        49.7279558
+      ],
+      "speedLimit": 60
+    },
+    "634": {
+      "coordinates": [
+        40.5776941,
+        49.6989373
+      ],
+      "speedLimit": 60
+    },
+    "636": {
+      "coordinates": [
+        40.5720483,
+        49.6909767
+      ],
+      "speedLimit": 60
+    },
+    "637": {
+      "coordinates": [
+        40.5717865,
+        49.6913522
+      ],
+      "speedLimit": 60
+    },
+    "638": {
+      "coordinates": [
+        41.3535,
+        48.47264
+      ],
+      "speedLimit": 60
+    },
+    "640": {
+      "coordinates": [
+        41.3409285,
+        48.541165
+      ],
+      "speedLimit": 60
+    },
+    "642": {
+      "coordinates": [
+        41.3640445,
+        48.5510685
+      ],
+      "speedLimit": 60
+    },
+    "644": {
+      "coordinates": [
+        41.3729667,
+        48.522118
+      ],
+      "speedLimit": 60
+    },
+    "646": {
+      "coordinates": [
+        41.390804,
+        48.4792625
+      ],
+      "speedLimit": 60
+    },
+    "648": {
+      "coordinates": [
+        41.432825,
+        48.4204554
+      ],
+      "speedLimit": 60
+    },
+    "650": {
+      "coordinates": [
+        41.4124159,
+        48.4060102
+      ],
+      "speedLimit": 60
+    },
+    "652": {
+      "coordinates": [
+        41.326319,
+        48.1459368
+      ],
+      "speedLimit": 40
+    },
+    "654": {
+      "coordinates": [
+        41.3265434,
+        48.1459353
+      ],
+      "speedLimit": 40
+    },
+    "656": {
+      "coordinates": [
+        41.4331163,
+        48.4470195
+      ],
+      "speedLimit": 60
+    },
+    "658": {
+      "coordinates": [
+        40.447945,
+        49.749397
+      ],
+      "speedLimit": 60
+    },
+    "660": {
+      "coordinates": [
+        41.229902,
+        48.9427095
+      ],
+      "speedLimit": 90
+    },
+    "661": {
+      "coordinates": [
+        40.7408187,
+        49.4553574
+      ],
+      "speedLimit": 90
+    },
+    "663": {
+      "coordinates": [
+        40.5811141,
+        50.0055814
+      ],
+      "speedLimit": 60
+    },
+    "665": {
+      "coordinates": [
+        41.331126,
+        48.8748821
+      ],
+      "speedLimit": 60
+    },
+    "667": {
+      "coordinates": [
+        40.5917856,
+        49.6581616
+      ],
+      "speedLimit": 60
+    },
+    "669": {
+      "coordinates": [
+        40.4334848,
+        47.9251831
+      ],
+      "speedLimit": 90
+    },
+    "670": {
+      "coordinates": [
+        41.3526968,
+        48.6775153
+      ],
+      "speedLimit": 60
+    },
+    "672": {
+      "coordinates": [
+        40.5100809,
+        49.7245385
+      ],
+      "speedLimit": 90
+    },
+    "673": {
+      "coordinates": [
+        40.509999,
+        49.724324
+      ],
+      "speedLimit": 90
+    },
+    "674": {
+      "coordinates": [
+        40.5213519,
+        49.7244517
+      ],
+      "speedLimit": 60
+    },
+    "676": {
+      "coordinates": [
+        40.5397063,
+        49.6680778
+      ],
+      "speedLimit": 60
+    },
+    "677": {
+      "coordinates": [
+        40.4073599,
+        49.9268316
+      ],
+      "speedLimit": 60
+    },
+    "679": {
+      "coordinates": [
+        40.4202712,
+        49.9171381
+      ],
+      "speedLimit": 60
+    },
+    "680": {
+      "coordinates": [
+        40.4544326,
+        49.9367482
+      ],
+      "speedLimit": 50
+    },
+    "684": {
+      "coordinates": [
+        40.5662192,
+        49.8898224
+      ],
+      "speedLimit": 50
+    },
+    "687": {
+      "coordinates": [
+        40.5788037,
+        50.0403648
+      ],
+      "speedLimit": 50
+    },
+    "689": {
+      "coordinates": [
+        40.5751612,
+        50.0411827
+      ],
+      "speedLimit": 50
+    },
+    "691": {
+      "coordinates": [
+        40.5722517,
+        50.0424847
+      ],
+      "speedLimit": 50
+    },
+    "693": {
+      "coordinates": [
+        40.569108,
+        50.0440945
+      ],
+      "speedLimit": 50
+    },
+    "695": {
+      "coordinates": [
+        40.4514537,
+        49.7639566
+      ],
+      "speedLimit": 90
+    },
+    "696": {
+      "coordinates": [
+        40.4513144,
+        49.7637742
+      ],
+      "speedLimit": 90
+    },
+    "697": {
+      "coordinates": [
+        41.49575,
+        48.76752
+      ],
+      "speedLimit": 90
+    },
+    "699": {
+      "coordinates": [
+        41.5194362,
+        48.7551144
+      ],
+      "speedLimit": 60
+    },
+    "701": {
+      "coordinates": [
+        41.5314241,
+        48.74072
+      ],
+      "speedLimit": 60
+    },
+    "703": {
+      "coordinates": [
+        40.6188488,
+        49.5482428
+      ],
+      "speedLimit": 90
+    },
+    "704": {
+      "coordinates": [
+        41.5620559,
+        48.7186595
+      ],
+      "speedLimit": 60
+    },
+    "705": {
+      "coordinates": [
+        41.5620881,
+        48.7184771
+      ],
+      "speedLimit": 60
+    },
+    "706": {
+      "coordinates": [
+        41.5859477,
+        48.7110764
+      ],
+      "speedLimit": 90
+    },
+    "708": {
+      "coordinates": [
+        41.6054839,
+        48.6959678
+      ],
+      "speedLimit": 60
+    },
+    "710": {
+      "coordinates": [
+        40.6529429,
+        48.550893
+      ],
+      "speedLimit": 90
+    },
+    "712": {
+      "coordinates": [
+        40.5904491,
+        48.3318607
+      ],
+      "speedLimit": 90
+    },
+    "714": {
+      "coordinates": [
+        40.6381552,
+        47.7417096
+      ],
+      "speedLimit": 60
+    },
+    "716": {
+      "coordinates": [
+        40.6027491,
+        48.2926644
+      ],
+      "speedLimit": 60
+    },
+    "718": {
+      "coordinates": [
+        40.6150327,
+        48.2650507
+      ],
+      "speedLimit": 90
+    },
+    "720": {
+      "coordinates": [
+        40.6261809,
+        48.2132135
+      ],
+      "speedLimit": 60
+    },
+    "722": {
+      "coordinates": [
+        40.6053455,
+        48.1634084
+      ],
+      "speedLimit": 90
+    },
+    "724": {
+      "coordinates": [
+        40.6064918,
+        48.1196386
+      ],
+      "speedLimit": 90
+    },
+    "726": {
+      "coordinates": [
+        40.6116617,
+        48.0485693
+      ],
+      "speedLimit": 90
+    },
+    "728": {
+      "coordinates": [
+        40.6190428,
+        48.1990459
+      ],
+      "speedLimit": 60
+    },
+    "730": {
+      "coordinates": [
+        40.61739,
+        47.98385
+      ],
+      "speedLimit": 90
+    },
+    "732": {
+      "coordinates": [
+        40.6320636,
+        47.8769714
+      ],
+      "speedLimit": 90
+    },
+    "734": {
+      "coordinates": [
+        40.6369835,
+        47.8439201
+      ],
+      "speedLimit": 90
+    },
+    "735": {
+      "coordinates": [
+        40.6368282,
+        47.8438664
+      ],
+      "speedLimit": 90
+    },
+    "736": {
+      "coordinates": [
+        40.64008,
+        47.78396
+      ],
+      "speedLimit": 60
+    },
+    "738": {
+      "coordinates": [
+        40.64688,
+        47.71729
+      ],
+      "speedLimit": 60
+    },
+    "739": {
+      "coordinates": [
+        40.6467492,
+        47.7171827
+      ],
+      "speedLimit": 60
+    },
+    "740": {
+      "coordinates": [
+        40.65468,
+        47.66722
+      ],
+      "speedLimit": 60
+    },
+    "742": {
+      "coordinates": [
+        40.63603,
+        47.58889
+      ],
+      "speedLimit": 60
+    },
+    "744": {
+      "coordinates": [
+        40.64091,
+        47.52553
+      ],
+      "speedLimit": 60
+    },
+    "746": {
+      "coordinates": [
+        40.4342649,
+        49.9566514
+      ],
+      "speedLimit": 60
+    },
+    "747": {
+      "coordinates": [
+        40.5498007,
+        49.9939874
+      ],
+      "speedLimit": 60
+    },
+    "749": {
+      "coordinates": [
+        40.3955043,
+        49.9604051
+      ],
+      "speedLimit": 60
+    },
+    "750": {
+      "coordinates": [
+        40.4022717,
+        49.8347748
+      ],
+      "speedLimit": 60
+    },
+    "752": {
+      "coordinates": [
+        40.3992249,
+        49.8668978
+      ],
+      "speedLimit": 60
+    },
+    "754": {
+      "coordinates": [
+        40.4630413,
+        49.8890488
+      ],
+      "speedLimit": 60
+    },
+    "756": {
+      "coordinates": [
+        40.4537732,
+        49.8427974
+      ],
+      "speedLimit": 60
+    },
+    "758": {
+      "coordinates": [
+        41.46422,
+        48.78444
+      ],
+      "speedLimit": 50
+    },
+    "759": {
+      "coordinates": [
+        40.432585,
+        49.781714
+      ],
+      "speedLimit": 60
+    },
+    "760": {
+      "coordinates": [
+        41.4607903,
+        48.7905196
+      ],
+      "speedLimit": 50
+    },
+    "761": {
+      "coordinates": [
+        41.4550644,
+        48.7921376
+      ],
+      "speedLimit": 50
+    },
+    "763": {
+      "coordinates": [
+        40.57594,
+        48.733634
+      ],
+      "speedLimit": 90
+    },
+    "764": {
+      "coordinates": [
+        40.5757627,
+        48.7334827
+      ],
+      "speedLimit": 90
+    },
+    "765": {
+      "coordinates": [
+        40.9420135,
+        49.2834606
+      ],
+      "speedLimit": 60
+    },
+    "766": {
+      "coordinates": [
+        40.5649736,
+        49.834751
+      ],
+      "speedLimit": 50
+    },
+    "768": {
+      "coordinates": [
+        40.5483484,
+        49.9026746
+      ],
+      "speedLimit": 50
+    },
+    "771": {
+      "coordinates": [
+        41.4512537,
+        48.7965866
+      ],
+      "speedLimit": 50
+    },
+    "772": {
+      "coordinates": [
+        41.4513021,
+        48.796372
+      ],
+      "speedLimit": 50
+    },
+    "773": {
+      "coordinates": [
+        41.2540479,
+        48.9111806
+      ],
+      "speedLimit": 60
+    },
+    "775": {
+      "coordinates": [
+        40.4138898,
+        49.9401995
+      ],
+      "speedLimit": 60
+    },
+    "776": {
+      "coordinates": [
+        41.3250502,
+        48.8754668
+      ],
+      "speedLimit": 60
+    },
+    "778": {
+      "coordinates": [
+        40.4918212,
+        49.2217306
+      ],
+      "speedLimit": 90
+    },
+    "779": {
+      "coordinates": [
+        40.6950973,
+        49.4927759
+      ],
+      "speedLimit": 90
+    },
+    "780": {
+      "coordinates": [
+        40.6949993,
+        49.492572
+      ],
+      "speedLimit": 90
+    },
+    "781": {
+      "coordinates": [
+        40.8238802,
+        49.3870429
+      ],
+      "speedLimit": 90
+    },
+    "782": {
+      "coordinates": [
+        40.823995,
+        49.38724
+      ],
+      "speedLimit": 90
+    },
+    "783": {
+      "coordinates": [
+        41.0706093,
+        47.3712134
+      ],
+      "speedLimit": 60
+    },
+    "785": {
+      "coordinates": [
+        41.0519853,
+        47.403735
+      ],
+      "speedLimit": 60
+    },
+    "787": {
+      "coordinates": [
+        40.9825769,
+        47.4810407
+      ],
+      "speedLimit": 60
+    },
+    "789": {
+      "coordinates": [
+        40.9387734,
+        47.601668
+      ],
+      "speedLimit": 60
+    },
+    "791": {
+      "coordinates": [
+        40.9293619,
+        47.7294868
+      ],
+      "speedLimit": 60
+    },
+    "793": {
+      "coordinates": [
+        40.9534302,
+        47.8906845
+      ],
+      "speedLimit": 60
+    },
+    "795": {
+      "coordinates": [
+        40.9186402,
+        48.0062205
+      ],
+      "speedLimit": 60
+    },
+    "797": {
+      "coordinates": [
+        40.8425255,
+        48.1447824
+      ],
+      "speedLimit": 60
+    },
+    "799": {
+      "coordinates": [
+        40.7711099,
+        48.1101855
+      ],
+      "speedLimit": 90
+    },
+    "801": {
+      "coordinates": [
+        40.7757248,
+        48.1965162
+      ],
+      "speedLimit": 90
+    },
+    "803": {
+      "coordinates": [
+        40.732031,
+        48.283105
+      ],
+      "speedLimit": 60
+    },
+    "805": {
+      "coordinates": [
+        40.7217404,
+        48.399506
+      ],
+      "speedLimit": 60
+    },
+    "807": {
+      "coordinates": [
+        40.6643227,
+        48.0388799
+      ],
+      "speedLimit": 60
+    },
+    "809": {
+      "coordinates": [
+        40.7084008,
+        48.0402824
+      ],
+      "speedLimit": 60
+    },
+    "811": {
+      "coordinates": [
+        40.9060956,
+        49.3196477
+      ],
+      "speedLimit": 90
+    },
+    "812": {
+      "coordinates": [
+        40.9059979,
+        49.3195082
+      ],
+      "speedLimit": 90
+    },
+    "813": {
+      "coordinates": [
+        40.4810792,
+        49.8747224
+      ],
+      "speedLimit": 60
+    },
+    "815": {
+      "coordinates": [
+        40.462427,
+        49.798494
+      ],
+      "speedLimit": 50
+    },
+    "817": {
+      "coordinates": [
+        40.422274,
+        49.778288
+      ],
+      "speedLimit": 60
+    },
+    "819": {
+      "coordinates": [
+        40.412109,
+        49.773039
+      ],
+      "speedLimit": 40
+    },
+    "821": {
+      "coordinates": [
+        40.454761,
+        49.815275
+      ],
+      "speedLimit": 50
+    },
+    "823": {
+      "coordinates": [
+        40.5240565,
+        50.023201
+      ],
+      "speedLimit": 50
+    },
+    "824": {
+      "coordinates": [
+        40.904317,
+        49.3212
+      ],
+      "speedLimit": 90
+    },
+    "825": {
+      "coordinates": [
+        40.9041949,
+        49.3210498
+      ],
+      "speedLimit": 90
+    },
+    "826": {
+      "coordinates": [
+        40.9605872,
+        49.2594554
+      ],
+      "speedLimit": 90
+    },
+    "828": {
+      "coordinates": [
+        40.971631,
+        49.243953
+      ],
+      "speedLimit": 70
+    },
+    "830": {
+      "coordinates": [
+        41.121126,
+        49.082145
+      ],
+      "speedLimit": 90
+    },
+    "831": {
+      "coordinates": [
+        41.1210854,
+        49.0819411
+      ],
+      "speedLimit": 90
+    },
+    "832": {
+      "coordinates": [
+        40.6187425,
+        49.5481033
+      ],
+      "speedLimit": 90
+    },
+    "833": {
+      "coordinates": [
+        40.4972912,
+        49.7263767
+      ],
+      "speedLimit": 90
+    },
+    "835": {
+      "coordinates": [
+        40.4883876,
+        49.7308399
+      ],
+      "speedLimit": 90
+    },
+    "836": {
+      "coordinates": [
+        40.4882565,
+        49.730636
+      ],
+      "speedLimit": 90
+    },
+    "837": {
+      "coordinates": [
+        40.580972,
+        48.3676224
+      ],
+      "speedLimit": 60
+    },
+    "839": {
+      "coordinates": [
+        40.6001859,
+        48.2979424
+      ],
+      "speedLimit": 60
+    },
+    "841": {
+      "coordinates": [
+        40.783166,
+        48.164261
+      ],
+      "speedLimit": 50
+    },
+    "843": {
+      "coordinates": [
+        41.4573974,
+        48.7946128
+      ],
+      "speedLimit": 50
+    },
+    "844": {
+      "coordinates": [
+        40.492177,
+        49.9544593
+      ],
+      "speedLimit": 60
+    },
+    "845": {
+      "coordinates": [
+        40.544818,
+        47.4026295
+      ],
+      "speedLimit": 90
+    },
+    "846": {
+      "coordinates": [
+        40.5445561,
+        47.4025329
+      ],
+      "speedLimit": 90
+    },
+    "847": {
+      "coordinates": [
+        40.7936401,
+        48.1590744
+      ],
+      "speedLimit": 50
+    },
+    "849": {
+      "coordinates": [
+        40.5230463,
+        49.6871048
+      ],
+      "speedLimit": 60
+    },
+    "850": {
+      "coordinates": [
+        40.5232428,
+        49.6872174
+      ],
+      "speedLimit": 60
+    },
+    "851": {
+      "coordinates": [
+        40.5319499,
+        48.8977216
+      ],
+      "speedLimit": 60
+    },
+    "852": {
+      "coordinates": [
+        40.4385811,
+        49.7763642
+      ],
+      "speedLimit": 90
+    },
+    "853": {
+      "coordinates": [
+        40.7573552,
+        48.2208144
+      ],
+      "speedLimit": 60
+    },
+    "854": {
+      "coordinates": [
+        41.6005337,
+        48.5177854
+      ],
+      "speedLimit": 60
+    },
+    "855": {
+      "coordinates": [
+        40.4325939,
+        49.8957221
+      ],
+      "speedLimit": 60
+    },
+    "857": {
+      "coordinates": [
+        40.577075,
+        49.626701
+      ],
+      "speedLimit": 90
+    },
+    "859": {
+      "coordinates": [
+        41.70245,
+        48.628524
+      ],
+      "speedLimit": 60
+    },
+    "862": {
+      "coordinates": [
+        40.4221967,
+        49.9199497
+      ],
+      "speedLimit": 60
+    },
+    "863": {
+      "coordinates": [
+        41.6715758,
+        48.7775536
+      ],
+      "speedLimit": 60
+    },
+    "865": {
+      "coordinates": [
+        41.7286734,
+        48.728618
+      ],
+      "speedLimit": 60
+    },
+    "867": {
+      "coordinates": [
+        40.6244358,
+        48.6405717
+      ],
+      "speedLimit": 60
+    },
+    "869": {
+      "coordinates": [
+        40.5690543,
+        49.8801127
+      ],
+      "speedLimit": 40
+    },
+    "871": {
+      "coordinates": [
+        41.4685042,
+        48.4876638
+      ],
+      "speedLimit": 70
+    },
+    "872": {
+      "coordinates": [
+        41.4701504,
+        48.4888923
+      ],
+      "speedLimit": 70
+    },
+    "873": {
+      "coordinates": [
+        41.3979566,
+        48.6556293
+      ],
+      "speedLimit": 60
+    },
+    "875": {
+      "coordinates": [
+        41.4027417,
+        48.3822094
+      ],
+      "speedLimit": 60
+    },
+    "877": {
+      "coordinates": [
+        40.3986699,
+        50.0000322
+      ],
+      "speedLimit": 60
+    },
+    "879": {
+      "coordinates": [
+        40.4276974,
+        50.0174862
+      ],
+      "speedLimit": 60
+    },
+    "881": {
+      "coordinates": [
+        40.420458,
+        50.0035979
+      ],
+      "speedLimit": 60
+    },
+    "882": {
+      "coordinates": [
+        40.498614,
+        49.9673451
+      ],
+      "speedLimit": 50
+    },
+    "883": {
+      "coordinates": [
+        40.4987205,
+        49.9675758
+      ],
+      "speedLimit": 50
+    },
+    "884": {
+      "coordinates": [
+        40.6541272,
+        49.5266766
+      ],
+      "speedLimit": 90
+    },
+    "886": {
+      "coordinates": [
+        41.4224058,
+        48.4280859
+      ],
+      "speedLimit": 60
+    },
+    "887": {
+      "coordinates": [
+        40.4739506,
+        49.9486527
+      ],
+      "speedLimit": 60
+    },
+    "888": {
+      "coordinates": [
+        40.4741308,
+        49.9486741
+      ],
+      "speedLimit": 60
+    },
+    "889": {
+      "coordinates": [
+        40.4462226,
+        49.8990207
+      ],
+      "speedLimit": 90
+    },
+    "891": {
+      "coordinates": [
+        40.4046864,
+        49.8853393
+      ],
+      "speedLimit": 70
+    },
+    "893": {
+      "coordinates": [
+        40.4934535,
+        49.9824081
+      ],
+      "speedLimit": 40
+    },
+    "895": {
+      "coordinates": [
+        40.4625606,
+        49.9071492
+      ],
+      "speedLimit": 90
+    },
+    "897": {
+      "coordinates": [
+        40.513939,
+        49.893415
+      ],
+      "speedLimit": 90
+    },
+    "899": {
+      "coordinates": [
+        40.5417016,
+        49.8942476
+      ],
+      "speedLimit": 90
+    },
+    "901": {
+      "coordinates": [
+        40.4139145,
+        49.9020823
+      ],
+      "speedLimit": 60
+    },
+    "902": {
+      "coordinates": [
+        40.4141795,
+        49.9017623
+      ],
+      "speedLimit": 60
+    },
+    "903": {
+      "coordinates": [
+        40.40556,
+        49.88627
+      ],
+      "speedLimit": 60
+    },
+    "904": {
+      "coordinates": [
+        40.405271,
+        49.886506
+      ],
+      "speedLimit": 60
+    },
+    "905": {
+      "coordinates": [
+        40.5724245,
+        49.6371998
+      ],
+      "speedLimit": 60
+    },
+    "906": {
+      "coordinates": [
+        40.572719,
+        49.6374251
+      ],
+      "speedLimit": 60
+    },
+    "907": {
+      "coordinates": [
+        40.5300503,
+        49.6793954
+      ],
+      "speedLimit": 90
+    },
+    "909": {
+      "coordinates": [
+        40.4001234,
+        49.7976669
+      ],
+      "speedLimit": 60
+    },
+    "910": {
+      "coordinates": [
+        40.4002382,
+        49.7975275
+      ],
+      "speedLimit": 60
+    },
+    "911": {
+      "coordinates": [
+        40.55079,
+        49.65084
+      ],
+      "speedLimit": 60
+    },
+    "912": {
+      "coordinates": [
+        40.5505855,
+        49.6508078
+      ],
+      "speedLimit": 60
+    },
+    "913": {
+      "coordinates": [
+        41.3234147,
+        48.8071221
+      ],
+      "speedLimit": 60
+    },
+    "914": {
+      "coordinates": [
+        41.3231802,
+        48.8072401
+      ],
+      "speedLimit": 60
+    },
+    "915": {
+      "coordinates": [
+        41.33751,
+        48.7701
+      ],
+      "speedLimit": 60
+    },
+    "916": {
+      "coordinates": [
+        41.3372675,
+        48.7703468
+      ],
+      "speedLimit": 60
+    },
+    "917": {
+      "coordinates": [
+        41.3246947,
+        48.8043807
+      ],
+      "speedLimit": 60
+    },
+    "918": {
+      "coordinates": [
+        41.3244845,
+        48.8045309
+      ],
+      "speedLimit": 60
+    },
+    "919": {
+      "coordinates": [
+        41.28194,
+        48.87022
+      ],
+      "speedLimit": 60
+    },
+    "920": {
+      "coordinates": [
+        41.2822232,
+        48.869984
+      ],
+      "speedLimit": 60
+    },
+    "921": {
+      "coordinates": [
+        41.19338,
+        48.98975
+      ],
+      "speedLimit": 70
+    },
+    "922": {
+      "coordinates": [
+        41.1931045,
+        48.9899539
+      ],
+      "speedLimit": 70
+    },
+    "923": {
+      "coordinates": [
+        41.35914,
+        48.60545
+      ],
+      "speedLimit": 90
+    },
+    "924": {
+      "coordinates": [
+        41.3589703,
+        48.605729
+      ],
+      "speedLimit": 90
+    },
+    "925": {
+      "coordinates": [
+        41.35505,
+        48.61844
+      ],
+      "speedLimit": 0
+    },
+    "926": {
+      "coordinates": [
+        41.35258,
+        48.65443
+      ],
+      "speedLimit": 90
+    },
+    "927": {
+      "coordinates": [
+        41.3523941,
+        48.6546338
+      ],
+      "speedLimit": 90
+    },
+    "928": {
+      "coordinates": [
+        41.35098,
+        48.65975
+      ],
+      "speedLimit": 0
+    },
+    "929": {
+      "coordinates": [
+        41.35041,
+        48.70411
+      ],
+      "speedLimit": 90
+    },
+    "930": {
+      "coordinates": [
+        41.3502483,
+        48.7044641
+      ],
+      "speedLimit": 90
+    },
+    "931": {
+      "coordinates": [
+        41.07223,
+        49.13543
+      ],
+      "speedLimit": 90
+    },
+    "932": {
+      "coordinates": [
+        41.0723599,
+        49.1360201
+      ],
+      "speedLimit": 90
+    },
+    "933": {
+      "coordinates": [
+        40.94814,
+        49.27696
+      ],
+      "speedLimit": 60
+    },
+    "934": {
+      "coordinates": [
+        40.9478472,
+        49.2770243
+      ],
+      "speedLimit": 60
+    },
+    "935": {
+      "coordinates": [
+        41.40186,
+        48.38044
+      ],
+      "speedLimit": 60
+    },
+    "936": {
+      "coordinates": [
+        41.4019488,
+        48.3808048
+      ],
+      "speedLimit": 60
+    },
+    "937": {
+      "coordinates": [
+        41.41393,
+        48.46438
+      ],
+      "speedLimit": 60
+    },
+    "938": {
+      "coordinates": [
+        41.4137524,
+        48.4646161
+      ],
+      "speedLimit": 60
+    },
+    "939": {
+      "coordinates": [
+        41.37136,
+        48.50654
+      ],
+      "speedLimit": 0
+    },
+    "940": {
+      "coordinates": [
+        41.42409,
+        48.43615
+      ],
+      "speedLimit": 0
+    },
+    "941": {
+      "coordinates": [
+        41.41735,
+        48.41804
+      ],
+      "speedLimit": 60
+    },
+    "942": {
+      "coordinates": [
+        41.4172773,
+        48.4176538
+      ],
+      "speedLimit": 60
+    },
+    "943": {
+      "coordinates": [
+        41.42299,
+        48.43116
+      ],
+      "speedLimit": 60
+    },
+    "945": {
+      "coordinates": [
+        40.5561318,
+        49.6167271
+      ],
+      "speedLimit": 90
+    },
+    "946": {
+      "coordinates": [
+        40.5562382,
+        49.6168559
+      ],
+      "speedLimit": 90
+    },
+    "947": {
+      "coordinates": [
+        41.3904277,
+        48.621935
+      ],
+      "speedLimit": 60
+    },
+    "949": {
+      "coordinates": [
+        41.37857,
+        48.59269
+      ],
+      "speedLimit": 60
+    },
+    "951": {
+      "coordinates": [
+        41.3628823,
+        48.5312093
+      ],
+      "speedLimit": 60
+    },
+    "953": {
+      "coordinates": [
+        41.36296,
+        48.516343
+      ],
+      "speedLimit": 60
+    },
+    "954": {
+      "coordinates": [
+        40.9074463,
+        47.7929836
+      ],
+      "speedLimit": 50
+    },
+    "956": {
+      "coordinates": [
+        40.405021,
+        49.8670227
+      ],
+      "speedLimit": 50
+    },
+    "957": {
+      "coordinates": [
+        40.46192,
+        47.85595
+      ],
+      "speedLimit": 90
+    },
+    "958": {
+      "coordinates": [
+        40.4616414,
+        47.856068
+      ],
+      "speedLimit": 90
+    },
+    "959": {
+      "coordinates": [
+        40.4787,
+        47.81347
+      ],
+      "speedLimit": 90
+    },
+    "960": {
+      "coordinates": [
+        40.4784378,
+        47.8136416
+      ],
+      "speedLimit": 90
+    },
+    "961": {
+      "coordinates": [
+        40.50987,
+        47.51282
+      ],
+      "speedLimit": 90
+    },
+    "962": {
+      "coordinates": [
+        40.9776012,
+        47.8322305
+      ],
+      "speedLimit": 50
+    },
+    "964": {
+      "coordinates": [
+        41.42398,
+        48.56395
+      ],
+      "speedLimit": 60
+    },
+    "965": {
+      "coordinates": [
+        41.4238588,
+        48.5638213
+      ],
+      "speedLimit": 60
+    },
+    "966": {
+      "coordinates": [
+        40.3940022,
+        49.859545
+      ],
+      "speedLimit": 60
+    },
+    "967": {
+      "coordinates": [
+        41.490464,
+        48.714473
+      ],
+      "speedLimit": 110
+    },
+    "968": {
+      "coordinates": [
+        41.570483,
+        48.601543
+      ],
+      "speedLimit": 110
+    },
+    "969": {
+      "coordinates": [
+        41.3965084,
+        48.8026262
+      ],
+      "speedLimit": 110
+    },
+    "970": {
+      "coordinates": [
+        41.36284,
+        48.530903
+      ],
+      "speedLimit": 60
+    },
+    "971": {
+      "coordinates": [
+        41.270188,
+        48.941185
+      ],
+      "speedLimit": 110
+    },
+    "973": {
+      "coordinates": [
+        40.568574,
+        49.631099
+      ],
+      "speedLimit": 60
+    },
+    "974": {
+      "coordinates": [
+        40.416389,
+        49.833869
+      ],
+      "speedLimit": 60
+    },
+    "975": {
+      "coordinates": [
+        40.393879,
+        49.86271
+      ],
+      "speedLimit": 60
+    },
+    "976": {
+      "coordinates": [
+        40.395097,
+        49.860636
+      ],
+      "speedLimit": 60
+    },
+    "977": {
+      "coordinates": [
+        40.594281,
+        49.617109
+      ],
+      "speedLimit": 50
+    },
+    "979": {
+      "coordinates": [
+        40.397892,
+        49.860688
+      ],
+      "speedLimit": 0
+    },
+    "980": {
+      "coordinates": [
+        40.777699,
+        49.47041
+      ],
+      "speedLimit": 110
+    },
+    "981": {
+      "coordinates": [
+        40.608673,
+        49.574807
+      ],
+      "speedLimit": 50
+    },
+    "983": {
+      "coordinates": [
+        40.847163,
+        49.39487
+      ],
+      "speedLimit": 110
+    },
+    "984": {
+      "coordinates": [
+        40.989844,
+        49.236222
+      ],
+      "speedLimit": 110
+    },
+    "985": {
+      "coordinates": [
+        41.22241,
+        49.036407
+      ],
+      "speedLimit": 110
+    },
+    "986": {
+      "coordinates": [
+        41.178025,
+        49.086213
+      ],
+      "speedLimit": 110
+    },
+    "987": {
+      "coordinates": [
+        40.40275,
+        49.86286
+      ],
+      "speedLimit": 0
+    },
+    "988": {
+      "coordinates": [
+        40.40196,
+        49.8632
+      ],
+      "speedLimit": 0
+    },
+    "989": {
+      "coordinates": [
+        40.39698,
+        49.86301
+      ],
+      "speedLimit": 0
+    },
+    "990": {
+      "coordinates": [
+        40.39745,
+        49.86359
+      ],
+      "speedLimit": 50
+    },
+    "991": {
+      "coordinates": [
+        40.397573,
+        49.863944
+      ],
+      "speedLimit": 50
+    },
+    "992": {
+      "coordinates": [
+        40.39958,
+        49.86626
+      ],
+      "speedLimit": 0
+    },
+    "993": {
+      "coordinates": [
+        40.40089,
+        49.86774
+      ],
+      "speedLimit": 0
+    },
+    "994": {
+      "coordinates": [
+        40.96407,
+        47.83904
+      ],
+      "speedLimit": 60
+    },
+    "995": {
+      "coordinates": [
+        40.9638748,
+        47.8391687
+      ],
+      "speedLimit": 50
+    },
+    "996": {
+      "coordinates": [
+        40.40005,
+        49.83822
+      ],
+      "speedLimit": 60
+    },
+    "997": {
+      "coordinates": [
+        40.40158,
+        49.84596
+      ],
+      "speedLimit": 0
+    },
+    "998": {
+      "coordinates": [
+        40.40307,
+        49.85089
+      ],
+      "speedLimit": 0
+    },
+    "999": {
+      "coordinates": [
+        40.41466,
+        49.85329
+      ],
+      "speedLimit": 70
+    },
+    "1000": {
+      "coordinates": [
+        40.4145042,
+        49.8533652
+      ],
+      "speedLimit": 70
+    },
+    "1001": {
+      "coordinates": [
+        40.99005,
+        47.8253
+      ],
+      "speedLimit": 60
+    },
+    "1002": {
+      "coordinates": [
+        40.9899036,
+        47.8256433
+      ],
+      "speedLimit": 60
+    },
+    "1003": {
+      "coordinates": [
+        40.40755,
+        49.81186
+      ],
+      "speedLimit": 0
+    },
+    "1004": {
+      "coordinates": [
+        40.40612,
+        49.80677
+      ],
+      "speedLimit": 60
+    },
+    "1005": {
+      "coordinates": [
+        40.3966,
+        49.83336
+      ],
+      "speedLimit": 0
+    },
+    "1006": {
+      "coordinates": [
+        40.43739,
+        49.9466
+      ],
+      "speedLimit": 60
+    },
+    "1007": {
+      "coordinates": [
+        40.77618,
+        48.14403
+      ],
+      "speedLimit": 50
+    },
+    "1008": {
+      "coordinates": [
+        40.7761637,
+        48.1436544
+      ],
+      "speedLimit": 50
+    },
+    "1009": {
+      "coordinates": [
+        40.4181128,
+        49.9317093
+      ],
+      "speedLimit": 60
+    },
+    "1010": {
+      "coordinates": [
+        40.4171582,
+        49.9361442
+      ],
+      "speedLimit": 60
+    },
+    "1011": {
+      "coordinates": [
+        41.2385943,
+        48.931263
+      ],
+      "speedLimit": 70
+    },
+    "1013": {
+      "coordinates": [
+        40.412384,
+        49.8523868
+      ],
+      "speedLimit": 60
+    },
+    "1015": {
+      "coordinates": [
+        40.396939,
+        49.952932
+      ],
+      "speedLimit": 60
+    },
+    "1022": {
+      "coordinates": [
+        40.39546,
+        49.950429
+      ],
+      "speedLimit": 60
+    },
+    "1023": {
+      "coordinates": [
+        40.5191512,
+        49.9857195
+      ],
+      "speedLimit": 60
+    }
+  }
+}
